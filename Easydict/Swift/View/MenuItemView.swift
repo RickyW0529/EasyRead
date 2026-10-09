@@ -61,9 +61,6 @@ struct MenuItemView: View {
 
             quitItem.keyboardShortcut(.init("q"))
         }
-        .task {
-            latestVersion = await fetchRepoLatestVersion(EZGithubRepoEasydict)
-        }
     }
 
     // MARK: - Menu Items
@@ -79,8 +76,6 @@ struct MenuItemView: View {
     @State private var currentVersion =
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
 
-    @State private var latestVersion: String?
-
     @Environment(\.openURL) private var openURL
 
     @Default(.showOCRMenuItems) private var showOCRMenuItems
@@ -88,13 +83,7 @@ struct MenuItemView: View {
     @Default(.shortcutSelectTranslateWindowType) private var shortcutSelectTranslateWindowType
 
     private var versionString: String {
-        let defaultLabel = "Easydict  \(currentVersion)"
-        if let latestVersion,
-           currentVersion.compare(latestVersion, options: .numeric) == .orderedAscending {
-            return defaultLabel + "  (✨\(latestVersion) )"
-        } else {
-            return defaultLabel
-        }
+        "EasyRead  \(currentVersion)"
     }
 
     @ViewBuilder private var screenshotItem: some View {
@@ -226,7 +215,7 @@ struct MenuItemView: View {
         let downloadDirectory = FileManager.default.urls(
             for: .downloadsDirectory, in: .userDomainMask
         )[0]
-        let zipPath = downloadDirectory.appendingPathComponent("Easydict log \(dataString).zip")
+        let zipPath = downloadDirectory.appendingPathComponent("EasyRead log \(dataString).zip")
             .path(percentEncoded: false)
         let success = SSZipArchive.createZipFile(
             atPath: zipPath,

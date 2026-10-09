@@ -30,15 +30,6 @@ struct EasydictMainMenu: Commands {
                 Text("menubar.about")
             }
         }
-
-        // Check for updates
-        CommandGroup(after: .appInfo, addition: {
-            Button {
-                MyConfiguration.shared.updater.checkForUpdates()
-            } label: {
-                Text("check_updates")
-            }
-        })
     }
 
     // MARK: Private

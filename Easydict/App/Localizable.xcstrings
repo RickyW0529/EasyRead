@@ -2321,19 +2321,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "zh-Hans" : {
@@ -2345,7 +2345,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         }
       }
@@ -2355,19 +2355,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 🍃"
+            "value" : "EasyRead 🍃"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 🍃"
+            "value" : "EasyRead 🍃"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 🍃"
+            "value" : "EasyRead 🍃"
           }
         },
         "zh-Hans" : {
@@ -2379,7 +2379,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 🍃"
+            "value" : "EasyRead 🍃"
           }
         }
       }
@@ -5116,37 +5116,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "About Easydict"
+            "value" : "About EasyRead"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acerca de Easydict"
+            "value" : "Acerca de EasyRead"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict について"
+            "value" : "EasyRead について"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O aplikácii Easydict"
+            "value" : "O aplikácii EasyRead"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "关于 Easydict"
+            "value" : "关于 EasyRead"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "關於 Easydict"
+            "value" : "關於 EasyRead"
           }
         }
       }
@@ -6268,37 +6268,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict uses Sentry and Firebase to collect crash logs (for bug fixes) and anonymous analytics data, but these data will not be associated with your identity, only for improving user experience, and will never be shared with other platforms.\n\nEasydict is open source software, if you are interested, you can check the code."
+            "value" : "EasyRead uses Sentry and Firebase to collect crash logs (for bug fixes) and anonymous analytics data, but these data will not be associated with your identity, only for improving user experience, and will never be shared with other platforms.\n\nEasyRead is open source software, if you are interested, you can check the code."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict usa Sentry y Firebase para recopilar registros de errores (para corrección de errores) y datos analíticos anónimos, pero estos datos no se asociarán con tu identidad, solo para mejorar la experiencia del usuario, y nunca se compartirán con otras plataformas.\n\nEasydict es software de código abierto, si estás interesado, puedes verificar el código."
+            "value" : "EasyRead usa Sentry y Firebase para recopilar registros de errores (para corrección de errores) y datos analíticos anónimos, pero estos datos no se asociarán con tu identidad, solo para mejorar la experiencia del usuario, y nunca se compartirán con otras plataformas.\n\nEasyRead es software de código abierto, si estás interesado, puedes verificar el código."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict は Sentry と Firebase を使用してクラッシュログ（バグ修正用）と匿名の分析データを収集しますが、これらのデータはあなたの個人情報と関連付けられることはなく、ユーザー体験の向上のみに使用され、他のプラットフォームと共有されることは一切ありません。\n\nEasydict はオープンソースソフトウェアです。ご興味があればコードをご確認いただけます。"
+            "value" : "EasyRead は Sentry と Firebase を使用してクラッシュログ（バグ修正用）と匿名の分析データを収集しますが、これらのデータはあなたの個人情報と関連付けられることはなく、ユーザー体験の向上のみに使用され、他のプラットフォームと共有されることは一切ありません。\n\nEasyRead はオープンソースソフトウェアです。ご興味があればコードをご確認いただけます。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict používa Sentry a Firebase na zbieranie záznamov o pádoch (pre opravy chýb) a anonymných analytických údajov. Tieto údaje však nie sú spájané s tvojou identitou, slúžia iba na vylepšenie aplikácie a nikdy nebudú zdieľané s tretími stranami.\n\nEasydict je open source softvér. V prípade záujmu si môžeš skontrolovať kód."
+            "value" : "EasyRead používa Sentry a Firebase na zbieranie záznamov o pádoch (pre opravy chýb) a anonymných analytických údajov. Tieto údaje však nie sú spájané s tvojou identitou, slúžia iba na vylepšenie aplikácie a nikdy nebudú zdieľané s tretími stranami.\n\nEasyRead je open source softvér. V prípade záujmu si môžeš skontrolovať kód."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 使用了 Sentry 和 Firebase，它们会收集用户的崩溃日志（用于修复 bug）和匿名统计数据，但这些数据都不会关联到您的身份，仅用于改进用户体验，绝不会分享给其他平台。\n\nEasydict 是开源软件，如果你感兴趣，可以查看代码。"
+            "value" : "EasyRead 使用了 Sentry 和 Firebase，它们会收集用户的崩溃日志（用于修复 bug）和匿名统计数据，但这些数据都不会关联到您的身份，仅用于改进用户体验，绝不会分享给其他平台。\n\nEasyRead 是开源软件，如果你感兴趣，可以查看代码。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 使用了 Sentry 和 Firebase 來收集當機記錄（用於修復錯誤）和匿名分析資料，但這些資料不會與您的身分有關聯，僅用於改善使用者體驗，絕不會與其他平台分享。\n\nEasydict 是開放原始碼軟體，如果您有興趣，可以查看程式碼。"
+            "value" : "EasyRead 使用了 Sentry 和 Firebase 來收集當機記錄（用於修復錯誤）和匿名分析資料，但這些資料不會與您的身分有關聯，僅用於改善使用者體驗，絕不會與其他平台分享。\n\nEasyRead 是開放原始碼軟體，如果您有興趣，可以查看程式碼。"
           }
         }
       }
@@ -6551,37 +6551,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Now Detected that there is not set input translation shortcut key or selection translation shortcut key!\n\nSet the shortcut key to make sure you can go Easydict and hide the menu bar icon."
+            "value" : "Now Detected that there is not set input translation shortcut key or selection translation shortcut key!\n\nSet the shortcut key to make sure you can go EasyRead and hide the menu bar icon."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¡Se detectó que no hay configurada tecla de atajo para traducción de entrada o traducción de selección!\n\nConfigura la tecla de atajo para asegurarte de poder acceder a Easydict y ocultar el icono de la barra de menú."
+            "value" : "¡Se detectó que no hay configurada tecla de atajo para traducción de entrada o traducción de selección!\n\nConfigura la tecla de atajo para asegurarte de poder acceder a EasyRead y ocultar el icono de la barra de menú."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "入力翻訳ショートカットまたは選択翻訳ショートカットが設定されていません！\n\nメニューバーアイコンを非表示にしてもEasydictを開けるよう、ショートカットを設定してください。"
+            "value" : "入力翻訳ショートカットまたは選択翻訳ショートカットが設定されていません！\n\nメニューバーアイコンを非表示にしてもEasyReadを開けるよう、ショートカットを設定してください。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teraz bolo zistené, že nie je nastavená žiadna klávesová skratka pre preklad vstupu alebo preklad výberu!\n\nNastav klávesovú skratku, aby si mohol používať Easydict a skryť ikonu v lište."
+            "value" : "Teraz bolo zistené, že nie je nastavená žiadna klávesová skratka pre preklad vstupu alebo preklad výberu!\n\nNastav klávesovú skratku, aby si mohol používať EasyRead a skryť ikonu v lište."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "检测到当前未设置输入翻译快捷键或划词翻译快捷键！\n\n请先设置快捷键确保可以触发 Easydict 再隐藏菜单栏图标。"
+            "value" : "检测到当前未设置输入翻译快捷键或划词翻译快捷键！\n\n请先设置快捷键确保可以触发 EasyRead 再隐藏菜单栏图标。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "現在偵測到未設定輸入翻譯快速鍵或選取翻譯快速鍵！\n\n請設定快速鍵以確保您可以前往 Easydict 並隱藏選單列圖示。"
+            "value" : "現在偵測到未設定輸入翻譯快速鍵或選取翻譯快速鍵！\n\n請設定快速鍵以確保您可以前往 EasyRead 並隱藏選單列圖示。"
           }
         }
       }
@@ -6713,37 +6713,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please go to System Settings - Privacy & Security - Screen Recording & System Audio page to enable permissions for Easydict."
+            "value" : "Please go to System Settings - Privacy & Security - Screen Recording & System Audio page to enable permissions for EasyRead."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Por favor, ve a Configuración del Sistema - Privacidad y Seguridad - Grabación de pantalla y audio del sistema para habilitar los permisos para Easydict."
+            "value" : "Por favor, ve a Configuración del Sistema - Privacidad y Seguridad - Grabación de pantalla y audio del sistema para habilitar los permisos para EasyRead."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "システム設定 - プライバシーとセキュリティ - 画面収録とシステムオーディオ のページで Easydict の権限を有効にしてください。"
+            "value" : "システム設定 - プライバシーとセキュリティ - 画面収録とシステムオーディオ のページで EasyRead の権限を有効にしてください。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prejdi do Systémové nastavenia > Súkromie a bezpečnosť > Nahrávanie obrazovky a systémového audia o povoľ oprávnenia pre Easydict."
+            "value" : "Prejdi do Systémové nastavenia > Súkromie a bezpečnosť > Nahrávanie obrazovky a systémového audia o povoľ oprávnenia pre EasyRead."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "请前往 \"系统设置-隐私和安全-录屏与系统录音\" 页面，为 Easydict 启用权限。"
+            "value" : "请前往 \"系统设置-隐私和安全-录屏与系统录音\" 页面，为 EasyRead 启用权限。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "請前往系統設定 - 隱私權與安全性 - 螢幕錄製與系統音訊頁面，為 Easydict 啟用權限。"
+            "value" : "請前往系統設定 - 隱私權與安全性 - 螢幕錄製與系統音訊頁面，為 EasyRead 啟用權限。"
           }
         }
       }
@@ -7974,37 +7974,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Local CLI mode uses the official Codex CLI you have installed and signed in to. Easydict reuses that installation and its sign-in state; it does not install a managed component or start ChatGPT sign-in in this mode. OpenAI may change CLI availability, account rules, or policies."
+            "value" : "Local CLI mode uses the official Codex CLI you have installed and signed in to. EasyRead reuses that installation and its sign-in state; it does not install a managed component or start ChatGPT sign-in in this mode. OpenAI may change CLI availability, account rules, or policies."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El modo CLI local usa la CLI oficial de Codex que has instalado y en la que has iniciado sesión. Easydict reutiliza esa instalación y su sesión; en este modo no instala un componente administrado ni inicia el acceso a ChatGPT. OpenAI puede cambiar la disponibilidad de la CLI, las reglas de cuenta o las políticas."
+            "value" : "El modo CLI local usa la CLI oficial de Codex que has instalado y en la que has iniciado sesión. EasyRead reutiliza esa instalación y su sesión; en este modo no instala un componente administrado ni inicia el acceso a ChatGPT. OpenAI puede cambiar la disponibilidad de la CLI, las reglas de cuenta o las políticas."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ローカル CLI モードでは、インストールしてログイン済みの公式 Codex CLI を使用します。Easydict はそのインストールとログイン状態を再利用し、このモードでは管理対象コンポーネントのインストールや ChatGPT ログインを開始しません。CLI の利用条件やアカウント規則、ポリシーは OpenAI により変更される場合があります。"
+            "value" : "ローカル CLI モードでは、インストールしてログイン済みの公式 Codex CLI を使用します。EasyRead はそのインストールとログイン状態を再利用し、このモードでは管理対象コンポーネントのインストールや ChatGPT ログインを開始しません。CLI の利用条件やアカウント規則、ポリシーは OpenAI により変更される場合があります。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Režim lokálneho CLI používa oficiálne Codex CLI, ktoré máte nainštalované a prihlásené. Easydict znovu použije túto inštaláciu a stav prihlásenia; v tomto režime neinštaluje spravovaný komponent ani nespúšťa prihlásenie cez ChatGPT. OpenAI môže zmeniť dostupnosť CLI, pravidlá účtu alebo zásady."
+            "value" : "Režim lokálneho CLI používa oficiálne Codex CLI, ktoré máte nainštalované a prihlásené. EasyRead znovu použije túto inštaláciu a stav prihlásenia; v tomto režime neinštaluje spravovaný komponent ani nespúšťa prihlásenie cez ChatGPT. OpenAI môže zmeniť dostupnosť CLI, pravidlá účtu alebo zásady."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "本机 CLI 模式使用你已安装并已登录的官方 Codex CLI。Easydict 复用该安装和登录状态，此模式不会安装托管组件或启动 ChatGPT 登录。OpenAI 未来可能调整 CLI 可用性、账户规则或政策。"
+            "value" : "本机 CLI 模式使用你已安装并已登录的官方 Codex CLI。EasyRead 复用该安装和登录状态，此模式不会安装托管组件或启动 ChatGPT 登录。OpenAI 未来可能调整 CLI 可用性、账户规则或政策。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "本機 CLI 模式使用你已安裝並已登入的官方 Codex CLI。Easydict 沿用該安裝和登入狀態，此模式不會安裝託管元件或啟動 ChatGPT 登入。OpenAI 未來可能調整 CLI 可用性、帳戶規則或政策。"
+            "value" : "本機 CLI 模式使用你已安裝並已登入的官方 Codex CLI。EasyRead 沿用該安裝和登入狀態，此模式不會安裝託管元件或啟動 ChatGPT 登入。OpenAI 未來可能調整 CLI 可用性、帳戶規則或政策。"
           }
         }
       }
@@ -18294,37 +18294,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compose each Anki field with Easydict variables like {Word}"
+            "value" : "Compose each Anki field with EasyRead variables like {Word}"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "{Word} などの Easydict 変数で各 Anki フィールドを作成します"
+            "value" : "{Word} などの EasyRead 変数で各 Anki フィールドを作成します"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skladajte každé pole Anki z premenných Easydict, napríklad {Word}"
+            "value" : "Skladajte každé pole Anki z premenných EasyRead, napríklad {Word}"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "使用 {Word} 等 Easydict 变量组合每个 Anki 字段"
+            "value" : "使用 {Word} 等 EasyRead 变量组合每个 Anki 字段"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "使用 {Word} 等 Easydict 變數組合每個 Anki 欄位"
+            "value" : "使用 {Word} 等 EasyRead 變數組合每個 Anki 欄位"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compón cada campo de Anki con variables de Easydict como {Word}"
+            "value" : "Compón cada campo de Anki con variables de EasyRead como {Word}"
           }
         }
       }
@@ -18334,37 +18334,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Insert Easydict Variable"
+            "value" : "Insert EasyRead Variable"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 変数を挿入"
+            "value" : "EasyRead 変数を挿入"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vložiť premennú Easydict"
+            "value" : "Vložiť premennú EasyRead"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "插入 Easydict 变量"
+            "value" : "插入 EasyRead 变量"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "插入 Easydict 變數"
+            "value" : "插入 EasyRead 變數"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Insertar variable de Easydict"
+            "value" : "Insertar variable de EasyRead"
           }
         }
       }
@@ -18574,37 +18574,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict Variables"
+            "value" : "EasyRead Variables"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 変数"
+            "value" : "EasyRead 変数"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premenné Easydict"
+            "value" : "Premenné EasyRead"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 变量"
+            "value" : "EasyRead 变量"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 變數"
+            "value" : "EasyRead 變數"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Variables de Easydict"
+            "value" : "Variables de EasyRead"
           }
         }
       }
@@ -18854,37 +18854,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The saved reasoning effort is outside Easydict’s local CLI compatibility options. Choose Default or another available option in advanced settings. Your saved value has not been changed."
+            "value" : "The saved reasoning effort is outside EasyRead’s local CLI compatibility options. Choose Default or another available option in advanced settings. Your saved value has not been changed."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El esfuerzo de razonamiento guardado no está entre las opciones de compatibilidad de la CLI local de Easydict. Elige Predeterminado u otra opción disponible en los ajustes avanzados. El valor guardado no se ha modificado."
+            "value" : "El esfuerzo de razonamiento guardado no está entre las opciones de compatibilidad de la CLI local de EasyRead. Elige Predeterminado u otra opción disponible en los ajustes avanzados. El valor guardado no se ha modificado."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保存された思考レベルは、Easydict のローカル CLI 互換オプションに含まれていません。詳細設定でデフォルトまたは別の選択肢を選んでください。保存値は変更されていません。"
+            "value" : "保存された思考レベルは、EasyRead のローカル CLI 互換オプションに含まれていません。詳細設定でデフォルトまたは別の選択肢を選んでください。保存値は変更されていません。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uložená úroveň uvažovania nepatrí medzi možnosti kompatibility lokálneho CLI v Easydict. V rozšírených nastaveniach vyberte predvolenú alebo inú dostupnú možnosť. Uložená hodnota sa nezmenila."
+            "value" : "Uložená úroveň uvažovania nepatrí medzi možnosti kompatibility lokálneho CLI v EasyRead. V rozšírených nastaveniach vyberte predvolenú alebo inú dostupnú možnosť. Uložená hodnota sa nezmenila."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已保存的思考程度不在 Easydict 的本机 CLI 兼容选项中。请在高级设置中选择“默认”或其他可用选项。原保存值未被修改。"
+            "value" : "已保存的思考程度不在 EasyRead 的本机 CLI 兼容选项中。请在高级设置中选择“默认”或其他可用选项。原保存值未被修改。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已儲存的思考程度不在 Easydict 的本機 CLI 相容選項中。請在進階設定中選擇「預設」或其他可用選項。原儲存值未被修改。"
+            "value" : "已儲存的思考程度不在 EasyRead 的本機 CLI 相容選項中。請在進階設定中選擇「預設」或其他可用選項。原儲存值未被修改。"
           }
         }
       }
@@ -18894,37 +18894,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ChatGPT sign-in mode lets Easydict download an official Codex component on demand and authorize your ChatGPT account through the official sign-in flow. You do not need to install the CLI yourself. Enabling this service alone does not download the component or sign you in. OpenAI may change availability, account rules, or policies."
+            "value" : "ChatGPT sign-in mode lets EasyRead download an official Codex component on demand and authorize your ChatGPT account through the official sign-in flow. You do not need to install the CLI yourself. Enabling this service alone does not download the component or sign you in. OpenAI may change availability, account rules, or policies."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El modo de inicio de sesión de ChatGPT permite a Easydict descargar un componente oficial de Codex cuando se necesite y autorizar tu cuenta mediante el inicio de sesión oficial. No necesitas instalar la CLI. Activar el servicio por sí solo no descarga el componente ni inicia sesión. OpenAI puede cambiar la disponibilidad, las reglas de cuenta o las políticas."
+            "value" : "El modo de inicio de sesión de ChatGPT permite a EasyRead descargar un componente oficial de Codex cuando se necesite y autorizar tu cuenta mediante el inicio de sesión oficial. No necesitas instalar la CLI. Activar el servicio por sí solo no descarga el componente ni inicia sesión. OpenAI puede cambiar la disponibilidad, las reglas de cuenta o las políticas."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ChatGPT ログインモードでは、Easydict が必要に応じて公式 Codex コンポーネントをダウンロードし、公式ログイン手順で ChatGPT アカウントを認証します。CLI の手動インストールは不要です。サービスを有効にするだけではダウンロードやログインは行いません。利用条件やアカウント規則、ポリシーは OpenAI により変更される場合があります。"
+            "value" : "ChatGPT ログインモードでは、EasyRead が必要に応じて公式 Codex コンポーネントをダウンロードし、公式ログイン手順で ChatGPT アカウントを認証します。CLI の手動インストールは不要です。サービスを有効にするだけではダウンロードやログインは行いません。利用条件やアカウント規則、ポリシーは OpenAI により変更される場合があります。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "V režime prihlásenia cez ChatGPT môže Easydict podľa potreby stiahnuť oficiálny komponent Codex a autorizovať účet ChatGPT cez oficiálne prihlásenie. CLI nemusíte inštalovať sami. Samotné zapnutie služby komponent nestiahne ani vás neprihlási. OpenAI môže zmeniť dostupnosť, pravidlá účtu alebo zásady."
+            "value" : "V režime prihlásenia cez ChatGPT môže EasyRead podľa potreby stiahnuť oficiálny komponent Codex a autorizovať účet ChatGPT cez oficiálne prihlásenie. CLI nemusíte inštalovať sami. Samotné zapnutie služby komponent nestiahne ani vás neprihlási. OpenAI môže zmeniť dostupnosť, pravidlá účtu alebo zásady."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ChatGPT 登录模式由 Easydict 按需下载官方 Codex 组件，并通过官方登录流程授权你的 ChatGPT 账户，无需自行安装 CLI。仅启用服务不会下载组件或启动登录。OpenAI 未来可能调整服务可用性、账户规则或政策。"
+            "value" : "ChatGPT 登录模式由 EasyRead 按需下载官方 Codex 组件，并通过官方登录流程授权你的 ChatGPT 账户，无需自行安装 CLI。仅启用服务不会下载组件或启动登录。OpenAI 未来可能调整服务可用性、账户规则或政策。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ChatGPT 登入模式由 Easydict 按需下載官方 Codex 元件，並透過官方登入流程授權你的 ChatGPT 帳戶，無需自行安裝 CLI。僅啟用服務不會下載元件或啟動登入。OpenAI 未來可能調整服務可用性、帳戶規則或政策。"
+            "value" : "ChatGPT 登入模式由 EasyRead 按需下載官方 Codex 元件，並透過官方登入流程授權你的 ChatGPT 帳戶，無需自行安裝 CLI。僅啟用服務不會下載元件或啟動登入。OpenAI 未來可能調整服務可用性、帳戶規則或政策。"
           }
         }
       }
@@ -22424,6 +22424,86 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 Finder 中顯示"
+          }
+        }
+      }
+    },
+    "EasyRead" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EasyRead"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EasyRead"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EasyRead"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EasyRead"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EasyRead"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EasyRead"
+          }
+        }
+      }
+    },
+    "setting.about.based_on" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Based on Easydict (GPL-3.0)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "基于 Easydict（GPL-3.0）开发"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "基於 Easydict（GPL-3.0）開發"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Easydict（GPL-3.0）ベース"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Založené na Easydict (GPL-3.0)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basado en Easydict (GPL-3.0)"
           }
         }
       }

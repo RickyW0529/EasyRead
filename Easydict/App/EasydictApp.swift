@@ -70,7 +70,7 @@ struct EasydictApp: App {
                 .environment(\.locale, .init(identifier: I18nHelper.shared.localizeCode))
         } label: {
             Label {
-                Text("Easydict")
+                Text("EasyRead")
                     .openSettingsAccess() // trick way for open setting
                     .onReceive(
                         NotificationCenter.default.publisher(
@@ -93,7 +93,7 @@ struct EasydictApp: App {
                     #endif
                     .scaledToFit()
             }
-            .help("Easydict 🍃")
+            .help("EasyRead")
         }
         .menuBarExtraStyle(.menu)
         .commands {

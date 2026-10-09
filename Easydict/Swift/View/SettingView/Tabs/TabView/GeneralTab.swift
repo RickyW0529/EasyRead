@@ -16,28 +16,6 @@ import SwiftUI
 struct GeneralTab: View {
     // MARK: Internal
 
-    class CheckUpdaterViewModel: ObservableObject {
-        // MARK: Lifecycle
-
-        init() {
-            updater
-                .publisher(for: \.automaticallyChecksForUpdates)
-                .assign(to: &$autoChecksForUpdates)
-        }
-
-        // MARK: Internal
-
-        @Published var autoChecksForUpdates = true {
-            didSet {
-                updater.automaticallyChecksForUpdates = autoChecksForUpdates
-            }
-        }
-
-        // MARK: Private
-
-        private let updater = MyConfiguration.shared.updater
-    }
-
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
@@ -136,45 +114,6 @@ struct GeneralTab: View {
                     }
                 }
 
-                // Check for updates
-                HStack {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("check_for_updates")
-                        Text("lastest_version \(lastestVersion ?? version)")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer()
-                    Button("check_now") {
-                        MyConfiguration.shared.updater.checkForUpdates()
-                    }
-                }
-
-                Toggle(isOn: $checkUpdaterViewModel.autoChecksForUpdates) {
-                    Text("auto_check_update ")
-                }
-
-                HStack {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("setting.general.startup_and_update.include_beta")
-                        Text("setting.general.startup_and_update.include_beta.description")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer()
-                    Toggle(
-                        isOn: $includeBetaUpdates.didSet(execute: { state in
-                            logSettings(["include_beta_updates": state])
-                            if state {
-                                MyConfiguration.shared.updater.checkForUpdates()
-                            }
-                        })
-                    ) {
-                        EmptyView()
-                    }
-                    .labelsHidden()
-                }
-
                 LaunchAtLogin.Toggle {
                     Text("launch_at_startup")
                 }
@@ -242,9 +181,6 @@ struct GeneralTab: View {
             }
         }
         .formStyle(.grouped)
-        .task {
-            lastestVersion = await fetchRepoLatestVersion(EZGithubRepoEasydict)
-        }
         .alert("hide_menu_bar_icon", isPresented: $showRefuseAlert) {
             Button("ok") {
                 showRefuseAlert = false
@@ -272,10 +208,6 @@ struct GeneralTab: View {
     @EnvironmentObject private var languageState: LanguageState
     @State private var showRefuseAlert = false
     @State private var showHideMenuBarIconAlert = false
-
-    @StateObject private var checkUpdaterViewModel = CheckUpdaterViewModel()
-
-    @State private var lastestVersion: String?
 
     // Query language
     @Default(.languageDetectOptimize) private var languageDetectOptimize
@@ -309,12 +241,6 @@ struct GeneralTab: View {
     @Default(.selectedMenuBarIcon) private var selectedMenuBarIcon
     @Default(.fontSizeOptionIndex) private var fontSizeOptionIndex
     @Default(.enableMarkdownRendering) private var enableMarkdownRendering
-
-    @Default(.includeBetaUpdates) private var includeBetaUpdates
-
-    private var version: String {
-        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-    }
 
     private var shortcutsHaveSetuped: Bool {
         Defaults[.inputShortcut] != nil || Defaults[.selectionShortcut] != nil

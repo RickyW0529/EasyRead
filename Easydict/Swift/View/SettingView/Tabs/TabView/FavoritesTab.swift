@@ -212,7 +212,7 @@ struct FavoritesTab: View {
     private func suggestedExportFileName(for type: QueryRecordManager.RecordType) -> String {
         let typeName: String = type == .favorites ? "Favorites" : "History"
         let dateString = Self.exportFileNameFormatter.string(from: Date())
-        return "Easydict \(typeName) \(dateString).csv"
+        return "EasyRead \(typeName) \(dateString).csv"
     }
 
     /// Converts records to a CSV string.

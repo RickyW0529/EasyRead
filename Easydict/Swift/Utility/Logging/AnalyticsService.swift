@@ -21,12 +21,20 @@ final class AnalyticsService: NSObject {
     @objc(setupCrashLogService)
     static func setupCrashService() {
         #if !DEBUG
+        // EasyRead ships without telemetry endpoints: neither the upstream Firebase
+        // config nor the upstream Sentry DSN is bundled, so both are inert unless a
+        // user opts in and provides a compatible configuration file.
+        guard MyConfiguration.shared.allowCrashLog else {
+            return
+        }
         configureFirebaseIfNeeded()
-        SentrySDK.start { options in
-            options.dsn = SecretKeyManager.keyValues["sentryDSN"]
-            options.debug = true
-            options.tracesSampleRate = NSNumber(value: 0.1)
-            options.swiftAsyncStacktraces = true
+        if let dsn = SecretKeyManager.keyValues["sentryDSN"], !dsn.isEmpty {
+            SentrySDK.start { options in
+                options.dsn = dsn
+                options.debug = true
+                options.tracesSampleRate = NSNumber(value: 0.1)
+                options.swiftAsyncStacktraces = true
+            }
         }
         #endif
     }
@@ -113,9 +121,15 @@ final class AnalyticsService: NSObject {
     // MARK: Private
 
     private static let firebaseConfigurationToken: () = {
-        if FirebaseApp.app() == nil {
-            FirebaseApp.configure()
+        // GoogleService-Info.plist is not bundled with EasyRead; FirebaseApp.configure()
+        // would abort the process when the file is missing, so guard on its presence.
+        guard
+            Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil,
+            FirebaseApp.app() == nil
+        else {
+            return
         }
+        FirebaseApp.configure()
     }()
 
     /// Ensures Firebase is configured only once.

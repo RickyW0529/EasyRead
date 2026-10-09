@@ -416,10 +416,11 @@ final class LocalStorage: NSObject {
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
 
+    /// EasyRead defaults: the local Apple dictionary first, then DeepSeek (which stays
+    /// auto-query-off until the user configures an API key).
     private let defaultServiceTypeIDs: [String] = [
-        ServiceType.youdao.rawValue,
-        ServiceType.deepL.rawValue,
-        ServiceType.builtInAI.rawValue,
+        ServiceType.appleDictionary.rawValue,
+        ServiceType.deepSeek.rawValue,
     ]
 
     /// Raw dictionary backing service query statistics.

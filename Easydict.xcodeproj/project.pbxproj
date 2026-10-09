@@ -402,7 +402,6 @@
 		03D0F0112F00000100ABCDEF /* QueryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D0F0012F00000100ABCDEF /* QueryService.swift */; };
 		03D0F0122F00000100ABCDEF /* BaiduService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D0F0022F00000100ABCDEF /* BaiduService.swift */; };
 		03D0F0132F00000200ABCDEF /* QueryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D0F0032F00000200ABCDEF /* QueryResult.swift */; };
-		03D1C8782952B1CD00F2C7BD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03D1C8772952B1CD00F2C7BD /* GoogleService-Info.plist */; };
 		03D35DAA2AA6C49B00B023FE /* NSString+EZRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D35DA92AA6C49B00B023FE /* NSString+EZRegex.m */; };
 		03D486502E3F2021009313B3 /* Regex+List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D4864F2E3F2021009313B3 /* Regex+List.swift */; };
 		03D486532E3F2190009313B3 /* ListRegexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D486522E3F2190009313B3 /* ListRegexTests.swift */; };
@@ -1176,7 +1175,6 @@
 		03D0F0012F00000100ABCDEF /* QueryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryService.swift; sourceTree = "<group>"; };
 		03D0F0022F00000100ABCDEF /* BaiduService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaiduService.swift; sourceTree = "<group>"; };
 		03D0F0032F00000200ABCDEF /* QueryResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryResult.swift; sourceTree = "<group>"; };
-		03D1C8772952B1CD00F2C7BD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		03D35DA82AA6C49B00B023FE /* NSString+EZRegex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+EZRegex.h"; sourceTree = "<group>"; };
 		03D35DA92AA6C49B00B023FE /* NSString+EZRegex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+EZRegex.m"; sourceTree = "<group>"; };
 		03D4864F2E3F2021009313B3 /* Regex+List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Regex+List.swift"; sourceTree = "<group>"; };
@@ -1410,7 +1408,7 @@
 		C4DE3D6C2AC00EB500C2B85D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = Easydict/App/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
 		C59C7EA362DF42E3A968F294 /* ClaudeCodeServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeCodeServiceTests.swift; sourceTree = "<group>"; };
 		C7C3650B1BBD12D1980FE6C6 /* CodexManagedProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexManagedProcess.swift; sourceTree = "<group>"; };
-		C99EEB182385796700FEE666 /* Easydict-debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Easydict-debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C99EEB182385796700FEE666 /* EasyRead-debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "EasyRead-debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9AB6CC6A83844F992CD49D6 /* MDictConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDictConfigurationView.swift; sourceTree = "<group>"; };
 		CA9CF8A22D2E6CE6000C1860 /* good_v4.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = good_v4.json; sourceTree = "<group>"; };
 		CA9CF8A42D2E6D13000C1860 /* 美_v4.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "美_v4.json"; sourceTree = "<group>"; };
@@ -2090,7 +2088,6 @@
 			children = (
 				27FE95262B3DC55F000AD654 /* EasydictApp.swift */,
 				031DBD782AE01E130071CF85 /* easydict */,
-				03D1C8772952B1CD00F2C7BD /* GoogleService-Info.plist */,
 				C4DE3D6C2AC00EB500C2B85D /* Localizable.xcstrings */,
 				C477BF902C0E2C61006A3F27 /* InfoPlist.xcstrings */,
 				03BFBB5429235C9400C48725 /* Icons */,
@@ -4218,7 +4215,6 @@
 				030D612C2CD9BB34000DF298 /* Pods-Easydict-acknowledgements.plist in Resources */,
 				CA9CF8A52D2E6D13000C1860 /* 美_v4.json in Resources */,
 				03B022E629231FA6001C7E63 /* Assets.xcassets in Resources */,
-				03D1C8782952B1CD00F2C7BD /* GoogleService-Info.plist in Resources */,
 				C4DE3D6D2AC00EB500C2B85D /* Localizable.xcstrings in Resources */,
 				CA9CF8A32D2E6CE6000C1860 /* good_v4.json in Resources */,
 				03BFBB662923998300C48725 /* black-white-icon@3x.png in Resources */,
@@ -4959,7 +4955,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.izual.EasydictSwiftTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easyread.EasyReadTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -4967,7 +4963,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Easydict-debug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Easydict-debug";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EasyRead-debug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EasyRead-debug";
 			};
 			name = Debug;
 		};
@@ -4988,13 +4984,13 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.izual.EasydictSwiftTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easyread.EasyReadTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Easydict-debug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Easydict-debug";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EasyRead-debug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EasyRead-debug";
 			};
 			name = Release;
 		};
@@ -5161,9 +5157,9 @@
 		);
 		"MACOSX_DEPLOYMENT_TARGET" = "13.0";
 		"MARKETING_VERSION" = "2.24.0";
-		"PRODUCT_BUNDLE_IDENTIFIER" = "com.izual.Easydict-debug";
+		"PRODUCT_BUNDLE_IDENTIFIER" = "com.easyread.EasyRead-debug";
 		"PRODUCT_MODULE_NAME" = Easydict;
-		"PRODUCT_NAME" = "Easydict-debug";
+		"PRODUCT_NAME" = "EasyRead-debug";
 		"RUNTIME_EXCEPTION_ALLOW_JIT" = YES;
 		"RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION" = YES;
 		"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "DEBUG AGENT_CLI_DEBUG $(inherited)";
@@ -5210,9 +5206,9 @@
 		);
 		"MACOSX_DEPLOYMENT_TARGET" = "13.0";
 		"MARKETING_VERSION" = "2.24.0";
-		"PRODUCT_BUNDLE_IDENTIFIER" = "com.izual.Easydict";
+		"PRODUCT_BUNDLE_IDENTIFIER" = "com.easyread.EasyRead";
 		"PRODUCT_MODULE_NAME" = Easydict;
-		"PRODUCT_NAME" = "$(TARGET_NAME)";
+		"PRODUCT_NAME" = "EasyRead";
 		"PROVISIONING_PROFILE_SPECIFIER" = "";
 		"RUNTIME_EXCEPTION_ALLOW_JIT" = YES;
 		"RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION" = YES;

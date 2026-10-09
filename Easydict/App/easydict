@@ -2,9 +2,9 @@
 
 # 在这里添加你的应用程序执行命令
 # 例如：
-# /path/to/your/application/Easydict "$@"
+# /path/to/your/application/EasyRead "$@"
 
 
-# /Users/tisfeng/Library/Developer/Xcode/DerivedData/Easydict-entaqaylceybfqboqggmsizyhose/Build/Products/Debug/Easydict-debug.app/Contents/MacOS/Easydict-debug "$@"
+# /path/to/DerivedData/Build/Products/Debug/EasyRead-debug.app/Contents/MacOS/EasyRead-debug "$@"
 
-/System/Volumes/Data/Applications/Easydict.app/Contents/MacOS/Easydict "$@"
+/System/Volumes/Data/Applications/EasyRead.app/Contents/MacOS/EasyRead "$@"

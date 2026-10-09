@@ -39,6 +39,10 @@ struct AboutTab: View {
                     Text(copyrightInfo)
                         .font(.system(size: 11))
                         .foregroundColor(.gray)
+
+                    Text("setting.about.based_on")
+                        .font(.system(size: 11))
+                        .foregroundColor(.gray)
                         .padding(.bottom, 20)
                 }
 

@@ -49,6 +49,12 @@ class DeepSeekService: OpenAIService {
         [apiKeyKey, supportedModelsKey]
     }
 
+    /// EasyRead ships AI auto-query off by default: without an API key no request
+    /// may leave the machine, and even with one, explanations should be opt-in.
+    override var serviceUsageStatusKey: Defaults.Key<ServiceUsageStatus> {
+        serviceDefaultsKey(.serviceUsageStatus, defaultValue: .alwaysOff)
+    }
+
     override var defaultEndpoint: String {
         "https://api.deepseek.com/v1/chat/completions"
     }

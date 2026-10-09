@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>NSAppleEventsUsageDescription</key>
-	<string>Easydict requires permission to execute AppleScript.</string>
+	<string>EasyRead requires permission to execute AppleScript.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>$(TARGET_NAME)</string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIconFile</key>
@@ -19,7 +19,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(TARGET_NAME)</string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
@@ -32,10 +32,10 @@
 			<key>CFBundleURLIconFile</key>
 			<string>white-black-icon@2x</string>
 			<key>CFBundleURLName</key>
-			<string>com.izual.Easydict</string>
+			<string>com.easyread.EasyRead</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>easydict</string>
+				<string>easyread</string>
 			</array>
 		</dict>
 	</array>
@@ -60,11 +60,7 @@
 	<true/>
 	<key>NSSupportsSuddenTermination</key>
 	<true/>
-	<key>SUFeedURL</key>
-	<string>https://raw.githubusercontent.com/tisfeng/Easydict/main/appcast.xml</string>
-	<key>SUPublicEDKey</key>
-	<string>9Ee1FtAsmJHFD79H4bToJhAOJmTtkTYIUDr23ofEWiU=</string>
 	<key>SUEnableAutomaticChecks</key>
-	<true/>
+	<false/>
 </dict>
 </plist>

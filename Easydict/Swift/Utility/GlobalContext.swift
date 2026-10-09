@@ -18,7 +18,7 @@ class GlobalContext: NSObject {
         self.updaterHelper = SPUUpdaterHelper()
         self.userDriverHelper = SPUUserDriverHelper()
         self.updaterController = SPUStandardUpdaterController(
-            startingUpdater: true,
+            startingUpdater: false,
             updaterDelegate: updaterHelper,
             userDriverDelegate: userDriverHelper
         )

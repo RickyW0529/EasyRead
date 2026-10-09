@@ -8,37 +8,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         }
       }
@@ -50,37 +50,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict"
+            "value" : "EasyRead"
           }
         }
       }
@@ -92,37 +92,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Easydict requires permission to execute AppleScript."
+            "value" : "EasyRead requires permission to execute AppleScript."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict が AppleScript を実行するには権限が必要です。"
+            "value" : "EasyRead が AppleScript を実行するには権限が必要です。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict vyžaduje povolenie na vykonanie AppleScriptu."
+            "value" : "EasyRead vyžaduje povolenie na vykonanie AppleScriptu."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 需要权限来执行 AppleScript。"
+            "value" : "EasyRead 需要权限来执行 AppleScript。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 需要權限來執行 AppleScript。"
+            "value" : "EasyRead 需要權限來執行 AppleScript。"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict requiere permiso para ejecutar AppleScript."
+            "value" : "EasyRead requiere permiso para ejecutar AppleScript."
           }
         }
       }

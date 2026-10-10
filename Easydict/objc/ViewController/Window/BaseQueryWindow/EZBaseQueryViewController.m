@@ -469,6 +469,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 
     self.inputText = text;
     self.queryModel.actionType = actionType;
+    [self.queryModel attachContextSnapshot];
     self.queryView.isTypingChinese = NO;
 
     if ([self handleEasydictScheme:text]) {

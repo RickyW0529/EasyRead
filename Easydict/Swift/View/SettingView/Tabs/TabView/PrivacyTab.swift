@@ -31,6 +31,18 @@ struct PrivacyTab: View {
                     Toggle("allow_collect_analytics", isOn: $allowCollectAnalytics)
                 }
             }
+            Section {
+                HStack {
+                    Text("reading_context")
+                    Toggle("enable_context_extraction", isOn: $enableContextExtraction)
+                }
+                Text("context_extraction_explanation")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                ContextExclusionEditor()
+            }
         }
         .formStyle(.grouped)
     }
@@ -39,6 +51,7 @@ struct PrivacyTab: View {
 
     @Default(.allowCrashLog) private var allowCollectCrashLog
     @Default(.allowAnalytics) private var allowCollectAnalytics
+    @Default(.enableContextExtraction) private var enableContextExtraction
 }
 
 #Preview {

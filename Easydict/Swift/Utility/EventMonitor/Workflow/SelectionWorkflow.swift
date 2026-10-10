@@ -25,8 +25,17 @@ final class SelectionWorkflow {
 
     func getSelectedTextSnapshot(
         onStartMonitoringKeyboard: (@MainActor () -> ())? = nil,
-        completion: @escaping (SelectedTextSnapshot?) -> ()
+        completion queryCompletion: @escaping (SelectedTextSnapshot?) -> ()
     ) {
+        // Capture reading context for the selection before handing it to the
+        // caller. Capture runs asynchronously and never blocks the selection.
+        let completion: (SelectedTextSnapshot?) -> () = { snapshot in
+            if let snapshot, !snapshot.text.isEmpty {
+                ContextExtractionCoordinator.shared.captureContext(for: snapshot.text)
+            }
+            queryCompletion(snapshot)
+        }
+
         recordSelectTextInfo()
         let frontmostApp = contextProvider?.frontmostApplication
         logInfo("getSelectedText in App: \(String(describing: frontmostApp))")

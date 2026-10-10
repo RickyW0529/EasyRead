@@ -213,6 +213,10 @@
 		036D62812BCAB613002C95C7 /* BuiltInAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036D62802BCAB613002C95C7 /* BuiltInAIService.swift */; };
 		036E7D7B293F4FC8002675DF /* EZOpenLinkButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 036E7D7A293F4FC8002675DF /* EZOpenLinkButton.m */; };
 		0370A0B12FBA0001000A0B12 /* AnkiConnectClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0370A0B02FBA0001000A0B12 /* AnkiConnectClient.swift */; };
+		FEA7B00C0000000000000002 /* ContextExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA7B00C0000000000000001 /* ContextExtractor.swift */; };
+		FEA7B00C0000000000000004 /* AXContextExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA7B00C0000000000000003 /* AXContextExtractor.swift */; };
+		FEA7B00C0000000000000006 /* ContextExclusionEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA7B00C0000000000000005 /* ContextExclusionEditor.swift */; };
+		FEA7B00C0000000000000009 /* EasyReadKit in Frameworks */ = {isa = PBXBuildFile; productRef = FEA7B00C0000000000000008 /* EasyReadKit */; };
 		03715A282E6D24F60067259C /* SystemUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BBC8152E62062100CFC582 /* SystemUtility.swift */; };
 		03715A292E6D25170067259C /* ActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A00D872E616D56001A4D82 /* ActionManager.swift */; };
 		03715A2A2E6D253E0067259C /* FocusedElementInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A91F142E63E1FB00896B17 /* FocusedElementInfo.swift */; };
@@ -919,6 +923,9 @@
 		036E7D79293F4FC8002675DF /* EZOpenLinkButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EZOpenLinkButton.h; sourceTree = "<group>"; };
 		036E7D7A293F4FC8002675DF /* EZOpenLinkButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EZOpenLinkButton.m; sourceTree = "<group>"; };
 		0370A0B02FBA0001000A0B12 /* AnkiConnectClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnkiConnectClient.swift; sourceTree = "<group>"; };
+		FEA7B00C0000000000000001 /* ContextExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextExtractor.swift; sourceTree = "<group>"; };
+		FEA7B00C0000000000000003 /* AXContextExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AXContextExtractor.swift; sourceTree = "<group>"; };
+		FEA7B00C0000000000000005 /* ContextExclusionEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextExclusionEditor.swift; sourceTree = "<group>"; };
 		0371A5002DB1291E0097D4A1 /* GitHubService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubService.swift; sourceTree = "<group>"; };
 		03779F0B2BB256A7008D3C42 /* OpenAIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
 		03779F0C2BB256A7008D3C42 /* StreamService+Prompt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StreamService+Prompt.swift"; sourceTree = "<group>"; };
@@ -1462,6 +1469,7 @@
 				038030952B4106800009230C /* CocoaLumberjack in Frameworks */,
 				03FD68BB2B1DC59600FD388E /* CryptoSwift in Frameworks */,
 				03A173E72CD120E600791B51 /* SelectedTextKit in Frameworks */,
+				FEA7B00C0000000000000009 /* EasyReadKit in Frameworks */,
 				038EA1AD2B41282F008A6DD1 /* MJExtension in Frameworks */,
 				C4BE8E1C2C72E61B00F53204 /* LaunchAtLogin in Frameworks */,
 				03022F222B36D1A400B63209 /* SnapKit in Frameworks */,
@@ -3579,6 +3587,7 @@
 				0328D0792D7D42520050B2C7 /* Screenshot */,
 				03A00D862E616D3D001A4D82 /* ActionManager */,
 				0370A0B22FBA0001000A0B12 /* AnkiConnect */,
+				FEA7B00C0000000000000007 /* ContextExtraction */,
 				032AAA502C456D96007996A1 /* HTTPServer */,
 				A1B2C3D4E5F6000000000005 /* VocabularyNotebook */,
 				EA3B81F72B52549B004C0E8B /* Configuration */,
@@ -3596,6 +3605,16 @@
 				0370A0B02FBA0001000A0B12 /* AnkiConnectClient.swift */,
 			);
 			path = AnkiConnect;
+			sourceTree = "<group>";
+		};
+		FEA7B00C0000000000000007 /* ContextExtraction */ = {
+			isa = PBXGroup;
+			children = (
+				FEA7B00C0000000000000003 /* AXContextExtractor.swift */,
+				FEA7B00C0000000000000005 /* ContextExclusionEditor.swift */,
+				FEA7B00C0000000000000001 /* ContextExtractor.swift */,
+			);
+			path = ContextExtraction;
 			sourceTree = "<group>";
 		};
 		967712EC2B5B941600105E0F /* Shortcut */ = {
@@ -4032,6 +4051,7 @@
 				8FA77A6C61B54C27803F5D7D /* Sentry */,
 				860409122DDD5F090095781D /* FirebaseAnalytics */,
 				0322D74B2EDC1C72005E67D8 /* OmenTextField */,
+				FEA7B00C0000000000000008 /* EasyReadKit */,
 			);
 			productName = Bob;
 			productReference = C99EEB182385796700FEE666 /* Easydict-debug.app */;
@@ -4096,6 +4116,7 @@
 				61CCBB09A2214ECE9FB1ECFD /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				03DD46182EDB38D1009E5D7B /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 				0322D74A2EDC1C72005E67D8 /* XCRemoteSwiftPackageReference "OmenTextField" */,
+				FEA7B00C000000000000000A /* XCLocalSwiftPackageReference "EasyReadKit" */,
 			);
 			productRefGroup = C99EEB192385796700FEE666 /* Products */;
 			projectDirPath = "";
@@ -4893,6 +4914,9 @@
 				03B73F7B2D9C51580051CB74 /* ChineseDetection+Poetry.swift in Sources */,
 				DC46DF802B4417B900DEAE3E /* MyConfiguration.swift in Sources */,
 				0370A0B12FBA0001000A0B12 /* AnkiConnectClient.swift in Sources */,
+				FEA7B00C0000000000000002 /* ContextExtractor.swift in Sources */,
+				FEA7B00C0000000000000004 /* AXContextExtractor.swift in Sources */,
+				FEA7B00C0000000000000006 /* ContextExclusionEditor.swift in Sources */,
 				036E7D7B293F4FC8002675DF /* EZOpenLinkButton.m in Sources */,
 				03832F542B5F6BE200D0DC64 /* AdvancedTab.swift in Sources */,
 				0A057D802F7000000025C51D /* AdvancedTabAnkiSection.swift in Sources */,
@@ -5252,6 +5276,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		FEA7B00C000000000000000A /* XCLocalSwiftPackageReference "EasyReadKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = EasyReadKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		03022F1A2B35DEBA00B63209 /* XCRemoteSwiftPackageReference "Hue" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -5554,6 +5585,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EA3B81FA2B52555C004C0E8B /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
+		};
+		FEA7B00C0000000000000008 /* EasyReadKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FEA7B00C000000000000000A /* XCLocalSwiftPackageReference "EasyReadKit" */;
+			productName = EasyReadKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -201,6 +201,19 @@ extension Defaults.Keys {
         default: .menuBarActionCopy
     )
 
+    // Context extraction (EasyRead).
+
+    /// Whether the sentence around a selection is read as reading context.
+    /// Context stays on the machine unless the user enables an AI service.
+    static var enableContextExtraction = Key<Bool>("enableContextExtraction", default: true)
+
+    /// Bundle ids the user excluded from context extraction; the
+    /// authoritative privacy boundary.
+    static var contextExtractionExcludedApps = Key<[String]>(
+        "contextExtractionExcludedApps",
+        default: []
+    )
+
     static let enableRemoveBooksExcerptInfo = Key<Bool>(
         "EZConfiguration_kEnableRemoveBooksExcerptInfo",
         default: true

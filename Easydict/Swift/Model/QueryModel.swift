@@ -8,6 +8,7 @@
 import AppKit
 import Combine
 import Defaults
+import EasyReadKit
 import Foundation
 
 /// Model that encapsulates query text, language preferences, and request state.
@@ -42,6 +43,7 @@ open class QueryModel: NSObject, NSCopying {
         model.specifiedTextLanguageDict = specifiedTextLanguageDict.mutableCopy() as? NSMutableDictionary
             ?? NSMutableDictionary()
         model.autoQuery = autoQuery
+        model.contextSnapshot = contextSnapshot
         return model
     }
 
@@ -52,6 +54,11 @@ open class QueryModel: NSObject, NSCopying {
 
     /// Selection type for text capture.
     var selectTextType: EZSelectTextType = .accessibility
+
+    /// Reading context captured for this query's selection. Sanitized and
+    /// length-limited at capture time; only leaves the machine when the user
+    /// has enabled an AI service.
+    var contextSnapshot: SelectionSnapshot?
 
     /// User selected target language.
     var userTargetLanguage: Language = .auto
@@ -169,6 +176,21 @@ open class QueryModel: NSObject, NSCopying {
             }
             detectedLanguage = detectedLanguageStorage
         }
+    }
+
+    // MARK: - Reading Context
+
+    /// Attaches the captured reading context when it matches the current
+    /// input text, so later services can explain the text in its original
+    /// sentence (EasyRead Phase 2).
+    ///
+    /// Always refreshes from the store: this model lives as long as the
+    /// window, so a later selection of the same text in a different app
+    /// must not keep the previous query's snapshot. No match in the store
+    /// means no context (honest degradation), never a stale one.
+    @objc
+    func attachContextSnapshot() {
+        contextSnapshot = ContextExtractionCoordinator.shared.snapshot(forInputText: inputText)
     }
 
     // MARK: - Stop Block

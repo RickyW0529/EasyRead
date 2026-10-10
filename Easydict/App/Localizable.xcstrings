@@ -1753,6 +1753,126 @@
         }
       }
     },
+    "context_extraction_excluded_apps" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps never read for context:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps de las que nunca se lee contexto:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コンテキストを読み取らないアプリ:"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplikácie, z ktorých sa nikdy nečíta kontext:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不读取语境的应用："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不讀取語境的應用："
+          }
+        }
+      }
+    },
+    "context_extraction_excluded_apps_hint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensitive apps such as password managers are always excluded."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las apps sensibles, como los gestores de contraseñas, siempre quedan excluidas."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パスワードマネージャーなどの機密性の高いアプリは常に除外されます。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Citlivé aplikácie, ako sú správcovia hesiel, sú vždy vylúčené."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密码管理器等敏感应用始终被排除。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密碼管理器等敏感應用程式始終被排除。"
+          }
+        }
+      }
+    },
+    "context_extraction_explanation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To explain words in context, EasyRead reads the sentence surrounding your selection. Context stays on this Mac and is only sent to an AI service after you enable one."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para explicar palabras en su contexto, EasyRead lee la frase que rodea la selección. El contexto permanece en este Mac y solo se envía a un servicio de IA cuando activas uno."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文脈の中で単語を説明するため、EasyRead は選択範囲の周囲の文を読み取ります。コンテキストはこの Mac に留まり、AI サービスを有効にした場合にのみ送信されます。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na vysvetlenie slov v kontexte EasyRead číta vetu okolo vášho výberu. Kontext zostáva na tomto Macu a odošle sa AI službe až po jej aktivovaní."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "为了在语境中解释词义，EasyRead 会读取划选内容周围的句子。语境仅保存在本机，只有在你启用 AI 服务后才会发送。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "為了在語境中解釋詞義，EasyRead 會讀取劃選內容周圍的句子。語境僅保存在本機，只有在你啟用 AI 服務後才會發送。"
+          }
+        }
+      }
+    },
     "copy_text" : {
       "localizations" : {
         "en" : {
@@ -2380,6 +2500,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "EasyRead 🍃"
+          }
+        }
+      }
+    },
+    "enable_context_extraction" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read sentence around selection"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leer la frase alrededor de la selección"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択範囲の周囲の文を読み取る"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čítať vetu okolo výberu"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "读取划选内容周围的句子"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "讀取劃選內容周圍的句子"
           }
         }
       }
@@ -6541,6 +6701,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "結束"
+          }
+        }
+      }
+    },
+    "reading_context" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reading Context:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contexto de lectura:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "読解コンテキスト:"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontext čítania:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "阅读语境："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閱讀語境："
           }
         }
       }

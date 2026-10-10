@@ -82,7 +82,7 @@ struct SettingView: View {
         case .disabled:
             500
         case .privacy:
-            340
+            580
         case .about:
             300
         case .favorites:

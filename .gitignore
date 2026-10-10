@@ -111,3 +111,9 @@ BuildTools/.swiftpm
 *.zip
 *.app
 *.dmg
+
+# SwiftPM build artifacts (local EasyReadKit package)
+.build/
+
+# Agent goal-session state (transient, not repo governance)
+.claude-goal.md

@@ -38,7 +38,7 @@
 		209BB026FC90D159A32D12CF90C7A9E6 /* RACDynamicSignal.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA35D78A4F2BE93222C4A43135B649B /* RACDynamicSignal.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20C37E2DAB127A5F16FB258A0C4800C6 /* RACSignal+Operations.m in Sources */ = {isa = PBXBuildFile; fileRef = ED38CB2FA2F6650B32059D7A6EA1972E /* RACSignal+Operations.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		20E1862C4EECFA808E37585B892AEFE2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0269DE8ED4CB94E5F6E2BB553BA00B /* Foundation.framework */; };
-		22956ED114F31C3283DA8E033EAC9267 /* Pods-Easydict-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B845C2ACCFEF00A5B6C2314BC9ACE0DD /* Pods-Easydict-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		22956ED114F31C3283DA8E033EAC9267 /* Pods-EasyRead-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B845C2ACCFEF00A5B6C2314BC9ACE0DD /* Pods-EasyRead-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		23963A5AB1C62E78EC53D29C36CCE015 /* JLRoutes-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 258B839BE671105CF3C68D975363F3EE /* JLRoutes-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		23C0AD5455A879A290114A78D37495C9 /* RACMulticastConnection+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CDA03C06405A99FFD3B475172DF3A0E /* RACMulticastConnection+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		26F355564E5D662708E2D2CE3726B558 /* RACSignal+Operations.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1ACB392B85E35F472BC9FAD4243926 /* RACSignal+Operations.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -112,12 +112,12 @@
 		71251D260C267AEA8B6C2E48D86367A9 /* RACDynamicSignal.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5209B352A38B4EBB6889B344F344F6 /* RACDynamicSignal.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		731DE80387D5D4C37B5ED1A0346CE20A /* RACStream.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33A8366D2A04E3EA253AAB7CB40B25 /* RACStream.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		738A12C57FEAE92C5029B24C30595553 /* RACUnarySequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 918D0A8527E8AD4334E8E3EF5FDB1417 /* RACUnarySequence.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		748E49D4C74407300DB57F9597E4CFBF /* Pods-EasydictTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9557017CFFCCA6BDFC4839A96EFD0115 /* Pods-EasydictTests-dummy.m */; };
+		748E49D4C74407300DB57F9597E4CFBF /* Pods-EasyReadTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9557017CFFCCA6BDFC4839A96EFD0115 /* Pods-EasyReadTests-dummy.m */; };
 		75093894D82E492709BD1E07DFE6B946 /* NSObject+RACPropertySubscribing.m in Sources */ = {isa = PBXBuildFile; fileRef = 0733D94E3706B91BA347D005A0602044 /* NSObject+RACPropertySubscribing.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		75B2913AB6E4C3B602BAB6B7FD35DE91 /* RACBlockTrampoline.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3CD92845DA067067EAA906F961A31A /* RACBlockTrampoline.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		767F06C89D3C1A2D07583D838338EA8D /* MASLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = F7D36DD16852BE0F811471CB186CD40D /* MASLayoutConstraint.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		788F0DFB894BF0F15352D2D49C060157 /* Masonry-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 558C5430AB55B50F600CC6F93AA3B842 /* Masonry-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		788FF2FB5E90C841983A25F9052010CD /* Pods-Easydict-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D610BCDDE18DC2909FCA3135208FAB9 /* Pods-Easydict-dummy.m */; };
+		788FF2FB5E90C841983A25F9052010CD /* Pods-EasyRead-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D610BCDDE18DC2909FCA3135208FAB9 /* Pods-EasyRead-dummy.m */; };
 		78BE06DD0AA848ACB31180FD9DFDDB02 /* RACCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = CD10A8ADF4FBCA5E6182D0525423010C /* RACCommand.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		798BA81CAFCE61A6D385E964C509F94B /* RACCompoundDisposableProvider.d in Sources */ = {isa = PBXBuildFile; fileRef = 65C99B3136B44184E718AE7D5E06B4ED /* RACCompoundDisposableProvider.d */; };
 		79D67E8D7A2C3DBFB08DDF38E803431F /* RACEmptySequence.m in Sources */ = {isa = PBXBuildFile; fileRef = F10B2EF37CFE74CBEC350518E2B7B773 /* RACEmptySequence.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -173,7 +173,7 @@
 		C37F6CA769E342B7B42D2D99462AB58D /* RACKVOChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = F3DA8B62742F001ADD3C481A5A646AC4 /* RACKVOChannel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C3B5E5D65F4AA819BD20A5141957444D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */; };
 		C54E56EA220C0414159373F274512C26 /* JLRRouteDefinition.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DE9A95E5B9FF34E7B91E723E6A62DCD /* JLRRouteDefinition.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C6127EEDA0991DD986679B168CD0E387 /* Pods-EasydictTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 91595758B02C3B624DAEBA1FA94E413B /* Pods-EasydictTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C6127EEDA0991DD986679B168CD0E387 /* Pods-EasyReadTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 91595758B02C3B624DAEBA1FA94E413B /* Pods-EasyReadTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C69289E74A86CBB971AA106A926CB011 /* RACValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = CE519E04EF0D3C99BEC47B147ABAAD83 /* RACValueTransformer.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C707AB9F9D48BD17246BA29AAE4CA746 /* JLRoutes-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BB1B61A8B460C1DCF23AC20A26439B6 /* JLRoutes-dummy.m */; };
 		C710698AFCADF345E0B48063CE63FF44 /* RACIndexSetSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D2015A2C77CDA3775D2E0F12555C3A /* RACIndexSetSequence.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -272,14 +272,14 @@
 		04B208120C714759A2F36D78A0120D24 /* MASConstraint.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MASConstraint.m; path = Masonry/MASConstraint.m; sourceTree = "<group>"; };
 		05A8C6E714AD2DA2B80262956037DF33 /* ReactiveObjC-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ReactiveObjC-prefix.pch"; sourceTree = "<group>"; };
 		0733D94E3706B91BA347D005A0602044 /* NSObject+RACPropertySubscribing.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSObject+RACPropertySubscribing.m"; path = "ReactiveObjC/NSObject+RACPropertySubscribing.m"; sourceTree = "<group>"; };
-		075B59E91BF3BF5ABD9620878E2DB30F /* Pods-EasydictTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-EasydictTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		077721F948898091D9B33938E5F2054E /* Pods-Easydict-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Easydict-acknowledgements.plist"; sourceTree = "<group>"; };
+		075B59E91BF3BF5ABD9620878E2DB30F /* Pods-EasyReadTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-EasyReadTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		077721F948898091D9B33938E5F2054E /* Pods-EasyRead-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-EasyRead-acknowledgements.plist"; sourceTree = "<group>"; };
 		07F1719CBADC89602A9138B41C39E7F7 /* RACKVOTrampoline.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACKVOTrampoline.h; path = ReactiveObjC/RACKVOTrampoline.h; sourceTree = "<group>"; };
 		0879D0580AEBE58D1ED7F90AE6C2B19C /* RACScopedDisposable.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACScopedDisposable.m; path = ReactiveObjC/RACScopedDisposable.m; sourceTree = "<group>"; };
 		097E46A36D1AEA69B27C13E12710FEAB /* RACEXTKeyPathCoding.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACEXTKeyPathCoding.h; path = ReactiveObjC/extobjc/RACEXTKeyPathCoding.h; sourceTree = "<group>"; };
 		09A2143769F11727DC522EA68971C403 /* NSIndexSet+RACSequenceAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSIndexSet+RACSequenceAdditions.m"; path = "ReactiveObjC/NSIndexSet+RACSequenceAdditions.m"; sourceTree = "<group>"; };
-		0D610BCDDE18DC2909FCA3135208FAB9 /* Pods-Easydict-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Easydict-dummy.m"; sourceTree = "<group>"; };
-		0F1C25F44128BF7424E93AA5262DC85E /* Pods-Easydict.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Easydict.release.xcconfig"; sourceTree = "<group>"; };
+		0D610BCDDE18DC2909FCA3135208FAB9 /* Pods-EasyRead-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-EasyRead-dummy.m"; sourceTree = "<group>"; };
+		0F1C25F44128BF7424E93AA5262DC85E /* Pods-EasyRead.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-EasyRead.release.xcconfig"; sourceTree = "<group>"; };
 		12B7959299F6BFE639C1DC622B018A6D /* RACEagerSequence.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACEagerSequence.m; path = ReactiveObjC/RACEagerSequence.m; sourceTree = "<group>"; };
 		13482B93DED62425AE404611FDF3E3E8 /* NSObject+RACKVOWrapper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+RACKVOWrapper.h"; path = "ReactiveObjC/NSObject+RACKVOWrapper.h"; sourceTree = "<group>"; };
 		134B30D5BB6C30839E20E14E24AD3706 /* RACSubscriptingAssignmentTrampoline.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACSubscriptingAssignmentTrampoline.m; path = ReactiveObjC/RACSubscriptingAssignmentTrampoline.m; sourceTree = "<group>"; };
@@ -294,7 +294,7 @@
 		1CB7B3A6B66882B0D2EC06F004E3AACB /* NSInvocation+RACTypeParsing.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSInvocation+RACTypeParsing.h"; path = "ReactiveObjC/NSInvocation+RACTypeParsing.h"; sourceTree = "<group>"; };
 		1F37A876830C02CBEAE60852265979A8 /* JLRRouteResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JLRRouteResponse.m; path = JLRoutes/Classes/JLRRouteResponse.m; sourceTree = "<group>"; };
 		1FFED36A657123030ABB700256D73F15 /* Masonry */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Masonry; path = Masonry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		225198CE18CF6D457A07FFA8E1635FD6 /* Pods-EasydictTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-EasydictTests.debug.xcconfig"; sourceTree = "<group>"; };
+		225198CE18CF6D457A07FFA8E1635FD6 /* Pods-EasyReadTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-EasyReadTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2255FB137FFAAC58B63F645EF3D5424E /* JLRoutes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = JLRoutes.release.xcconfig; sourceTree = "<group>"; };
 		24EC9DACFE4838E76D7832806E362D7F /* RACReplaySubject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACReplaySubject.h; path = ReactiveObjC/RACReplaySubject.h; sourceTree = "<group>"; };
 		2501A3484C684D488B620641902325F4 /* RACQueueScheduler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACQueueScheduler.h; path = ReactiveObjC/RACQueueScheduler.h; sourceTree = "<group>"; };
@@ -321,10 +321,10 @@
 		3511F85252236B79BACC6D8A6C90E2FA /* RACReturnSignal.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACReturnSignal.m; path = ReactiveObjC/RACReturnSignal.m; sourceTree = "<group>"; };
 		353AC01768C3F1526B37751B1202C844 /* MASConstraint+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "MASConstraint+Private.h"; path = "Masonry/MASConstraint+Private.h"; sourceTree = "<group>"; };
 		35D20D6BE7B39DBBF13C5FE3E5EB15E8 /* MASCompositeConstraint.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASCompositeConstraint.h; path = Masonry/MASCompositeConstraint.h; sourceTree = "<group>"; };
-		36A4A62A1CCA6B9F3C0381439421C36C /* Pods-EasydictTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-EasydictTests.modulemap"; sourceTree = "<group>"; };
+		36A4A62A1CCA6B9F3C0381439421C36C /* Pods-EasyReadTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-EasyReadTests.modulemap"; sourceTree = "<group>"; };
 		36A724A8BDD07E05DE27B26E296F6138 /* JLRoutes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JLRoutes.h; path = JLRoutes/JLRoutes.h; sourceTree = "<group>"; };
 		3760C55944FA19FFDB2291047053CF62 /* RACSignal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACSignal.h; path = ReactiveObjC/RACSignal.h; sourceTree = "<group>"; };
-		3906AD4DF1E6F559AA77E8B9CE6C6075 /* Pods-EasydictTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-EasydictTests-Info.plist"; sourceTree = "<group>"; };
+		3906AD4DF1E6F559AA77E8B9CE6C6075 /* Pods-EasyReadTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-EasyReadTests-Info.plist"; sourceTree = "<group>"; };
 		3BB8DF5D472CD32CBFD237A61C338233 /* MASViewConstraint.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MASViewConstraint.m; path = Masonry/MASViewConstraint.m; sourceTree = "<group>"; };
 		3DD70607D62AB74A16D154F7E9D1D084 /* MASViewAttribute.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASViewAttribute.h; path = Masonry/MASViewAttribute.h; sourceTree = "<group>"; };
 		3DE9A95E5B9FF34E7B91E723E6A62DCD /* JLRRouteDefinition.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JLRRouteDefinition.h; path = JLRoutes/Classes/JLRRouteDefinition.h; sourceTree = "<group>"; };
@@ -355,7 +355,7 @@
 		5F3CD92845DA067067EAA906F961A31A /* RACBlockTrampoline.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACBlockTrampoline.m; path = ReactiveObjC/RACBlockTrampoline.m; sourceTree = "<group>"; };
 		5FD82718412FF99F709C74436A7191B6 /* NSObject+RACAppKitBindings.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+RACAppKitBindings.h"; path = "ReactiveObjC/NSObject+RACAppKitBindings.h"; sourceTree = "<group>"; };
 		5FF9FC0CCA3B98904D34B1E2340542B3 /* View+MASAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "View+MASAdditions.m"; path = "Masonry/View+MASAdditions.m"; sourceTree = "<group>"; };
-		609FBC631238BFF4067769DA895D7F5D /* Pods-Easydict-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Easydict-frameworks.sh"; sourceTree = "<group>"; };
+		609FBC631238BFF4067769DA895D7F5D /* Pods-EasyRead-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-EasyRead-frameworks.sh"; sourceTree = "<group>"; };
 		60D6077C047541CA0D269ED45D35DABB /* RACEXTRuntimeExtensions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACEXTRuntimeExtensions.m; path = ReactiveObjC/extobjc/RACEXTRuntimeExtensions.m; sourceTree = "<group>"; };
 		615EAA0D2E4D2415C7BF1D3C32A1EFF5 /* NSObject+RACPropertySubscribing.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+RACPropertySubscribing.h"; path = "ReactiveObjC/NSObject+RACPropertySubscribing.h"; sourceTree = "<group>"; };
 		64C9B225460B8A26C8E8212E97BDFD49 /* NSOrderedSet+RACSequenceAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSOrderedSet+RACSequenceAdditions.m"; path = "ReactiveObjC/NSOrderedSet+RACSequenceAdditions.m"; sourceTree = "<group>"; };
@@ -375,7 +375,7 @@
 		7531970F82DDD2E85E225B118BA48EE6 /* RACKVOChannel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACKVOChannel.m; path = ReactiveObjC/RACKVOChannel.m; sourceTree = "<group>"; };
 		753266D504B13F045AE66F1D0FE760A3 /* RACUnarySequence.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACUnarySequence.m; path = ReactiveObjC/RACUnarySequence.m; sourceTree = "<group>"; };
 		776E34B460498205B71294622DCC7DEA /* MASConstraint.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASConstraint.h; path = Masonry/MASConstraint.h; sourceTree = "<group>"; };
-		7928E94955D0DC03EACC29A7B0111C9C /* Pods-Easydict.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Easydict.modulemap"; sourceTree = "<group>"; };
+		7928E94955D0DC03EACC29A7B0111C9C /* Pods-EasyRead.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-EasyRead.modulemap"; sourceTree = "<group>"; };
 		7A1C1F4C05FDD9B2D95C47B04438FDFB /* RACTestScheduler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACTestScheduler.m; path = ReactiveObjC/RACTestScheduler.m; sourceTree = "<group>"; };
 		7C201A95ACD5E734EEC2B732F56B6387 /* NSText+RACSignalSupport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSText+RACSignalSupport.h"; path = "ReactiveObjC/NSText+RACSignalSupport.h"; sourceTree = "<group>"; };
 		7C526E2241248BCB41F9A9A32E735DAE /* Masonry.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Masonry.modulemap; sourceTree = "<group>"; };
@@ -395,7 +395,7 @@
 		874ACB8FB39BB7FE09A326EAABF648DC /* RACValueTransformer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACValueTransformer.h; path = ReactiveObjC/RACValueTransformer.h; sourceTree = "<group>"; };
 		88A89EDCB7E4CE1A7418F4F8E516E925 /* ReactiveObjC-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ReactiveObjC-Info.plist"; sourceTree = "<group>"; };
 		891BB120B6064416DD5C21F126123F99 /* NSData+RACSupport.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSData+RACSupport.m"; path = "ReactiveObjC/NSData+RACSupport.m"; sourceTree = "<group>"; };
-		8B00B1A7406B4F5FEEC4C4B39D91D48A /* Pods-Easydict.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Easydict.debug.xcconfig"; sourceTree = "<group>"; };
+		8B00B1A7406B4F5FEEC4C4B39D91D48A /* Pods-EasyRead.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-EasyRead.debug.xcconfig"; sourceTree = "<group>"; };
 		8E006E572CF0B71D70F127CDF7FC798E /* RACEXTScope.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACEXTScope.h; path = ReactiveObjC/extobjc/RACEXTScope.h; sourceTree = "<group>"; };
 		8E35431D89452ED3C26CEF4424DF8213 /* ReactiveObjC-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ReactiveObjC-umbrella.h"; sourceTree = "<group>"; };
 		8E579E19E02F8AA76DE64CAC1DEBA9AB /* JLRRouteRequest.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JLRRouteRequest.h; path = JLRoutes/Classes/JLRRouteRequest.h; sourceTree = "<group>"; };
@@ -403,22 +403,22 @@
 		8F274262E0D2DFCC94ABA0AA613A2DC6 /* RACDynamicSequence.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACDynamicSequence.h; path = ReactiveObjC/RACDynamicSequence.h; sourceTree = "<group>"; };
 		8F6B91AAF362124062A84B2A786086E4 /* RACMulticastConnection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACMulticastConnection.m; path = ReactiveObjC/RACMulticastConnection.m; sourceTree = "<group>"; };
 		9103B65DB6D44BAE8B5201F2DBD0D279 /* NSArray+RACSequenceAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSArray+RACSequenceAdditions.h"; path = "ReactiveObjC/NSArray+RACSequenceAdditions.h"; sourceTree = "<group>"; };
-		91595758B02C3B624DAEBA1FA94E413B /* Pods-EasydictTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-EasydictTests-umbrella.h"; sourceTree = "<group>"; };
+		91595758B02C3B624DAEBA1FA94E413B /* Pods-EasyReadTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-EasyReadTests-umbrella.h"; sourceTree = "<group>"; };
 		918D0A8527E8AD4334E8E3EF5FDB1417 /* RACUnarySequence.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACUnarySequence.h; path = ReactiveObjC/RACUnarySequence.h; sourceTree = "<group>"; };
 		91D65205C903A4E9AA8B4C62F95619F7 /* NSURLConnection+RACSupport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSURLConnection+RACSupport.h"; path = "ReactiveObjC/NSURLConnection+RACSupport.h"; sourceTree = "<group>"; };
 		9214DC7BC994A41692495491CCBB9A7A /* Masonry-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Masonry-dummy.m"; sourceTree = "<group>"; };
 		92A1B405EFCAB626CB622BD024FBF3ED /* NSObject+RACSelectorSignal.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSObject+RACSelectorSignal.m"; path = "ReactiveObjC/NSObject+RACSelectorSignal.m"; sourceTree = "<group>"; };
-		9312CC9A36808D0478AE8052EF3DF43A /* Pods-EasydictTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-EasydictTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		9312CC9A36808D0478AE8052EF3DF43A /* Pods-EasyReadTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-EasyReadTests-acknowledgements.plist"; sourceTree = "<group>"; };
 		93A406E826A6930214BAA84734DBA688 /* NSArray+MASAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSArray+MASAdditions.h"; path = "Masonry/NSArray+MASAdditions.h"; sourceTree = "<group>"; };
 		942B064B833B2310165B7356F06F0037 /* NSArray+RACSequenceAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSArray+RACSequenceAdditions.m"; path = "ReactiveObjC/NSArray+RACSequenceAdditions.m"; sourceTree = "<group>"; };
-		9557017CFFCCA6BDFC4839A96EFD0115 /* Pods-EasydictTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-EasydictTests-dummy.m"; sourceTree = "<group>"; };
+		9557017CFFCCA6BDFC4839A96EFD0115 /* Pods-EasyReadTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-EasyReadTests-dummy.m"; sourceTree = "<group>"; };
 		9621C6383F5733C35183B2DE886C7EC6 /* ReactiveObjC */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ReactiveObjC; path = ReactiveObjC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96FC0C5F959D2C2D0BCF4A226AB7FBD0 /* RACAnnotations.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACAnnotations.h; path = ReactiveObjC/RACAnnotations.h; sourceTree = "<group>"; };
 		989409FEF4A05533E931BAA1A1CF9C34 /* JLRParsingUtilities.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JLRParsingUtilities.h; path = JLRoutes/Classes/JLRParsingUtilities.h; sourceTree = "<group>"; };
 		9A273C51F83EAF962E5E458D19E65B70 /* RACPassthroughSubscriber.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACPassthroughSubscriber.m; path = ReactiveObjC/RACPassthroughSubscriber.m; sourceTree = "<group>"; };
 		9AF6E42AABD17867F7A1AB306F916581 /* RACScheduler+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "RACScheduler+Private.h"; path = "ReactiveObjC/RACScheduler+Private.h"; sourceTree = "<group>"; };
-		9B03860033D4E77E2A17C8CEDAA65BA7 /* Pods-EasydictTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-EasydictTests.release.xcconfig"; sourceTree = "<group>"; };
-		9B4352D1CD18BB2BDE8A51479B871C10 /* Pods-Easydict */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Easydict"; path = Pods_Easydict.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B03860033D4E77E2A17C8CEDAA65BA7 /* Pods-EasyReadTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-EasyReadTests.release.xcconfig"; sourceTree = "<group>"; };
+		9B4352D1CD18BB2BDE8A51479B871C10 /* Pods-EasyRead */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-EasyRead"; path = Pods_EasyRead.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B714A29E7577A9EF94C3E298B1413CE /* NSObject+RACDescription.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSObject+RACDescription.m"; path = "ReactiveObjC/NSObject+RACDescription.m"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9EAFD6F68AFC5827312F728B8B46AEFE /* JLRoutes-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JLRoutes-prefix.pch"; sourceTree = "<group>"; };
@@ -426,7 +426,7 @@
 		A2EC6568EBAD2908C18E7893AD89833C /* RACUnit.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACUnit.m; path = ReactiveObjC/RACUnit.m; sourceTree = "<group>"; };
 		A3C52B0D798D67F9EFB9228E1688E7B7 /* NSData+RACSupport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSData+RACSupport.h"; path = "ReactiveObjC/NSData+RACSupport.h"; sourceTree = "<group>"; };
 		A856C2F467ABA2206EFF140DD34E972E /* MASUtilities.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASUtilities.h; path = Masonry/MASUtilities.h; sourceTree = "<group>"; };
-		A8855B8F589FC345830C0325F4E7724D /* Pods-Easydict-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Easydict-Info.plist"; sourceTree = "<group>"; };
+		A8855B8F589FC345830C0325F4E7724D /* Pods-EasyRead-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-EasyRead-Info.plist"; sourceTree = "<group>"; };
 		A88E9955A77D157A717B25E4D8A38F79 /* RACImmediateScheduler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACImmediateScheduler.h; path = ReactiveObjC/RACImmediateScheduler.h; sourceTree = "<group>"; };
 		A97BE71363EAE99DD0CE7E68B21EE5D8 /* NSFileHandle+RACSupport.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSFileHandle+RACSupport.m"; path = "ReactiveObjC/NSFileHandle+RACSupport.m"; sourceTree = "<group>"; };
 		AA728FB4BEE56079639E711DD1D6DEFB /* RACKVOTrampoline.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACKVOTrampoline.m; path = ReactiveObjC/RACKVOTrampoline.m; sourceTree = "<group>"; };
@@ -440,7 +440,7 @@
 		B3B7BA8EE46AD60E0BB0747785B150DB /* NSControl+RACCommandSupport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSControl+RACCommandSupport.h"; path = "ReactiveObjC/NSControl+RACCommandSupport.h"; sourceTree = "<group>"; };
 		B427E50961B5E049875DB11DE4087549 /* RACErrorSignal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACErrorSignal.h; path = ReactiveObjC/RACErrorSignal.h; sourceTree = "<group>"; };
 		B7D2015A2C77CDA3775D2E0F12555C3A /* RACIndexSetSequence.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACIndexSetSequence.m; path = ReactiveObjC/RACIndexSetSequence.m; sourceTree = "<group>"; };
-		B845C2ACCFEF00A5B6C2314BC9ACE0DD /* Pods-Easydict-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Easydict-umbrella.h"; sourceTree = "<group>"; };
+		B845C2ACCFEF00A5B6C2314BC9ACE0DD /* Pods-EasyRead-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-EasyRead-umbrella.h"; sourceTree = "<group>"; };
 		BA16A1B94C0A62D2353F03EBDFB752D1 /* RACErrorSignal.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACErrorSignal.m; path = ReactiveObjC/RACErrorSignal.m; sourceTree = "<group>"; };
 		BB38086A54E4F0C764B094B06C2F7BD1 /* RACTestScheduler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACTestScheduler.h; path = ReactiveObjC/RACTestScheduler.h; sourceTree = "<group>"; };
 		BD26429691CD0440FB9411C26F877E2A /* NSUserDefaults+RACSupport.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+RACSupport.m"; path = "ReactiveObjC/NSUserDefaults+RACSupport.m"; sourceTree = "<group>"; };
@@ -457,7 +457,7 @@
 		C611CC9EBE68C142D7752F8019C417F3 /* JLRoutes-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "JLRoutes-Info.plist"; sourceTree = "<group>"; };
 		C6B7F6835A8195BE4F3306967397607A /* RACMulticastConnection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACMulticastConnection.h; path = ReactiveObjC/RACMulticastConnection.h; sourceTree = "<group>"; };
 		C7BADA38188AF65A2D87FD83DFE9BF67 /* NSArray+MASAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MASAdditions.m"; path = "Masonry/NSArray+MASAdditions.m"; sourceTree = "<group>"; };
-		CA7E6DB6AFE7635C9077622C743F91CC /* Pods-EasydictTests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-EasydictTests"; path = Pods_EasydictTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA7E6DB6AFE7635C9077622C743F91CC /* Pods-EasyReadTests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-EasyReadTests"; path = Pods_EasyReadTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC174900A0DF78F421BB9C57BF41FD79 /* RACKVOProxy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACKVOProxy.m; path = ReactiveObjC/RACKVOProxy.m; sourceTree = "<group>"; };
 		CD10A8ADF4FBCA5E6182D0525423010C /* RACCommand.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACCommand.h; path = ReactiveObjC/RACCommand.h; sourceTree = "<group>"; };
 		CE519E04EF0D3C99BEC47B147ABAAD83 /* RACValueTransformer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACValueTransformer.m; path = ReactiveObjC/RACValueTransformer.m; sourceTree = "<group>"; };
@@ -465,7 +465,7 @@
 		D1BB059BDFE6F6451B634B320394B187 /* RACSubscriber.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACSubscriber.h; path = ReactiveObjC/RACSubscriber.h; sourceTree = "<group>"; };
 		D4268A94F59DC1E2063F3D41F965D83A /* RACChannel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACChannel.m; path = ReactiveObjC/RACChannel.m; sourceTree = "<group>"; };
 		D44024EA67812427613F210C2F37FB18 /* RACPassthroughSubscriber.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACPassthroughSubscriber.h; path = ReactiveObjC/RACPassthroughSubscriber.h; sourceTree = "<group>"; };
-		D4577EDD80EE21A830A0D562EA93FACB /* Pods-Easydict-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Easydict-acknowledgements.markdown"; sourceTree = "<group>"; };
+		D4577EDD80EE21A830A0D562EA93FACB /* Pods-EasyRead-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-EasyRead-acknowledgements.markdown"; sourceTree = "<group>"; };
 		D6A888BB30B77FC095129DE3A92732D8 /* NSObject+RACDescription.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+RACDescription.h"; path = "ReactiveObjC/NSObject+RACDescription.h"; sourceTree = "<group>"; };
 		D8825484B3F0D23C29C13F16EAB78E02 /* NSString+RACKeyPathUtilities.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSString+RACKeyPathUtilities.m"; path = "ReactiveObjC/NSString+RACKeyPathUtilities.m"; sourceTree = "<group>"; };
 		DA1ACB392B85E35F472BC9FAD4243926 /* RACSignal+Operations.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "RACSignal+Operations.h"; path = "ReactiveObjC/RACSignal+Operations.h"; sourceTree = "<group>"; };
@@ -499,7 +499,7 @@
 		F59702A564E0F771AB343AA6617A5EE3 /* RACBehaviorSubject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACBehaviorSubject.h; path = ReactiveObjC/RACBehaviorSubject.h; sourceTree = "<group>"; };
 		F5F32D123489418C9514EAEC4A9DF8D7 /* Masonry.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Masonry.h; path = Masonry/Masonry.h; sourceTree = "<group>"; };
 		F5FB7A70E88077E6DC7D35DB70B0CB96 /* RACScheduler+Subclass.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "RACScheduler+Subclass.h"; path = "ReactiveObjC/RACScheduler+Subclass.h"; sourceTree = "<group>"; };
-		F6AC3A4C0F4CF68BC61D5D70CB9B9971 /* Pods-EasydictTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-EasydictTests-frameworks.sh"; sourceTree = "<group>"; };
+		F6AC3A4C0F4CF68BC61D5D70CB9B9971 /* Pods-EasyReadTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-EasyReadTests-frameworks.sh"; sourceTree = "<group>"; };
 		F6D14B19F05D13BA182B58176FBBCA91 /* NSObject+RACKVOWrapper.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSObject+RACKVOWrapper.m"; path = "ReactiveObjC/NSObject+RACKVOWrapper.m"; sourceTree = "<group>"; };
 		F7D36DD16852BE0F811471CB186CD40D /* MASLayoutConstraint.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MASLayoutConstraint.m; path = Masonry/MASLayoutConstraint.m; sourceTree = "<group>"; };
 		F83E54C0EA948D9233194DB7A03A7973 /* RACUnit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACUnit.h; path = ReactiveObjC/RACUnit.h; sourceTree = "<group>"; };
@@ -581,21 +581,21 @@
 			path = JLRoutes;
 			sourceTree = "<group>";
 		};
-		277079E64D587828BC84168A65DD46C6 /* Pods-EasydictTests */ = {
+		277079E64D587828BC84168A65DD46C6 /* Pods-EasyReadTests */ = {
 			isa = PBXGroup;
 			children = (
-				36A4A62A1CCA6B9F3C0381439421C36C /* Pods-EasydictTests.modulemap */,
-				075B59E91BF3BF5ABD9620878E2DB30F /* Pods-EasydictTests-acknowledgements.markdown */,
-				9312CC9A36808D0478AE8052EF3DF43A /* Pods-EasydictTests-acknowledgements.plist */,
-				9557017CFFCCA6BDFC4839A96EFD0115 /* Pods-EasydictTests-dummy.m */,
-				F6AC3A4C0F4CF68BC61D5D70CB9B9971 /* Pods-EasydictTests-frameworks.sh */,
-				3906AD4DF1E6F559AA77E8B9CE6C6075 /* Pods-EasydictTests-Info.plist */,
-				91595758B02C3B624DAEBA1FA94E413B /* Pods-EasydictTests-umbrella.h */,
-				225198CE18CF6D457A07FFA8E1635FD6 /* Pods-EasydictTests.debug.xcconfig */,
-				9B03860033D4E77E2A17C8CEDAA65BA7 /* Pods-EasydictTests.release.xcconfig */,
+				36A4A62A1CCA6B9F3C0381439421C36C /* Pods-EasyReadTests.modulemap */,
+				075B59E91BF3BF5ABD9620878E2DB30F /* Pods-EasyReadTests-acknowledgements.markdown */,
+				9312CC9A36808D0478AE8052EF3DF43A /* Pods-EasyReadTests-acknowledgements.plist */,
+				9557017CFFCCA6BDFC4839A96EFD0115 /* Pods-EasyReadTests-dummy.m */,
+				F6AC3A4C0F4CF68BC61D5D70CB9B9971 /* Pods-EasyReadTests-frameworks.sh */,
+				3906AD4DF1E6F559AA77E8B9CE6C6075 /* Pods-EasyReadTests-Info.plist */,
+				91595758B02C3B624DAEBA1FA94E413B /* Pods-EasyReadTests-umbrella.h */,
+				225198CE18CF6D457A07FFA8E1635FD6 /* Pods-EasyReadTests.debug.xcconfig */,
+				9B03860033D4E77E2A17C8CEDAA65BA7 /* Pods-EasyReadTests.release.xcconfig */,
 			);
-			name = "Pods-EasydictTests";
-			path = "Target Support Files/Pods-EasydictTests";
+			name = "Pods-EasyReadTests";
+			path = "Target Support Files/Pods-EasyReadTests";
 			sourceTree = "<group>";
 		};
 		32369A664DC4EA075B7538A989B7D905 /* Support Files */ = {
@@ -779,21 +779,21 @@
 			path = ReactiveObjC;
 			sourceTree = "<group>";
 		};
-		3D866075C3D3015C6742E23645E52689 /* Pods-Easydict */ = {
+		3D866075C3D3015C6742E23645E52689 /* Pods-EasyRead */ = {
 			isa = PBXGroup;
 			children = (
-				7928E94955D0DC03EACC29A7B0111C9C /* Pods-Easydict.modulemap */,
-				D4577EDD80EE21A830A0D562EA93FACB /* Pods-Easydict-acknowledgements.markdown */,
-				077721F948898091D9B33938E5F2054E /* Pods-Easydict-acknowledgements.plist */,
-				0D610BCDDE18DC2909FCA3135208FAB9 /* Pods-Easydict-dummy.m */,
-				609FBC631238BFF4067769DA895D7F5D /* Pods-Easydict-frameworks.sh */,
-				A8855B8F589FC345830C0325F4E7724D /* Pods-Easydict-Info.plist */,
-				B845C2ACCFEF00A5B6C2314BC9ACE0DD /* Pods-Easydict-umbrella.h */,
-				8B00B1A7406B4F5FEEC4C4B39D91D48A /* Pods-Easydict.debug.xcconfig */,
-				0F1C25F44128BF7424E93AA5262DC85E /* Pods-Easydict.release.xcconfig */,
+				7928E94955D0DC03EACC29A7B0111C9C /* Pods-EasyRead.modulemap */,
+				D4577EDD80EE21A830A0D562EA93FACB /* Pods-EasyRead-acknowledgements.markdown */,
+				077721F948898091D9B33938E5F2054E /* Pods-EasyRead-acknowledgements.plist */,
+				0D610BCDDE18DC2909FCA3135208FAB9 /* Pods-EasyRead-dummy.m */,
+				609FBC631238BFF4067769DA895D7F5D /* Pods-EasyRead-frameworks.sh */,
+				A8855B8F589FC345830C0325F4E7724D /* Pods-EasyRead-Info.plist */,
+				B845C2ACCFEF00A5B6C2314BC9ACE0DD /* Pods-EasyRead-umbrella.h */,
+				8B00B1A7406B4F5FEEC4C4B39D91D48A /* Pods-EasyRead.debug.xcconfig */,
+				0F1C25F44128BF7424E93AA5262DC85E /* Pods-EasyRead.release.xcconfig */,
 			);
-			name = "Pods-Easydict";
-			path = "Target Support Files/Pods-Easydict";
+			name = "Pods-EasyRead";
+			path = "Target Support Files/Pods-EasyRead";
 			sourceTree = "<group>";
 		};
 		4E58A644E5DE9BD569456E639A06D581 /* Support Files */ = {
@@ -893,8 +893,8 @@
 			children = (
 				50FFBAE87DAAA5D19C6D04413ED5E6D3 /* JLRoutes */,
 				1FFED36A657123030ABB700256D73F15 /* Masonry */,
-				9B4352D1CD18BB2BDE8A51479B871C10 /* Pods-Easydict */,
-				CA7E6DB6AFE7635C9077622C743F91CC /* Pods-EasydictTests */,
+				9B4352D1CD18BB2BDE8A51479B871C10 /* Pods-EasyRead */,
+				CA7E6DB6AFE7635C9077622C743F91CC /* Pods-EasyReadTests */,
 				9621C6383F5733C35183B2DE886C7EC6 /* ReactiveObjC */,
 			);
 			name = Products;
@@ -914,8 +914,8 @@
 		D1E0CB3188DEDB5AE871914790FAE975 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				3D866075C3D3015C6742E23645E52689 /* Pods-Easydict */,
-				277079E64D587828BC84168A65DD46C6 /* Pods-EasydictTests */,
+				3D866075C3D3015C6742E23645E52689 /* Pods-EasyRead */,
+				277079E64D587828BC84168A65DD46C6 /* Pods-EasyReadTests */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
@@ -950,7 +950,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22956ED114F31C3283DA8E033EAC9267 /* Pods-Easydict-umbrella.h in Headers */,
+				22956ED114F31C3283DA8E033EAC9267 /* Pods-EasyRead-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -972,7 +972,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6127EEDA0991DD986679B168CD0E387 /* Pods-EasydictTests-umbrella.h in Headers */,
+				C6127EEDA0991DD986679B168CD0E387 /* Pods-EasyReadTests-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1070,9 +1070,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		0470353E8CC9CF58F0DD2C31E0F3E085 /* Pods-EasydictTests */ = {
+		0470353E8CC9CF58F0DD2C31E0F3E085 /* Pods-EasyReadTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6F6EB50A5C1233600534DF9B307EB7CA /* Build configuration list for PBXNativeTarget "Pods-EasydictTests" */;
+			buildConfigurationList = 6F6EB50A5C1233600534DF9B307EB7CA /* Build configuration list for PBXNativeTarget "Pods-EasyReadTests" */;
 			buildPhases = (
 				96550A002ABA4F16ACBFF5A00FEC59E3 /* Headers */,
 				4977248EECD4E6F9698ACBBD89446E9D /* Sources */,
@@ -1086,9 +1086,9 @@
 				6DEA97C814B059CF9721A4AB6C10ADC2 /* PBXTargetDependency */,
 				B04A27249283F26351AF18916F0C0E95 /* PBXTargetDependency */,
 			);
-			name = "Pods-EasydictTests";
-			productName = Pods_EasydictTests;
-			productReference = CA7E6DB6AFE7635C9077622C743F91CC /* Pods-EasydictTests */;
+			name = "Pods-EasyReadTests";
+			productName = Pods_EasyReadTests;
+			productReference = CA7E6DB6AFE7635C9077622C743F91CC /* Pods-EasyReadTests */;
 			productType = "com.apple.product-type.framework";
 		};
 		438B238ACC7DF1178D1BCE1A31983146 /* ReactiveObjC */ = {
@@ -1127,9 +1127,9 @@
 			productReference = 1FFED36A657123030ABB700256D73F15 /* Masonry */;
 			productType = "com.apple.product-type.framework";
 		};
-		85E42DEBB9BFEB455B18B8D5F0F36F65 /* Pods-Easydict */ = {
+		85E42DEBB9BFEB455B18B8D5F0F36F65 /* Pods-EasyRead */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C49BDDF8BD5E50823A4913999F51A166 /* Build configuration list for PBXNativeTarget "Pods-Easydict" */;
+			buildConfigurationList = C49BDDF8BD5E50823A4913999F51A166 /* Build configuration list for PBXNativeTarget "Pods-EasyRead" */;
 			buildPhases = (
 				54D7AE9007BA6F3E1374758EF5135465 /* Headers */,
 				7A90A74A326C1E903F23D02336461817 /* Sources */,
@@ -1143,9 +1143,9 @@
 				30950F5F37BABF7C47CBC2CF2543E683 /* PBXTargetDependency */,
 				22260855AC798376BE6E82248921619C /* PBXTargetDependency */,
 			);
-			name = "Pods-Easydict";
-			productName = Pods_Easydict;
-			productReference = 9B4352D1CD18BB2BDE8A51479B871C10 /* Pods-Easydict */;
+			name = "Pods-EasyRead";
+			productName = Pods_EasyRead;
+			productReference = 9B4352D1CD18BB2BDE8A51479B871C10 /* Pods-EasyRead */;
 			productType = "com.apple.product-type.framework";
 		};
 		94C1BAA17BCEBC27586488A205D2E0CB /* JLRoutes */ = {
@@ -1192,8 +1192,8 @@
 			targets = (
 				94C1BAA17BCEBC27586488A205D2E0CB /* JLRoutes */,
 				55AF53E6C77A10ED4985E04D74A8878E /* Masonry */,
-				85E42DEBB9BFEB455B18B8D5F0F36F65 /* Pods-Easydict */,
-				0470353E8CC9CF58F0DD2C31E0F3E085 /* Pods-EasydictTests */,
+				85E42DEBB9BFEB455B18B8D5F0F36F65 /* Pods-EasyRead */,
+				0470353E8CC9CF58F0DD2C31E0F3E085 /* Pods-EasyReadTests */,
 				438B238ACC7DF1178D1BCE1A31983146 /* ReactiveObjC */,
 			);
 		};
@@ -1342,7 +1342,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				748E49D4C74407300DB57F9597E4CFBF /* Pods-EasydictTests-dummy.m in Sources */,
+				748E49D4C74407300DB57F9597E4CFBF /* Pods-EasyReadTests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1350,7 +1350,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				788FF2FB5E90C841983A25F9052010CD /* Pods-Easydict-dummy.m in Sources */,
+				788FF2FB5E90C841983A25F9052010CD /* Pods-EasyRead-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1452,7 +1452,7 @@
 		};
 		32C301AA1CDD644498486FB54A8DEF97 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F1C25F44128BF7424E93AA5262DC85E /* Pods-Easydict.release.xcconfig */;
+			baseConfigurationReference = 0F1C25F44128BF7424E93AA5262DC85E /* Pods-EasyRead.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -1467,7 +1467,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = "Target Support Files/Pods-Easydict/Pods-Easydict-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-EasyRead/Pods-EasyRead-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1476,7 +1476,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MODULEMAP_FILE = "Target Support Files/Pods-Easydict/Pods-Easydict.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-EasyRead/Pods-EasyRead.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1775,7 +1775,7 @@
 		};
 		C5ACEB76EF49E4BD3571536A885686F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8B00B1A7406B4F5FEEC4C4B39D91D48A /* Pods-Easydict.debug.xcconfig */;
+			baseConfigurationReference = 8B00B1A7406B4F5FEEC4C4B39D91D48A /* Pods-EasyRead.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -1790,7 +1790,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = "Target Support Files/Pods-Easydict/Pods-Easydict-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-EasyRead/Pods-EasyRead-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1799,7 +1799,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MODULEMAP_FILE = "Target Support Files/Pods-Easydict/Pods-Easydict.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-EasyRead/Pods-EasyRead.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1814,7 +1814,7 @@
 		};
 		E3E9BE9D324DC0FEF1F5C2B28E5BB318 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B03860033D4E77E2A17C8CEDAA65BA7 /* Pods-EasydictTests.release.xcconfig */;
+			baseConfigurationReference = 9B03860033D4E77E2A17C8CEDAA65BA7 /* Pods-EasyReadTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -1829,7 +1829,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = "Target Support Files/Pods-EasydictTests/Pods-EasydictTests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-EasyReadTests/Pods-EasyReadTests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1838,7 +1838,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MODULEMAP_FILE = "Target Support Files/Pods-EasydictTests/Pods-EasydictTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-EasyReadTests/Pods-EasyReadTests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1893,7 +1893,7 @@
 		};
 		E69952A46896C352DC721A32113F8CBF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 225198CE18CF6D457A07FFA8E1635FD6 /* Pods-EasydictTests.debug.xcconfig */;
+			baseConfigurationReference = 225198CE18CF6D457A07FFA8E1635FD6 /* Pods-EasyReadTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -1908,7 +1908,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = "Target Support Files/Pods-EasydictTests/Pods-EasydictTests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-EasyReadTests/Pods-EasyReadTests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1917,7 +1917,7 @@
 				);
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MODULEMAP_FILE = "Target Support Files/Pods-EasydictTests/Pods-EasydictTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-EasyReadTests/Pods-EasyReadTests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1951,7 +1951,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6F6EB50A5C1233600534DF9B307EB7CA /* Build configuration list for PBXNativeTarget "Pods-EasydictTests" */ = {
+		6F6EB50A5C1233600534DF9B307EB7CA /* Build configuration list for PBXNativeTarget "Pods-EasyReadTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E69952A46896C352DC721A32113F8CBF /* Debug */,
@@ -1960,7 +1960,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C49BDDF8BD5E50823A4913999F51A166 /* Build configuration list for PBXNativeTarget "Pods-Easydict" */ = {
+		C49BDDF8BD5E50823A4913999F51A166 /* Build configuration list for PBXNativeTarget "Pods-EasyRead" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C5ACEB76EF49E4BD3571536A885686F6 /* Debug */,

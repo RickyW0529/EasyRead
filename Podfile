@@ -3,7 +3,7 @@ platform :osx, '13.0'
 
 inhibit_all_warnings!
 
-target 'Easydict' do
+target 'EasyRead' do
   use_frameworks!
   
   pod 'Masonry', '~> 1.1.0'
@@ -15,7 +15,7 @@ target 'Easydict' do
 
 end
 
-target 'EasydictTests' do
+target 'EasyReadTests' do
   use_frameworks!
   
   pod 'Masonry', '~> 1.1.0'

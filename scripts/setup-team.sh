@@ -14,7 +14,7 @@ die() {
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 ||
   die "not a git repository"
 
-LOCAL_CONFIG="Easydict-debug.local.xcconfig"
+LOCAL_CONFIG="EasyRead-debug.local.xcconfig"
 LEGACY_CONFIG=$(git rev-parse --git-path setup-team-id)
 HOOKS_DIR=$(git rev-parse --git-path hooks)
 
@@ -33,24 +33,24 @@ fi'
 
 # Moves legacy or manual signing edits back to the tracked defaults.
 migrate_legacy_setup() {
-  git update-index --no-assume-unchanged Easydict-debug.xcconfig \
+  git update-index --no-assume-unchanged EasyRead-debug.xcconfig \
     2>/dev/null || true
-  git update-index --no-skip-worktree Easydict-debug.xcconfig \
+  git update-index --no-skip-worktree EasyRead-debug.xcconfig \
     2>/dev/null || true
 
   sed -i '' -E \
     "s/DEVELOPMENT_TEAM *= *.*/DEVELOPMENT_TEAM =/" \
-    Easydict-debug.xcconfig
+    EasyRead-debug.xcconfig
   sed -i '' -E \
     "s/CODE_SIGN_IDENTITY *= *.*/CODE_SIGN_IDENTITY = -/" \
-    Easydict-debug.xcconfig
+    EasyRead-debug.xcconfig
   sed -i '' -E \
     "s/CODE_SIGN_STYLE *= *.*/CODE_SIGN_STYLE = Manual/" \
-    Easydict-debug.xcconfig
-  if ! grep -Fqx '#include? "Easydict-debug.local.xcconfig"' \
-    Easydict-debug.xcconfig; then
-    printf '\n#include? "Easydict-debug.local.xcconfig"\n' \
-      >> Easydict-debug.xcconfig
+    EasyRead-debug.xcconfig
+  if ! grep -Fqx '#include? "EasyRead-debug.local.xcconfig"' \
+    EasyRead-debug.xcconfig; then
+    printf '\n#include? "EasyRead-debug.local.xcconfig"\n' \
+      >> EasyRead-debug.xcconfig
   fi
 
   rm -f "$LEGACY_CONFIG"

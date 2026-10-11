@@ -119,7 +119,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ runner.temp }}/swift-package-sources
-          key: swiftpm-${{ runner.os }}-${{ runner.arch }}-xcode-${{ steps.toolchain.outputs.xcode_version }}-${{ hashFiles('Easydict.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          key: swiftpm-${{ runner.os }}-${{ runner.arch }}-xcode-${{ steps.toolchain.outputs.xcode_version }}-${{ hashFiles('EasyRead.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
           restore-keys: |
             swiftpm-${{ runner.os }}-${{ runner.arch }}-xcode-${{ steps.toolchain.outputs.xcode_version }}-
 
@@ -150,8 +150,8 @@ jobs:
         # docs/histories/2026-09/2026-09-25-codeql-swiftpm-manifest-sandbox.md.
         run: |
           xcodebuild build \
-            -workspace Easydict.xcworkspace \
-            -scheme Easydict \
+            -workspace EasyRead.xcworkspace \
+            -scheme EasyRead \
             -configuration Debug \
             -destination "generic/platform=macOS" \
             -clonedSourcePackagesDirPath "$RUNNER_TEMP/swift-package-sources" \
@@ -160,7 +160,7 @@ jobs:
             COMBINE_HIDPI_IMAGES=NO \
             ARCHS=arm64 \
             ONLY_ACTIVE_ARCH=YES \
-            EASYDICT_RELEASE_PACKAGING=YES \
+            EASYREAD_RELEASE_PACKAGING=YES \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
 

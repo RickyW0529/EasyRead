@@ -72,7 +72,7 @@ trailing_comma:
 # Limit directory traversal to project sources. Top-level `excluded` entries
 # make SwiftLint 0.62.2 traverse large generated directories even with `included`.
 included:
-  - Easydict
-  - EasydictTests
+  - EasyRead
+  - EasyReadTests
   - BuildTools/Package.swift
   - BuildTools/Empty.swift

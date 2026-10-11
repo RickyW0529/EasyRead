@@ -15,15 +15,15 @@
 
 ## 测试与工程文件组织
 
-- 测试目录按领域对应源码模块，Swift 测试以 `Easydict/Swift/` 为映射根，例如 `Service/OpenAI/`
-  对应 `EasydictTests/Service/OpenAI/`；跨模块测试按主要业务归属放置，现有目录按任务范围渐进调整。
+- 测试目录按领域对应源码模块，Swift 测试以 `EasyRead/Swift/` 为映射根，例如 `Service/OpenAI/`
+  对应 `EasyReadTests/Service/OpenAI/`；跨模块测试按主要业务归属放置，现有目录按任务范围渐进调整。
 - 每个测试文件聚焦一个主要被测类型或行为领域，最多声明一个 `@Suite`；接近文件规模限制时按职责
   拆分 suite 和 fixture，保留原有覆盖和标签、actor 隔离、共享状态恢复、串行边界。独立 suite 的
   `.serialized` 不提供跨 suite 串行保证。
 - 单文件 helper 保持局部，同领域共享工具就近放置，跨目录复用的 fixture 或工具放入
-  `EasydictTests/Support/<Domain>/`，资源放入对应测试资源目录。
+  `EasyReadTests/Support/<Domain>/`，资源放入对应测试资源目录。
 - 新增、移动或删除由 Xcode 管理的源码文件或运行时资源时，同步
-  `Easydict.xcodeproj/project.pbxproj` 中的 group、文件和 build phase 引用，测试文件同时同步测试
+  `EasyRead.xcodeproj/project.pbxproj` 中的 group、文件和 build phase 引用，测试文件同时同步测试
   target 的 Sources，删除文件不保留悬空引用。仓库治理 Markdown、plan、history、skill、参考资料
   和 `docs/` 下的公共 Markdown 不需要工程引用，除非作为运行时资源发布。
 
@@ -46,7 +46,7 @@
 - 因此 agent 运行 `xcodebuild` 时始终显式指定 `-derivedDataPath`，指向按 checkout 派生、与 Xcode
   默认目录不相交的 `~/Library/Developer/Xcode/DerivedData/Easydict-Agent/<checkout-id>`；损坏时
   删除该目录重建，不切换到 Xcode 默认 DerivedData。
-- `xcodebuild test` 会启动同 bundle id 的 `Easydict-debug.app` 测试宿主，不要与 Xcode 的 Run/Test
+- `xcodebuild test` 会启动同 bundle id 的 `EasyRead-debug.app` 测试宿主，不要与 Xcode 的 Run/Test
   同时运行；构建与 Archive 不受此限制。
 ## 常用命令
 
@@ -58,28 +58,28 @@ agent_dd="$HOME/Library/Developer/Xcode/DerivedData/Easydict-Agent/$checkout_id"
 
 # 构建
 xcodebuild build \
-  -workspace Easydict.xcworkspace \
-  -scheme Easydict \
+  -workspace EasyRead.xcworkspace \
+  -scheme EasyRead \
   -derivedDataPath "$agent_dd" | xcbeautify
 
 # 运行测试
 xcodebuild test \
-  -workspace Easydict.xcworkspace \
-  -scheme Easydict \
+  -workspace EasyRead.xcworkspace \
+  -scheme EasyRead \
   -derivedDataPath "$agent_dd" | xcbeautify
 
 # 构建可复用的测试产物
 xcodebuild build-for-testing \
-  -workspace Easydict.xcworkspace \
-  -scheme Easydict \
+  -workspace EasyRead.xcworkspace \
+  -scheme EasyRead \
   -derivedDataPath "$agent_dd" | xcbeautify
 
 # 复用已构建产物运行指定 suite 或方法，-only-testing 支持 <Suite> 与 <Suite>/<test>
 xcodebuild test-without-building \
-  -workspace Easydict.xcworkspace \
-  -scheme Easydict \
+  -workspace EasyRead.xcworkspace \
+  -scheme EasyRead \
   -derivedDataPath "$agent_dd" \
-  -only-testing:EasydictTests/UtilityFunctionsTests | xcbeautify
+  -only-testing:EasyReadTests/UtilityFunctionsTests | xcbeautify
 ```
 
 `xcbeautify` 依赖 `pipefail` 才能保留 `xcodebuild` 的真实退出状态。重建时只删除当前 checkout 的

@@ -1,0 +1,6 @@
+framework module Pods_EasyRead {
+  umbrella header "Pods-EasyRead-umbrella.h"
+
+  export *
+  module * { export * }
+}

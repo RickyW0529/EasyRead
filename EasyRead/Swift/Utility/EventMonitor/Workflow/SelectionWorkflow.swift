@@ -36,6 +36,16 @@ final class SelectionWorkflow {
             queryCompletion(snapshot)
         }
 
+        // Sensitive-app checks and selection reads both use Accessibility.
+        // An untrusted call raises the system dialog on this OS, so stop
+        // before any of those calls.
+        guard AXIsProcessTrusted() else {
+            EventMonitor.shared.requestAccessibilityPromptIfNeeded()
+            logInfo("Accessibility is not trusted; skip selection capture")
+            queryCompletion(nil)
+            return
+        }
+
         guard !AXContextExtractor.shouldBlockCurrentSelection() else {
             ContextExtractionCoordinator.shared.store.clear()
             queryCompletion(nil)
@@ -83,13 +93,9 @@ final class SelectionWorkflow {
                     }
                 }
 
-                if contextProvider?.useAccessibilityForFirstTime() == true {
-                    if AXIsProcessTrustedWithOptions([
-                        kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true,
-                    ] as CFDictionary) == false {
-                        completion(nil)
-                        return
-                    }
+                if contextProvider?.useAccessibilityForFirstTime() == true, !AXIsProcessTrusted() {
+                    completion(nil)
+                    return
                 }
 
                 if isBrowser {

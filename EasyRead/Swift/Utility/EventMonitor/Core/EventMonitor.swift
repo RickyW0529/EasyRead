@@ -176,10 +176,20 @@ final class EventMonitor: NSObject {
     }
 
     func isAccessibilityEnabled() -> Bool {
-        let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
-        let isEnabled = AXIsProcessTrustedWithOptions(options)
+        let isEnabled = AXIsProcessTrusted()
         logInfo("accessibilityEnabled: \(isEnabled)")
         return isEnabled
+    }
+
+    /// Shows the system Accessibility prompt at most once for this process.
+    /// Passing the prompt option on every selection raises the dialog again when
+    /// this build's signature is not the granted one.
+    func requestAccessibilityPromptIfNeeded() {
+        guard !didRequestAccessibilityPrompt else { return }
+        didRequestAccessibilityPrompt = true
+        let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
+        let isEnabled = AXIsProcessTrustedWithOptions(options)
+        logInfo("accessibility prompt requested, enabled: \(isEnabled)")
     }
 
     func authorize() {
@@ -226,6 +236,7 @@ final class EventMonitor: NSObject {
     private var escapeKeyMonitor: Any?
     private var isAutoSelectTextMonitoringEnabled = false
     private var autoSelectionGeneration: UInt = 0
+    private var didRequestAccessibilityPrompt = false
 }
 
 // MARK: - Private Implementation
@@ -365,6 +376,12 @@ extension EventMonitor {
         }
 
         guard enabledAutoSelectText() else { return false }
+        // An untrusted Accessibility call raises the system dialog on this OS.
+        guard AXIsProcessTrusted() else {
+            requestAccessibilityPromptIfNeeded()
+            logInfo("Accessibility is not trusted; skip select-all auto selection")
+            return false
+        }
         guard systemUtility.canInsertText() else {
             logInfo("Focused element is not an editable text element, skip select all shortcut auto get selected text")
             return false
@@ -485,6 +502,14 @@ extension EventMonitor {
     private func autoGetSelectedText() {
         guard enabledAutoSelectText() else { return }
         logInfo("auto get selected text")
+
+        // Checking the focused element uses Accessibility. On this OS that call
+        // raises the permission dialog whenever this build is not the granted one.
+        guard AXIsProcessTrusted() else {
+            requestAccessibilityPromptIfNeeded()
+            logInfo("Accessibility is not trusted; skip auto selection")
+            return
+        }
 
         guard systemUtility.isFocusedSelectableTextElement() else {
             logInfo("Focused element is not selectable text element, skip auto get selected text")

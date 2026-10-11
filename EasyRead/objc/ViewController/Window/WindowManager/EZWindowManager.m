@@ -790,6 +790,7 @@ static EZWindowManager *_instance;
     MMLogInfo(@"selectTextTranslate");
 
     if (![self.eventMonitor isAccessibilityEnabled]) {
+        [self.eventMonitor requestAccessibilityPromptIfNeeded];
         MMLogWarn(@"App is not trusted");
         return;
     }

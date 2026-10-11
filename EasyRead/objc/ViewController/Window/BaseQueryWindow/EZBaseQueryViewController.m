@@ -1040,7 +1040,14 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     } else if ([self isSelectLanguageCellAtRow:row]) {
         height = 35;
     } else if (row == [self resultCellOffset] - 1) {
-        height = self.inputText.length > 0 ? (self.readingAssistantView ? self.readingAssistantView.rowHeight : 190) : 0;
+        // AppKit aborts the process when a variable row height is 0. The
+        // reading row exists before any text is entered, so keep it positive.
+        if (self.inputText.length == 0) {
+            height = 1;
+        } else {
+            CGFloat readingHeight = self.readingAssistantView.rowHeight;
+            height = readingHeight > 0 ? readingHeight : 190;
+        }
     } else {
         EZQueryResult *result = [self serviceAtRow:row].result;
         if (result.isShowing) {
@@ -1052,7 +1059,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     }
     //    MMLogInfo(@"row: %ld, height: %@", row, @(height));
 
-    return height;
+    return height > 0 ? height : 1;
 }
 
 // Disable select cell

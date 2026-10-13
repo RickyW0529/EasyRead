@@ -3,26 +3,33 @@ import Defaults
 import EasyReadKit
 import SwiftUI
 
-/// Progressive reading card; translation appears first, grammar stays collapsed until requested.
+/// Translation-first reading card with grammar explanations attached to the original text.
 struct ReadingAssistantView: View {
+    // MARK: Internal
+
     @ObservedObject var model: ReadingAssistantModel
-    @Default(.enableReadingAI) private var enableAI
-    @Default(.deepSeekAPIKeyMirror) private var keyMirror
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("reading.ai.title").font(.headline)
                 Spacer()
-                Toggle("reading.ai.enable", isOn: $enableAI).disabled(keyMirror.isEmpty)
+                Toggle("reading.ai.enable", isOn: Binding(
+                    get: { enableAI },
+                    set: { enabled in
+                        enableAI = enabled
+                        if enabled { model.resumeCommittedQuery() }
+                    }
+                )).disabled(keyMirror.isEmpty)
             }
             Text("reading.ai.privacy_notice").font(.caption).foregroundStyle(.secondary)
-            HStack {
-                Button("reading.action.explain") { model.request(.word) }
-                Button("reading.action.translate") { model.request(.translation) }
-                Button("reading.action.grammar") { model.request(.grammar) }
+            if model.showsDictionaryHint {
+                Text("reading.dictionary.lookup_hint").font(.caption).foregroundStyle(.secondary)
             }
-            .disabled(!model.canRequest || model.isLoading)
+            if model.kind == .sentence {
+                Button("reading.action.grammar") { model.revealGrammar() }
+                    .disabled(model.grammar == nil)
+            }
 
             if !model.hasKey {
                 Text("reading.ai.no_key").font(.caption).foregroundStyle(.secondary)
@@ -39,7 +46,10 @@ struct ReadingAssistantView: View {
                     Button("reading.action.cancel") { model.cancel() }
                 }
             } else if model.wasCancelled {
-                Text("reading.ai.cancelled").font(.caption).foregroundStyle(.secondary)
+                HStack {
+                    Text("reading.ai.cancelled").font(.caption).foregroundStyle(.secondary)
+                    Button("reading.action.retry") { model.retry() }.disabled(!model.canRequest)
+                }
             }
             if !model.errorMessage.isEmpty {
                 HStack {
@@ -47,12 +57,27 @@ struct ReadingAssistantView: View {
                     Button("reading.action.retry") { model.retry() }.disabled(!model.canRequest)
                 }
             }
-            if !model.translation.isEmpty || !model.wordExplanation.isEmpty {
+            if !model.translation.isEmpty || model.wordExplanation != nil {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 10) {
-                        if !model.translation.isEmpty { Text(verbatim: model.translation) }
-                        if !model.wordExplanation.isEmpty { Text(verbatim: model.wordExplanation) }
-                        if let grammar = model.grammar {
+                        if model.showsGrammar, let grammar = model.grammar {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("reading.grammar.original").font(.headline)
+                                Text("reading.grammar.hover_hint").font(.caption).foregroundStyle(.secondary)
+                                Text("reading.grammar.color_legend").font(.caption2).foregroundStyle(.secondary)
+                                GrammarAnnotatedText(source: model.text, structures: grammar.structures)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            .padding(12)
+                            .background { RoundedRectangle(cornerRadius: 8).fill(.quaternary) }
+                        }
+                        if !model.translation.isEmpty {
+                            Text(verbatim: model.translation).lineSpacing(4)
+                        }
+                        if let explanation = model.wordExplanation {
+                            ReadingContextTip(answer: explanation, context: model.contextExcerpt)
+                        }
+                        if model.showsGrammar, let grammar = model.grammar {
                             DisclosureGroup("reading.grammar.details", isExpanded: $model.showsDetails) {
                                 grammarDetails(grammar)
                             }
@@ -74,26 +99,35 @@ struct ReadingAssistantView: View {
         .onChange(of: model.showsDetails) { _ in model.onLayoutChange?() }
     }
 
+    // MARK: Private
+
+    @Default(.enableReadingAI) private var enableAI
+    @Default(.deepSeekAPIKeyMirror) private var keyMirror
+
     private func grammarDetails(_ answer: GrammarExplanation) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("reading.grammar.main_clause").font(.headline)
             Text(verbatim: answer.mainClause)
             ForEach(Array(answer.structures.enumerated()), id: \.offset) { _, structure in
-                VStack(alignment: .leading) {
-                    Text(verbatim: structure.excerpt).font(.callout).foregroundStyle(.secondary)
-                    Text(verbatim: structure.labelZh).bold()
-                    Text(verbatim: structure.explanationZh)
+                if structure.sourceRange(in: model.text) == nil {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(verbatim: structure.excerpt).font(.callout).foregroundStyle(.secondary)
+                        Text(verbatim: structure.label).bold()
+                        Text(verbatim: structure.explanation)
+                    }
                 }
             }
+            Divider()
             Text("reading.grammar.reading_order").font(.headline)
             ForEach(Array(answer.readingSteps.enumerated()), id: \.offset) { index, step in
                 Text(verbatim: "\(index + 1). \(step)")
             }
             ForEach(Array(answer.terminology.enumerated()), id: \.offset) { _, item in
-                Text(verbatim: "\(item.term)：\(item.meaningZh)")
+                Text(verbatim: "\(item.term)：\(item.meaning)")
             }
             if let question = answer.comprehensionQuestion { Text(verbatim: question) }
         }
+        .lineSpacing(4)
         .padding(.top, 8)
     }
 }

@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EAA013001300130013001307 /* ReadingAnalysisCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA013001300130013001308 /* ReadingAnalysisCache.swift */; };
+		EAA013001300130013001305 /* ReadingContextTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA013001300130013001306 /* ReadingContextTip.swift */; };
+		EAA013001300130013001303 /* GrammarHoverTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA013001300130013001304 /* GrammarHoverTextView.swift */; };
+		EAA013001300130013001301 /* GrammarAnnotatedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA013001300130013001302 /* GrammarAnnotatedText.swift */; };
+		EAA012001200120012001201 /* ApplicationInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA012001200120012001202 /* ApplicationInstance.swift */; };
 		C0FFEEBF2026092400000000 /* GitHubCopilotDebugWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEEFD2026092400000000 /* GitHubCopilotDebugWindow.swift */; };
 		C0FFEEBF2026092400000001 /* GitHubCopilotEffort.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEEFD2026092400000001 /* GitHubCopilotEffort.swift */; };
 		C0FFEEBF2026092400000002 /* GitHubCopilotError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEEFD2026092400000002 /* GitHubCopilotError.swift */; };
@@ -695,6 +700,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EAA013001300130013001308 /* ReadingAnalysisCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingAnalysisCache.swift; sourceTree = "<group>"; };
+		EAA013001300130013001306 /* ReadingContextTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingContextTip.swift; sourceTree = "<group>"; };
+		EAA013001300130013001304 /* GrammarHoverTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarHoverTextView.swift; sourceTree = "<group>"; };
+		EAA013001300130013001302 /* GrammarAnnotatedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarAnnotatedText.swift; sourceTree = "<group>"; };
+		EAA012001200120012001202 /* ApplicationInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationInstance.swift; sourceTree = "<group>"; };
 		C0FFEEFD2026092400000000 /* GitHubCopilotDebugWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubCopilotDebugWindow.swift; sourceTree = "<group>"; };
 		C0FFEEFD2026092400000001 /* GitHubCopilotEffort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubCopilotEffort.swift; sourceTree = "<group>"; };
 		C0FFEEFD2026092400000002 /* GitHubCopilotError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubCopilotError.swift; sourceTree = "<group>"; };
@@ -2107,6 +2117,7 @@
 			isa = PBXGroup;
 			children = (
 				27FE95262B3DC55F000AD654 /* EasyReadApp.swift */,
+				EAA012001200120012001202 /* ApplicationInstance.swift */,
 				031DBD782AE01E130071CF85 /* easyread */,
 				C4DE3D6C2AC00EB500C2B85D /* Localizable.xcstrings */,
 				C477BF902C0E2C61006A3F27 /* InfoPlist.xcstrings */,
@@ -4004,6 +4015,10 @@
 			isa = PBXGroup;
 			children = (
 				FEA7B00C0000000000000020 /* ReadingAssistantModel.swift */,
+				EAA013001300130013001302 /* GrammarAnnotatedText.swift */,
+				EAA013001300130013001304 /* GrammarHoverTextView.swift */,
+				EAA013001300130013001306 /* ReadingContextTip.swift */,
+				EAA013001300130013001308 /* ReadingAnalysisCache.swift */,
 				FEA7B00C0000000000000022 /* ReadingAssistantView.swift */,
 				FEA7B00C0000000000000024 /* ReadingAssistantHostView.swift */,
 			);
@@ -4609,6 +4624,10 @@
 				FEA7B00C000000000000000D /* DeepSeekChatError+QueryError.swift in Sources */,
 				FEA7B00C000000000000000F /* DeepSeekService+WordExplanation.swift in Sources */,
 				FEA7B00C0000000000000021 /* ReadingAssistantModel.swift in Sources */,
+				EAA013001300130013001301 /* GrammarAnnotatedText.swift in Sources */,
+				EAA013001300130013001303 /* GrammarHoverTextView.swift in Sources */,
+				EAA013001300130013001305 /* ReadingContextTip.swift in Sources */,
+				EAA013001300130013001307 /* ReadingAnalysisCache.swift in Sources */,
 				FEA7B00C0000000000000023 /* ReadingAssistantView.swift in Sources */,
 				FEA7B00C0000000000000025 /* ReadingAssistantHostView.swift in Sources */,
 				0337D3CA2E66AA5000B08437 /* SystemUtility+AX.swift in Sources */,
@@ -4627,6 +4646,7 @@
 				A94F9CB9D704426DB91B25D3 /* DeviceSystemInfo.swift in Sources */,
 				C43B566E2C693F8B00EF26FD /* VolcanoTranslateType.swift in Sources */,
 				27FE95272B3DC55F000AD654 /* EasyReadApp.swift in Sources */,
+				EAA012001200120012001201 /* ApplicationInstance.swift in Sources */,
 				03882F9129D95044005B5A52 /* CTCommon.m in Sources */,
 				032AAA5D2C45744E007996A1 /* VaporServer.swift in Sources */,
 				276742082B3DC230002A2C75 /* PrivacyTab.swift in Sources */,

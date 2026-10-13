@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "EZWindowManager.h"
 #import "XPMArguments.h"
+#import "entry.h"
 #include <stdio.h>
 #include <sys/ioctl.h>
 
@@ -30,13 +31,18 @@ void queryText(NSString *text) {
 }
 
 void parseArmguments(void) {
+    parseApplicationArguments(NSProcessInfo.processInfo.arguments);
+}
+
+void parseApplicationArguments(NSArray<NSString *> *launchArguments) {
     XPMArgumentSignature *helpSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[-h --help]"],
     *detectTextSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[-d --detectText]="],
     *queryTextSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[-q --queryText]="];
     
     NSArray *signatures = @[ helpSig, detectTextSig, queryTextSig ];
     
-    XPMArgumentPackage *arguments = [[NSProcessInfo processInfo] xpmargs_parseArgumentsWithSignatures:signatures];
+    XPMArgumentPackage *arguments = [[[XPMArgumentParser alloc] initWithArguments:launchArguments
+                                                                    signatures:signatures] parse];
     
     bool print_help = false;
     

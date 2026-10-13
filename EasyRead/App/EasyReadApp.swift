@@ -17,6 +17,7 @@ import SwiftUI
 @main
 enum EasyReadCmpatibilityEntry {
     static func main() {
+        guard ApplicationInstance.acquire() else { return }
         AppPathMigration.prepareForLaunch()
         parseArmguments()
 

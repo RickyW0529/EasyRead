@@ -12,13 +12,32 @@ import Foundation
 
 /// One technical term of an `AIWordExplanation` (spec 4.1 data contract).
 public struct TerminologyItem: Decodable, Equatable, Sendable {
-    public let term: String
-    public let meaningZh: String
+    // MARK: Lifecycle
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.term = try values.decode(String.self, forKey: .term)
+        self.meaningZh = try values.decodeIfPresent(String.self, forKey: .meaning) ?? values.decode(
+            String.self,
+            forKey: .meaningZh
+        )
+    }
 
     public init(term: String, meaningZh: String) {
         self.term = term
         self.meaningZh = meaningZh
     }
+
+    // MARK: Public
+
+    public let term: String
+    public let meaningZh: String
+
+    public var meaning: String { meaningZh }
+
+    // MARK: Private
+
+    private enum CodingKeys: String, CodingKey { case term, meaning, meaningZh }
 }
 
 // MARK: - AIWordExplanation
@@ -52,15 +71,21 @@ public struct AIWordExplanation: Decodable, Equatable, Sendable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        selectedText = try container.decode(String.self, forKey: .selectedText)
-        primaryMeaningZh = try container.decode(String.self, forKey: .primaryMeaningZh)
-        partOfSpeech = try container.decodeIfPresent(String.self, forKey: .partOfSpeech)
-        contextualEvidence = try container.decodeIfPresent(String.self, forKey: .contextualEvidence)
-        explanationZh = try container.decode(String.self, forKey: .explanationZh)
+        self.selectedText = try container.decode(String.self, forKey: .selectedText)
+        self.primaryMeaningZh = try container.decodeIfPresent(String.self, forKey: .primaryMeaning) ?? container.decode(
+            String.self,
+            forKey: .primaryMeaningZh
+        )
+        self.partOfSpeech = try container.decodeIfPresent(String.self, forKey: .partOfSpeech)
+        self.contextualEvidence = try container.decodeIfPresent(String.self, forKey: .contextualEvidence)
+        self.explanationZh = try container.decodeIfPresent(String.self, forKey: .explanation) ?? container.decode(
+            String.self,
+            forKey: .explanationZh
+        )
         // The schema requires the array, but models sometimes omit it when a
         // word has no relevant terminology; an empty list is the honest value.
-        terminology = try container.decodeIfPresent([TerminologyItem].self, forKey: .terminology) ?? []
-        contextStatus = try container.decode(ContextStatus.self, forKey: .contextStatus)
+        self.terminology = try container.decodeIfPresent([TerminologyItem].self, forKey: .terminology) ?? []
+        self.contextStatus = try container.decode(ContextStatus.self, forKey: .contextStatus)
     }
 
     // MARK: Public
@@ -81,14 +106,19 @@ public struct AIWordExplanation: Decodable, Equatable, Sendable {
     public let terminology: [TerminologyItem]
     public let contextStatus: ContextStatus
 
+    public var primaryMeaning: String { primaryMeaningZh }
+    public var explanation: String { explanationZh }
+
     // MARK: Private
 
     private enum CodingKeys: String, CodingKey {
         case selectedText
         case primaryMeaningZh
+        case primaryMeaning
         case partOfSpeech
         case contextualEvidence
         case explanationZh
+        case explanation
         case terminology
         case contextStatus
     }

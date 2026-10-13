@@ -6,8 +6,8 @@
 //  Copyright © 2025 izual. All rights reserved.
 //
 
-import Defaults
 import Combine
+import Defaults
 import EasyReadKit
 import Foundation
 
@@ -19,6 +19,8 @@ import Foundation
 /// and future DeepSeek models opt in without code changes.
 @objc(EZDeepSeekService)
 class DeepSeekService: OpenAIService {
+    // MARK: Lifecycle
+
     required public init() {
         super.init()
         Defaults.publisher(.enableReadingAI).sink { [weak self] change in
@@ -41,22 +43,6 @@ class DeepSeekService: OpenAIService {
         }.store(in: &privacyObservers)
     }
 
-    private var privacyObservers: Set<AnyCancellable> = []
-
-    /// Word auto-explanation is opt-in; sentences always require an explicit action.
-    override var enabledAutoQuery: Bool {
-        get {
-            guard Defaults[.enableReadingAI], !apiKey.isEmpty,
-                  queryModel.queryText.split(whereSeparator: \.isWhitespace).count <= 4,
-                  queryModel.queryFromLanguage == .english,
-                  queryType(text: queryModel.queryText, from: .english, to: queryModel.queryTargetLanguage) == .dictionary else { return false }
-            return super.enabledAutoQuery
-        }
-        set { super.enabledAutoQuery = newValue }
-    }
-
-    override var endpoint: String { defaultEndpoint }
-
     // MARK: Public
 
     public override func cancelStream() {
@@ -75,6 +61,16 @@ class DeepSeekService: OpenAIService {
         "https://www.deepseek.com/"
     }
 
+    /// The DeepSeek section replaces the plaintext API-key input with a
+    /// Keychain-backed cell.
+    public override func configurationListItems() -> Any? {
+        _ = apiKey // Migrate legacy storage before the settings cell checks key presence.
+        return StreamConfigurationView(
+            service: self, usesKeychainAPIKey: true, showEndpointSection: false,
+            showCustomPromptSection: false, showThinkTagContent: false
+        )
+    }
+
     // MARK: Internal
 
     /// Where the user's API key lives: the macOS Keychain, never
@@ -83,6 +79,14 @@ class DeepSeekService: OpenAIService {
         service: "com.easyread.EasyRead.apikey",
         account: "deepseek"
     )
+
+    /// The reading card owns automatic analysis; this legacy service remains available for manual queries.
+    override var enabledAutoQuery: Bool {
+        get { false }
+        set { super.enabledAutoQuery = newValue }
+    }
+
+    override var endpoint: String { defaultEndpoint }
 
     /// The Keychain is the source of truth for the API key. Upstream
     /// Easydict stored it in UserDefaults; a legacy value is migrated to
@@ -103,50 +107,6 @@ class DeepSeekService: OpenAIService {
     /// instead (see `Defaults.Keys.deepSeekAPIKeyMirror`).
     override var observeKeys: [Defaults.Key<String>] {
         [.deepSeekAPIKeyMirror, supportedModelsKey]
-    }
-
-    /// The DeepSeek section replaces the plaintext API-key input with a
-    /// Keychain-backed cell.
-    public override func configurationListItems() -> Any? {
-        _ = apiKey // Migrate legacy storage before the settings cell checks key presence.
-        return StreamConfigurationView(
-            service: self, usesKeychainAPIKey: true, showEndpointSection: false,
-            showCustomPromptSection: false, showThinkTagContent: false
-        )
-    }
-
-    /// EasyRead "测试连接" (spec 4.4): one minimal non-streaming chat request
-    /// through `DeepSeekChatClient` — cheap, cancellable and classified into
-    /// distinct localized failure messages — instead of the shared streaming
-    /// translation used by other services.
-    func validateConnection() async -> QueryResult {
-        resetServiceResult()
-
-        let result = QueryResult()
-
-        guard let url = URL(string: endpoint), url.isValid else {
-            result.error = QueryError(
-                type: .parameter,
-                message: "`\(serviceType().rawValue)` endpoint is invalid"
-            )
-            return result
-        }
-
-        do {
-            let client = DeepSeekChatClient(endpoint: url)
-            _ = try await client.complete(
-                model: model,
-                messages: [.init(role: .user, content: "Hi")],
-                apiKey: apiKey,
-                jsonOutput: false
-            )
-        } catch let error as DeepSeekChatError {
-            result.error = error.queryError
-        } catch {
-            result.error = QueryError.queryError(from: error)
-        }
-
-        return result
     }
 
     override var defaultModels: [String] {
@@ -189,6 +149,10 @@ class DeepSeekService: OpenAIService {
     override var supportsReasoningEffort: Bool {
         true
     }
+
+    /// The in-flight request task. Internal (not private) so the
+    /// word-explanation extension file can cancel and replace it.
+    var currentTask: Task<(), Never>?
 
     override func contentStreamTranslate(
         _ text: String,
@@ -272,11 +236,43 @@ class DeepSeekService: OpenAIService {
         }
     }
 
+    /// EasyRead "测试连接" (spec 4.4): one minimal non-streaming chat request
+    /// through `DeepSeekChatClient` — cheap, cancellable and classified into
+    /// distinct localized failure messages — instead of the shared streaming
+    /// translation used by other services.
+    func validateConnection() async -> QueryResult {
+        resetServiceResult()
+
+        let result = QueryResult()
+
+        guard let url = URL(string: endpoint), url.isValid else {
+            result.error = QueryError(
+                type: .parameter,
+                message: "`\(serviceType().rawValue)` endpoint is invalid"
+            )
+            return result
+        }
+
+        do {
+            let client = DeepSeekChatClient(endpoint: url)
+            _ = try await client.complete(
+                model: model,
+                messages: [.init(role: .user, content: "Hi")],
+                apiKey: apiKey,
+                jsonOutput: false
+            )
+        } catch let error as DeepSeekChatError {
+            result.error = error.queryError
+        } catch {
+            result.error = QueryError.queryError(from: error)
+        }
+
+        return result
+    }
+
     // MARK: Private
 
-    /// The in-flight request task. Internal (not private) so the
-    /// word-explanation extension file can cancel and replace it.
-    var currentTask: Task<(), Never>?
+    private var privacyObservers: Set<AnyCancellable> = []
 
     /// Moves a legacy plaintext key (upstream Easydict stored it in
     /// UserDefaults) into the Keychain exactly once, then clears the

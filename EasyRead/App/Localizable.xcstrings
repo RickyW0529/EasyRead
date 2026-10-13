@@ -1,6 +1,293 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "reading.context.unavailable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No sentence context was available. This explanation uses the selected text only."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未获取到原句上下文，当前解释仅依据所选词语。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未取得原句上下文，目前解釋僅依據所選詞語。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文脈を取得できなかったため、選択した語句のみを解説しています。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se obtuvo el contexto de la oración. La explicación usa solo el texto seleccionado."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontext vety nebol dostupný. Vysvetlenie vychádza iba z vybraného textu."
+          }
+        }
+      }
+    },
+    "reading.context.word_only" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Word meaning"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "词语释义"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "詞語釋義"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "語句の意味"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Significado de la expresión"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Význam výrazu"
+          }
+        }
+      }
+    },
+    "reading.context.meaning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meaning in this context"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此处词义"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此處詞義"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この文脈での意味"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Significado en este contexto"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Význam v tomto kontexte"
+          }
+        }
+      }
+    },
+    "reading.grammar.color_legend" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subject: red · Verb: yellow · Object: blue · Adverbial: green · Attributive: purple · Other: orange"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主语红色 · 动词黄色 · 宾语蓝色 · 状语绿色 · 定语紫色 · 其他橙色"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主語紅色 · 動詞黃色 · 受詞藍色 · 狀語綠色 · 定語紫色 · 其他橙色"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主語：赤 · 動詞：黄 · 目的語：青 · 副詞句：緑 · 修飾語：紫 · その他：橙"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sujeto: rojo · Verbo: amarillo · Objeto: azul · Adverbial: verde · Atributivo: morado · Otro: naranja"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podmet: červená · Sloveso: žltá · Predmet: modrá · Príslovkové určenie: zelená · Prívlastok: fialová · Iné: oranžová"
+          }
+        }
+      }
+    },
+    "reading.grammar.hover_hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hover over an underlined passage to see its grammar explanation."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将鼠标停在下划线片段上，查看对应的语法解释。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "將滑鼠停在底線片段上，查看對應的語法解釋。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下線付きの部分にポインタを合わせると文法の説明が表示されます。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasa el cursor sobre un fragmento subrayado para ver su explicación gramatical."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podržte kurzor nad podčiarknutou časťou a zobrazí sa gramatické vysvetlenie."
+          }
+        }
+      }
+    },
+    "reading.grammar.original" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original text · Grammar"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "原文 · 语法标注"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "原文 · 語法標註"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "原文 · 文法"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Texto original · Gramática"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pôvodný text · Gramatika"
+          }
+        }
+      }
+    },
+    "reading.dictionary.lookup_hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Dictionary looks up words and phrases. Use DeepSeek to translate sentences and paragraphs."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "苹果词典用于查单词和短语；句子、段落由 DeepSeek 翻译。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "蘋果詞典用於查單字和片語；句子、段落由 DeepSeek 翻譯。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple 辞書は単語・語句の検索用です。文や段落の翻訳には DeepSeek を使用します。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El diccionario de Apple busca palabras y expresiones. DeepSeek traduce oraciones y párrafos."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slovník Apple vyhľadáva slová a frázy. Vety a odseky prekladá DeepSeek."
+          }
+        }
+      }
+    },
     "reading.ai.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -89,37 +376,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AI actions send selected text to DeepSeek and incur API charges. Context is sent only when enabled in Privacy settings."
+            "value" : "When enabled, each query automatically prepares meanings, translations or grammar with DeepSeek and incurs API charges. Context is sent only when enabled in Privacy settings."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AI 操作会将选中文字发送到 DeepSeek 并产生 API 费用。仅在隐私设置开启后发送有限上下文。"
+            "value" : "启用后，查询会自动使用 DeepSeek 准备释义、翻译或语法解析，并产生 API 费用。仅在隐私设置开启后发送有限上下文。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AI 操作會將選中文字傳送至 DeepSeek 並產生 API 費用。僅在隱私設定開啟後傳送有限上下文。"
+            "value" : "啟用後，查詢會自動使用 DeepSeek 準備釋義、翻譯或語法解析，並產生 API 費用。僅在隱私設定開啟後傳送有限上下文。"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AI 操作は選択テキストを DeepSeek に送信し、API 料金が発生します。文脈はプライバシー設定で有効な場合のみ送信されます。"
+            "value" : "有効にすると、検索時に DeepSeek が意味・翻訳・文法解析を自動的に準備し、API 料金が発生します。文脈はプライバシー設定で有効な場合のみ送信されます。"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las acciones de IA envían el texto seleccionado a DeepSeek y generan cargos de API. El contexto solo se envía si se activa en Privacidad."
+            "value" : "Al activarlo, cada consulta prepara significados, traducciones o gramática con DeepSeek y genera cargos de API. El contexto solo se envía si se activa en Privacidad."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Akcie AI odosielajú vybraný text do DeepSeek a účtujú sa poplatky API. Kontext sa odosiela iba po povolení v nastaveniach súkromia."
+            "value" : "Po povolení každý dopyt automaticky pripraví význam, preklad alebo gramatiku cez DeepSeek a účtujú sa poplatky API. Kontext sa odosiela iba po povolení v nastaveniach súkromia."
           }
         }
       }

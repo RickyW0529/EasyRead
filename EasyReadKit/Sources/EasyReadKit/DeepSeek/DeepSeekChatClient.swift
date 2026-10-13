@@ -12,6 +12,13 @@ import Foundation
 
 /// One message sent to DeepSeek's OpenAI-compatible /chat/completions endpoint.
 public struct DeepSeekChatMessage: Equatable, Sendable {
+    // MARK: Lifecycle
+
+    public init(role: Role, content: String) {
+        self.role = role
+        self.content = content
+    }
+
     // MARK: Public
 
     public enum Role: String, Sendable {
@@ -22,11 +29,6 @@ public struct DeepSeekChatMessage: Equatable, Sendable {
 
     public let role: Role
     public let content: String
-
-    public init(role: Role, content: String) {
-        self.role = role
-        self.content = content
-    }
 }
 
 // MARK: - DeepSeekChatError
@@ -70,7 +72,7 @@ extension DeepSeekChatError {
         switch self {
         case .rateLimited, .server:
             true
-        case .network(let code):
+        case let .network(code):
             Self.retryableNetworkCodes.contains(code)
         default:
             false
@@ -113,19 +115,17 @@ public struct DeepSeekChatClient: Sendable {
         self.sleep = sleep
     }
 
-    /// In-memory transport without HTTP cache or cookies; source text never reaches disk caches.
-    public static let privateSession: URLSession = {
-        let configuration = URLSessionConfiguration.ephemeral
-        configuration.urlCache = nil
-        configuration.httpCookieStorage = nil
-        return URLSession(configuration: configuration, delegate: OfficialRedirectPolicy(), delegateQueue: nil)
-    }()
-
     // MARK: Public
 
     /// Tuning knobs; the defaults follow the spec's engineering targets
     /// (12–20 s total network budget, at most 2 retries).
     public struct Configuration: Sendable {
+        // MARK: Lifecycle
+
+        public init() {}
+
+        // MARK: Public
+
         /// Per-attempt network timeout.
         public var requestTimeout: TimeInterval = 15
         /// Total wall-clock budget across all attempts.
@@ -136,12 +136,20 @@ public struct DeepSeekChatClient: Sendable {
         public var retryBaseDelay: TimeInterval = 0.5
         /// Upper bound for a server-provided `Retry-After` wait.
         public var maxRetryAfter: TimeInterval = 5
-
-        public init() {}
+        /// Structured grammar reports need more headroom than a short translation.
+        public var maxOutputTokens: Int = 4096
     }
 
     /// Waits before a retry. Injectable so tests can record instead of sleep.
-    public typealias Sleeper = @Sendable (TimeInterval) async throws -> Void
+    public typealias Sleeper = @Sendable (TimeInterval) async throws -> ()
+
+    /// In-memory transport without HTTP cache or cookies; source text never reaches disk caches.
+    public static let privateSession: URLSession = {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.urlCache = nil
+        configuration.httpCookieStorage = nil
+        return URLSession(configuration: configuration, delegate: OfficialRedirectPolicy(), delegateQueue: nil)
+    }()
 
     /// Sends one chat completion request and returns the assistant message
     /// content. Throws `DeepSeekChatError` on any classified failure.
@@ -156,7 +164,8 @@ public struct DeepSeekChatClient: Sendable {
         messages: [DeepSeekChatMessage],
         apiKey: String,
         jsonOutput: Bool = true
-    ) async throws -> String {
+    ) async throws
+        -> String {
         guard !apiKey.isEmpty else {
             throw DeepSeekChatError.missingAPIKey
         }
@@ -207,11 +216,6 @@ public struct DeepSeekChatClient: Sendable {
 
     // MARK: Private
 
-    private let endpoint: URL
-    private let session: URLSession
-    private let configuration: Configuration
-    private let sleep: Sleeper
-
     /// Request body mirrored after the spec's protocol example (section 4.4):
     /// `thinking` is always disabled for low-latency reading assistance and
     /// `response_format` is only present for structured-JSON tasks.
@@ -229,13 +233,6 @@ public struct DeepSeekChatClient: Sendable {
             let type = "json_object"
         }
 
-        let model: String
-        let messages: [Message]
-        let stream = false
-        let maxTokens = 4096
-        let thinking = Thinking()
-        let responseFormat: ResponseFormat?
-
         enum CodingKeys: String, CodingKey {
             case model
             case messages
@@ -244,6 +241,13 @@ public struct DeepSeekChatClient: Sendable {
             case thinking
             case responseFormat = "response_format"
         }
+
+        let model: String
+        let messages: [Message]
+        let stream = false
+        let maxTokens: Int
+        let thinking = Thinking()
+        let responseFormat: ResponseFormat?
     }
 
     /// Non-streaming chat completion response; only the fields EasyRead
@@ -254,16 +258,47 @@ public struct DeepSeekChatClient: Sendable {
                 let content: String?
             }
 
-            let message: Message?
-            let finishReason: String?
-
             enum CodingKeys: String, CodingKey {
                 case message
                 case finishReason = "finish_reason"
             }
+
+            let message: Message?
+            let finishReason: String?
         }
 
         let choices: [Choice]?
+    }
+
+    private let endpoint: URL
+    private let session: URLSession
+    private let configuration: Configuration
+    private let sleep: Sleeper
+
+    private static func seconds(_ duration: Duration) -> Double {
+        Double(duration.components.seconds) + Double(duration.components.attoseconds) / 1e18
+    }
+
+    private static func classify(_ error: URLError) -> DeepSeekChatError {
+        switch error.code {
+        case .timedOut:
+            .timeout
+        case .cancelled:
+            .cancelled
+        default:
+            .network(code: error.code)
+        }
+    }
+
+    /// `Retry-After` in seconds; the HTTP-date form is not used by DeepSeek
+    /// and is ignored.
+    private static func retryAfter(from response: HTTPURLResponse) -> TimeInterval? {
+        guard let header = response.value(forHTTPHeaderField: "Retry-After") else {
+            return nil
+        }
+        guard let seconds = TimeInterval(header.trimmingCharacters(in: .whitespaces)),
+              seconds.isFinite else { return nil }
+        return seconds
     }
 
     private func makeRequest(
@@ -271,10 +306,12 @@ public struct DeepSeekChatClient: Sendable {
         messages: [DeepSeekChatMessage],
         apiKey: String,
         jsonOutput: Bool
-    ) throws -> URLRequest {
+    ) throws
+        -> URLRequest {
         let requestBody = RequestBody(
             model: model,
             messages: messages.map { .init(role: $0.role.rawValue, content: $0.content) },
+            maxTokens: configuration.maxOutputTokens,
             responseFormat: jsonOutput ? .init() : nil
         )
 
@@ -355,45 +392,22 @@ public struct DeepSeekChatClient: Sendable {
         }
     }
 
-    private static func seconds(_ duration: Duration) -> Double {
-        Double(duration.components.seconds) + Double(duration.components.attoseconds) / 1e18
-    }
-
     private func retryDelay(for error: DeepSeekChatError, retry: Int) -> TimeInterval {
-        if case .rateLimited(let retryAfter) = error, let retryAfter {
+        if case let .rateLimited(retryAfter) = error, let retryAfter {
             return min(max(retryAfter, 0), configuration.maxRetryAfter)
         }
         return configuration.retryBaseDelay * pow(2, Double(retry - 1))
     }
-
-    private static func classify(_ error: URLError) -> DeepSeekChatError {
-        switch error.code {
-        case .timedOut:
-            .timeout
-        case .cancelled:
-            .cancelled
-        default:
-            .network(code: error.code)
-        }
-    }
-
-    /// `Retry-After` in seconds; the HTTP-date form is not used by DeepSeek
-    /// and is ignored.
-    private static func retryAfter(from response: HTTPURLResponse) -> TimeInterval? {
-        guard let header = response.value(forHTTPHeaderField: "Retry-After") else {
-            return nil
-        }
-        guard let seconds = TimeInterval(header.trimmingCharacters(in: .whitespaces)), seconds.isFinite else { return nil }
-        return seconds
-    }
 }
+
+// MARK: - OfficialRedirectPolicy
 
 /// Do not forward a reading payload to another host through a redirect.
 private final class OfficialRedirectPolicy: NSObject, URLSessionTaskDelegate {
     func urlSession(
         _ session: URLSession, task: URLSessionTask,
         willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest,
-        completionHandler: @escaping (URLRequest?) -> Void
+        completionHandler: @escaping (URLRequest?) -> ()
     ) {
         let allowed = request.url?.scheme == "https" && request.url?.host == "api.deepseek.com"
         completionHandler(allowed ? request : nil)

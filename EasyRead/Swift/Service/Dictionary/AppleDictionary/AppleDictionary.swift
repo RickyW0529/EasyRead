@@ -54,6 +54,11 @@ class AppleDictionary: QueryService, @unchecked Sendable {
 
     static let shared = AppleDictionary()
 
+    override var enabledAutoQuery: Bool {
+        get { Self.shouldAutomaticallyLookUp(queryModel.queryText) && super.enabledAutoQuery }
+        set { super.enabledAutoQuery = newValue }
+    }
+
     var appleDictionaryNames: [String] {
         get {
             appleDictionaries.map { $0.name }
@@ -74,10 +79,11 @@ class AppleDictionary: QueryService, @unchecked Sendable {
     }
 
     override func supportedQueryType() -> EZQueryTextType {
-        [.dictionary, .sentence]
+        [.dictionary]
     }
 
     override func intelligentQueryTextType() -> EZQueryTextType {
+        // The shared classifier treats multiword dictionary entries as sentences.
         [.dictionary, .sentence]
     }
 
@@ -107,7 +113,7 @@ class AppleDictionary: QueryService, @unchecked Sendable {
         to: Language
     ) async throws
         -> QueryResult {
-        let noResultError = QueryError(type: .noResult)
+        let noResultError = QueryError(type: .noResult, message: String(localized: "reading.dictionary.lookup_hint"))
 
         return try await withCheckedThrowingContinuation { continuation in
             DispatchQueue.global(qos: .default).async { [weak self] in
@@ -184,6 +190,16 @@ class AppleDictionary: QueryService, @unchecked Sendable {
         _ = from
         _ = to
         throw QueryError.error(type: .unsupportedQueryType, message: "Apple Dictionary does not support OCR")
+    }
+
+    /// Limits automatic lookup to likely headwords; manual lookup can still try longer idioms.
+    @nonobjc
+    static func shouldAutomaticallyLookUp(_ text: String) -> Bool {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        return !trimmed.isEmpty && trimmed.count <= 80
+            && trimmed.split(whereSeparator: \.isWhitespace).count <= 4
+            && !trimmed.contains(where: \.isNewline)
+            && !trimmed.contains(where: { ".!?。！？".contains($0) })
     }
 
     // MARK: - Public Methods

@@ -394,6 +394,23 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     return _tableView;
 }
 
+- (ReadingAssistantHostView *)readingAssistantView {
+    if (!_readingAssistantView) {
+        _readingAssistantView = [[ReadingAssistantHostView alloc] initWithFrame:NSZeroRect];
+        __weak typeof(self) weakSelf = self;
+        _readingAssistantView.onHeightChange = ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                typeof(self) strongSelf = weakSelf;
+                if (!strongSelf) return;
+                NSInteger readingRow = [strongSelf resultCellOffset] - 1;
+                [strongSelf.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:readingRow]];
+                [strongSelf updateWindowHeight];
+            });
+        };
+    }
+    return _readingAssistantView;
+}
+
 - (EZSchemeParser *)schemeParser {
     if (!_schemeParser) {
         _schemeParser = [[EZSchemeParser alloc] init];
@@ -845,6 +862,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 }
 
 - (void)queryAllSerives:(EZQueryModel *)queryModel {
+    [self.readingAssistantView prepareAnalysisWithQueryModel:queryModel];
     MMLogInfo(@"query: %@ --> %@", queryModel.queryFromLanguage, queryModel.queryTargetLanguage);
 
     self.firstService = nil;
@@ -1005,19 +1023,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     }
 
     if (row == [self resultCellOffset] - 1) {
-        if (!self.readingAssistantView) {
-            self.readingAssistantView = [[ReadingAssistantHostView alloc] initWithFrame:[self tableViewContentBounds]];
-            __weak typeof(self) weakSelf = self;
-            self.readingAssistantView.onHeightChange = ^{
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    typeof(self) strongSelf = weakSelf;
-                    if (!strongSelf) return;
-                    NSInteger readingRow = [strongSelf resultCellOffset] - 1;
-                    [strongSelf.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:readingRow]];
-                    [strongSelf updateWindowHeight];
-                });
-            };
-        }
         [self.readingAssistantView updateWithQueryModel:self.queryModel];
         return self.readingAssistantView;
     }

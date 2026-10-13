@@ -5,69 +5,81 @@ import Defaults
 import EasyReadKit
 import Foundation
 
-/// Explicit AI actions are isolated from local dictionary results and never persist source text.
+/// One request prepares a word/phrase tip or a sentence translation with ready-to-display grammar.
 @MainActor
 final class ReadingAssistantModel: ObservableObject {
-    enum Intent { case word, translation, grammar }
+    // MARK: Lifecycle
+
+    init() {
+        Defaults.publisher(.enableReadingAI, options: []).receive(on: DispatchQueue.main).sink { [weak self] change in
+            if !change.newValue, !Defaults[.enableReadingAI] { self?.invalidatePrivateResults() }
+        }.store(in: &observers)
+        Defaults.publisher(.enableContextExtraction, options: []).receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.invalidatePrivateResults()
+            }.store(in: &observers)
+        Defaults.publisher(.contextExtractionExcludedApps, options: []).receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.invalidatePrivateResults()
+            }.store(in: &observers)
+        Defaults.publisher(.deepSeekAPIKeyMirror, options: []).receive(on: DispatchQueue.main).sink { [weak self] _ in
+            self?.invalidatePrivateResults()
+        }.store(in: &observers)
+    }
+
+    // MARK: Internal
 
     @Published private(set) var text = ""
     @Published private(set) var translation = ""
-    @Published private(set) var wordExplanation = ""
+    @Published private(set) var wordExplanation: AIWordExplanation?
+    @Published private(set) var contextExcerpt: String?
     @Published private(set) var grammar: GrammarExplanation?
+    @Published private(set) var kind: ReadingAnalysis.Kind?
     @Published private(set) var errorMessage = ""
     @Published private(set) var isLoading = false
     @Published private(set) var wasCancelled = false
+    @Published var showsGrammar = false
     @Published var showsDetails = false
-
-    var onLayoutChange: (() -> Void)?
-    private let service = DeepSeekService()
-    private var task: Task<Void, Never>?
-    private var queryID: UUID?
-    private var requestID = UUID()
-    private var snapshot: SelectionSnapshot?
-    private var lastIntent: Intent = .word
-    private var observers: Set<AnyCancellable> = []
-
-    init() {
-        Defaults.publisher(.enableReadingAI).receive(on: DispatchQueue.main).sink { [weak self] change in
-            if !change.newValue { self?.cancel() }
-        }.store(in: &observers)
-        Defaults.publisher(.enableContextExtraction).receive(on: DispatchQueue.main).sink { [weak self] _ in
-            self?.cancel()
-        }.store(in: &observers)
-        Defaults.publisher(.contextExtractionExcludedApps).receive(on: DispatchQueue.main).sink { [weak self] _ in
-            self?.cancel()
-        }.store(in: &observers)
-        Defaults.publisher(.deepSeekAPIKeyMirror).receive(on: DispatchQueue.main).sink { [weak self] _ in
-            self?.cancel()
-        }.store(in: &observers)
-    }
+    var onLayoutChange: (() -> ())?
 
     var hasKey: Bool { !service.apiKey.isEmpty }
+    var showsDictionaryHint: Bool { kind == .sentence }
     var allowsAI: Bool { AXContextExtractor.allowsAI(snapshot: snapshot) }
     var canRequest: Bool {
-        Defaults[.enableReadingAI] && hasKey && SelectionPolicy.default.validateSelection(text).isUsable
-            && AXContextExtractor.allowsAI(snapshot: snapshot)
+        Defaults[.enableReadingAI] && hasKey && SelectionPolicy.default.validateSelection(text).isUsable && allowsAI
     }
 
     var rowHeight: CGFloat {
-        if showsDetails, grammar != nil { return 520 }
-        return translation.isEmpty && wordExplanation.isEmpty ? 190 : 350
+        if showsGrammar, grammar != nil { return showsDetails ? 560 : 460 }
+        if wordExplanation != nil { return 380 }
+        return translation.isEmpty ? 150 : 300
     }
 
     func update(queryModel: QueryModel) {
-        guard queryID != queryModel.readingQueryID || text != queryModel.inputText else { return }
+        let input = queryModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let source = queryModel.queryFromLanguage.queryLanguageName
+        let target = queryModel.queryTargetLanguage.queryLanguageName
+        guard queryID != queryModel
+            .readingQueryID || text != input || sourceLanguage != source || targetLanguage != target else { return }
         cancel()
         queryID = queryModel.readingQueryID
-        text = queryModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines)
-        snapshot = [ActionType.autoSelectQuery, .shortcutQuery].contains(queryModel.actionType)
-            ? queryModel.contextSnapshot : nil
-        translation = ""
-        wordExplanation = ""
-        grammar = nil
-        errorMessage = ""
-        wasCancelled = false
-        showsDetails = false
+        committedQueryID = nil
+        preparedQueryID = nil
+        text = input
+        sourceLanguage = source
+        targetLanguage = target
+        snapshot = [ActionType.autoSelectQuery, .shortcutQuery].contains(queryModel.actionType) ? queryModel
+            .contextSnapshot : nil
+        clearResult()
+    }
+
+    /// The query controller calls this after language detection, never from row layout or typing.
+    func prepareAnalysis(queryModel: QueryModel) {
+        update(queryModel: queryModel)
+        committedQueryID = queryModel.readingQueryID
+        guard preparedQueryID != queryModel.readingQueryID, canRequest else { return }
+        preparedQueryID = queryModel.readingQueryID
+        request()
     }
 
     func cancel() {
@@ -79,22 +91,63 @@ final class ReadingAssistantModel: ObservableObject {
         onLayoutChange?()
     }
 
-    func retry() { request(lastIntent) }
+    func retry() { request() }
 
-    func request(_ intent: Intent) {
+    /// Switching to grammar only changes presentation; it never creates a network request.
+    func revealGrammar() {
+        guard grammar != nil else { return }
+        showsGrammar.toggle()
+        onLayoutChange?()
+    }
+
+    func copyResult() {
+        var parts = [text, translation].filter { !$0.isEmpty }
+        if let wordExplanation {
+            parts += [wordExplanation.primaryMeaning, wordExplanation.explanation]
+            if let contextExcerpt { parts.append(contextExcerpt) }
+        }
+        if showsGrammar, let grammar {
+            parts.append(grammar.mainClause)
+            parts += grammar.structures.map { "\($0.excerpt) — \($0.label)：\($0.explanation)" }
+            parts += grammar.readingSteps
+            parts += grammar.terminology.map { "\($0.term)：\($0.meaning)" }
+        }
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(parts.joined(separator: "\n\n"), forType: .string)
+    }
+
+    func resumeCommittedQuery() {
+        guard let queryID, committedQueryID == queryID, canRequest, !isLoading else { return }
+        preparedQueryID = queryID
+        request()
+    }
+
+    // MARK: Private
+
+    private let service = DeepSeekService()
+    private var task: Task<(), Never>?
+    private var queryID: UUID?
+    private var committedQueryID: UUID?
+    private var preparedQueryID: UUID?
+    private var requestID = UUID()
+    private var snapshot: SelectionSnapshot?
+    private var sourceLanguage = "auto"
+    private var targetLanguage = "auto"
+    private var observers: Set<AnyCancellable> = []
+
+    private func request() {
         guard canRequest else { return }
         cancel()
-        lastIntent = intent
         let activeRequest = UUID()
         requestID = activeRequest
         let selectedText = text
         let attached = snapshot
-        let latest = ContextExtractionCoordinator.shared.snapshot(forInputText: selectedText)
-        let captured = attached?.selectionID == latest?.selectionID ? latest : nil
-        guard AXContextExtractor.allowsAI(snapshot: captured) else { return }
-        let source = captured?.availability == .selectionOnly ? nil : captured?.surroundingText
+        let sourceLanguage = sourceLanguage
+        let targetLanguage = targetLanguage
+        let explanationLanguage = I18nHelper.shared.localizeCode
         let key = service.apiKey
         let model = service.model
+        let endpoint = service.endpoint
         isLoading = true
         wasCancelled = false
         errorMessage = ""
@@ -102,55 +155,75 @@ final class ReadingAssistantModel: ObservableObject {
 
         task = Task { [weak self] in
             do {
-                let systemPrompt: String
-                let userPrompt: String
-                switch intent {
-                case .word:
-                    systemPrompt = WordContextPrompt.systemPrompt
-                    userPrompt = try WordContextPrompt.userPrompt(
-                        selectedText: selectedText, sourceSentence: source,
-                        availability: captured?.availability ?? .selectionOnly
+                let captured: SelectionSnapshot?
+                if let attached {
+                    captured = await ContextExtractionCoordinator.shared.completedSnapshot(
+                        forInputText: selectedText,
+                        selectionID: attached.selectionID
                     )
-                case .translation, .grammar:
-                    systemPrompt = SentencePrompt.systemPrompt
-                    userPrompt = try SentencePrompt.userPrompt(sentence: selectedText, grammar: intent == .grammar)
-                }
-                var configuration = DeepSeekChatClient.Configuration()
-                if intent == .grammar {
-                    configuration.requestTimeout = 30
-                    configuration.totalTimeout = 40
-                }
+                    guard captured != nil else { throw CancellationError() }
+                } else { captured = nil }
                 try Task.checkCancellation()
                 guard let self, requestID == activeRequest else { return }
-                guard canRequest else { cancel(); return }
-                let client = DeepSeekChatClient(endpoint: URL(string: service.endpoint)!, configuration: configuration)
-                let output = try await client.complete(
+                guard canRequest, AXContextExtractor.allowsAI(snapshot: captured) else { throw CancellationError() }
+                let source = captured?.availability == .selectionOnly ? nil : captured?.surroundingText
+                let availability = captured?.availability ?? .selectionOnly
+                let cacheKey = ReadingAnalysisCache.Key(
+                    text: selectedText,
+                    context: source,
+                    availability: availability.rawValue,
+                    sourceLanguage: sourceLanguage,
+                    targetLanguage: targetLanguage,
+                    explanationLanguage: explanationLanguage,
                     model: model,
-                    messages: [.init(role: .system, content: systemPrompt), .init(role: .user, content: userPrompt)],
-                    apiKey: key
+                    endpoint: endpoint
                 )
+                let answer: ReadingAnalysis
+                if let cached = ReadingAnalysisCache.shared.value(for: cacheKey) {
+                    answer = cached
+                } else {
+                    let prompt = try ReadingAnalysisPrompt.userPrompt(
+                        text: selectedText,
+                        sourceSentence: source,
+                        availability: availability,
+                        sourceLanguage: sourceLanguage,
+                        targetLanguage: targetLanguage,
+                        explanationLanguage: explanationLanguage
+                    )
+                    var configuration = DeepSeekChatClient.Configuration()
+                    configuration.requestTimeout = 40
+                    configuration.totalTimeout = 50
+                    configuration.maxOutputTokens = 8192
+                    guard let url = URL(string: endpoint) else { throw DeepSeekChatError.invalidResponse }
+                    let output = try await DeepSeekChatClient(endpoint: url, configuration: configuration).complete(
+                        model: model, messages: [
+                            .init(role: .system, content: ReadingAnalysisPrompt.systemPrompt),
+                            .init(role: .user, content: prompt),
+                        ], apiKey: key
+                    )
+                    answer = try ReadingAnalysis.decode(
+                        jsonContent: output,
+                        queriedText: selectedText,
+                        sourceSentence: source
+                    )
+                }
                 try Task.checkCancellation()
                 guard requestID == activeRequest else { return }
-                guard canRequest else { cancel(); return }
+                guard canRequest, AXContextExtractor.allowsAI(snapshot: captured) else { throw CancellationError() }
                 if let captured {
-                    guard ContextExtractionCoordinator.shared.snapshot(forInputText: selectedText)?.selectionID == captured.selectionID else {
-                        cancel()
-                        return
+                    guard ContextExtractionCoordinator.shared.snapshot(forInputText: selectedText)?
+                        .selectionID == captured.selectionID else {
+                        throw CancellationError()
                     }
                 }
-                switch intent {
-                case .word:
-                    let answer = try AIWordExplanation.decode(jsonContent: output).validated(queriedText: selectedText, sourceSentence: source)
-                    // Plain text rendering prevents source/model strings from becoming Markdown links or HTML.
-                    wordExplanation = DeepSeekService.explanationMarkdown(answer, snapshot: captured)
-                case .translation:
-                    translation = try SentenceTranslation.decode(jsonContent: output, queriedSentence: selectedText).translationZh
-                case .grammar:
-                    let answer = try GrammarExplanation.decode(jsonContent: output).validated(queriedSentence: selectedText)
-                    grammar = answer
-                    translation = answer.translationZh
-                    showsDetails = false
-                }
+                ReadingAnalysisCache.shared.insert(answer, for: cacheKey)
+                kind = answer.kind
+                wordExplanation = answer.wordExplanation
+                contextExcerpt = answer.wordExplanation?.contextualEvidence ?? source
+                translation = answer.kind == .sentence ? answer.translation : ""
+                grammar = answer.grammar
+                showsGrammar = false
+                showsDetails = false
             } catch {
                 guard let self, requestID == activeRequest else { return }
                 if error is CancellationError || (error as? DeepSeekChatError) == .cancelled {
@@ -168,16 +241,22 @@ final class ReadingAssistantModel: ObservableObject {
         }
     }
 
-    func copyResult() {
-        var parts = [text, translation, wordExplanation].filter { !$0.isEmpty }
-        if let grammar {
-            parts.append(grammar.mainClause)
-            parts += grammar.structures.map { "\($0.excerpt) — \($0.labelZh)：\($0.explanationZh)" }
-            parts += grammar.readingSteps
-            parts += grammar.terminology.map { "\($0.term)：\($0.meaningZh)" }
-            if let question = grammar.comprehensionQuestion { parts.append(question) }
-        }
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(parts.joined(separator: "\n\n"), forType: .string)
+    private func invalidatePrivateResults() {
+        cancel()
+        preparedQueryID = nil
+        ReadingAnalysisCache.shared.removeAll()
+        clearResult()
+    }
+
+    private func clearResult() {
+        translation = ""
+        wordExplanation = nil
+        contextExcerpt = nil
+        grammar = nil
+        kind = nil
+        errorMessage = ""
+        wasCancelled = false
+        showsGrammar = false
+        showsDetails = false
     }
 }

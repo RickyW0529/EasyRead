@@ -79,6 +79,13 @@ static const NSTimeInterval EZAutoQueryWhenTextChangedDelay = 0.8;
     scrollView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     
     EZTextView *textView = [[EZTextView alloc] initWithFrame:scrollView.bounds];
+    // Source selections must stay verbatim: automatic corrections can change the
+    // query identity after analysis starts and invalidate its context/result.
+    textView.automaticSpellingCorrectionEnabled = NO;
+    textView.automaticTextReplacementEnabled = NO;
+    textView.automaticQuoteSubstitutionEnabled = NO;
+    textView.automaticDashSubstitutionEnabled = NO;
+    textView.enabledTextCheckingTypes = NSTextCheckingTypeLink;
     textView.allowsUndo = YES;
     self.textView = textView;
     self.scrollView.documentView = textView;

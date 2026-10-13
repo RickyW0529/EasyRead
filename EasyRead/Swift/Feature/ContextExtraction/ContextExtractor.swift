@@ -6,10 +6,11 @@
 //  Copyright © 2026 izual. All rights reserved.
 //
 
+import AppKit
 import Defaults
 import EasyReadKit
 import Foundation
-import AppKit
+import os
 
 // MARK: - ContextExtracting
 
@@ -32,16 +33,18 @@ protocol ContextExtracting: Sendable {
 /// privacy setting, runs the extractor asynchronously and keeps the latest
 /// snapshot available to the query flow.
 final class ContextExtractionCoordinator: Sendable {
-    static let shared = ContextExtractionCoordinator()
-
-    /// Latest captured context; in-memory only, replaced on every selection.
-    let store = SelectionContextStore()
-
-    private let extractor: any ContextExtracting
+    // MARK: Lifecycle
 
     init(extractor: any ContextExtracting = AXContextExtractor()) {
         self.extractor = extractor
     }
+
+    // MARK: Internal
+
+    static let shared = ContextExtractionCoordinator()
+
+    /// Latest captured context; in-memory only, replaced on every selection.
+    let store = SelectionContextStore()
 
     /// Whether the user enabled context extraction in privacy settings.
     var isContextExtractionEnabled: Bool {
@@ -57,12 +60,26 @@ final class ContextExtractionCoordinator: Sendable {
         )
         // Replace immediately, even with context off, so repeated words never inherit an old sentence.
         store.store(initial)
-        guard isContextExtractionEnabled, SelectionPolicy.default.validateSelection(selectedText).isUsable else { return }
-        Task { [extractor] in
+        guard isContextExtractionEnabled,
+              SelectionPolicy.default.validateSelection(selectedText).isUsable else { return }
+        let task = Task { [extractor] in
             let captured = await extractor.captureContext(selectedText: selectedText)
             guard isContextExtractionEnabled else { return }
             store.completeCapture(captured, selectionID: initial.selectionID)
         }
+        pendingCapture.withLock { pending in
+            pending?.1.cancel()
+            pending = (initial.selectionID, task)
+        }
+    }
+
+    /// Awaits only this selection's existing capture; never reads another app after the query opens.
+    func completedSnapshot(forInputText text: String, selectionID: UUID) async -> SelectionSnapshot? {
+        let task = pendingCapture.withLock { $0?.0 == selectionID ? $0?.1 : nil }
+        if isContextExtractionEnabled { await task?.value }
+        guard !Task.isCancelled,
+              let snapshot = snapshot(forInputText: text), snapshot.selectionID == selectionID else { return nil }
+        return snapshot
     }
 
     /// The stored snapshot when its selected text matches the query's input
@@ -78,4 +95,9 @@ final class ContextExtractionCoordinator: Sendable {
         }
         return snapshot
     }
+
+    // MARK: Private
+
+    private let extractor: any ContextExtracting
+    private let pendingCapture = OSAllocatedUnfairLock<(UUID, Task<(), Never>)?>(initialState: nil)
 }

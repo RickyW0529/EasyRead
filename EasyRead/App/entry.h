@@ -6,4 +6,7 @@
 //  Copyright © 2023 izual. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 void parseArmguments(void);
+void parseApplicationArguments(NSArray<NSString *> *arguments);

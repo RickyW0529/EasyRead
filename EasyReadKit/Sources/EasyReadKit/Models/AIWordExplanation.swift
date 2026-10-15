@@ -134,9 +134,17 @@ extension AIWordExplanation {
         return try JSONDecoder().decode(AIWordExplanation.self, from: Data(stripped.utf8))
     }
 
-    /// Removes an opening ` ``` `/` ```json ` line and a closing ` ``` ` line.
+    /// Removes an opening ` ``` `/` ```json ` line and a closing ` ``` ` line, and
+    /// strips a leading `<think>…</think>` reasoning block some models inline in the
+    /// message content even when asked not to think.
     static func strippingCodeFences(_ content: String) -> String {
         var text = content.trimmingCharacters(in: .whitespacesAndNewlines)
+        // An unclosed thinking block swallows the whole message (parity with the
+        // app's `filterThinkTagContent`); thinking outside the leading block stays.
+        if text.hasPrefix("<think>") {
+            guard let closingTag = text.range(of: "</think>") else { return "" }
+            text = String(text[closingTag.upperBound...]).trimmingCharacters(in: .whitespacesAndNewlines)
+        }
         guard text.hasPrefix("```") else {
             return text
         }

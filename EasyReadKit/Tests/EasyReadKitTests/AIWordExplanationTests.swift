@@ -18,9 +18,14 @@ import Testing
 /// 5.1 quality requirements).
 @Suite
 struct AIWordExplanationTests {
+    // MARK: Internal
+
+    static let sentence = "The operating system schedules each process to run on the CPU."
+
     // MARK: - Decoding
 
-    @Test func decodeValidJSONWithAllFields() throws {
+    @Test
+    func decodeValidJSONWithAllFields() throws {
         let json = """
         {
           "selectedText": "process",
@@ -44,7 +49,8 @@ struct AIWordExplanationTests {
         #expect(explanation.contextStatus == .contextual)
     }
 
-    @Test func decodeOmitsOptionalFields() throws {
+    @Test
+    func decodeOmitsOptionalFields() throws {
         let json = """
         {
           "selectedText": "process",
@@ -61,7 +67,8 @@ struct AIWordExplanationTests {
         #expect(explanation.contextualEvidence == nil)
     }
 
-    @Test func decodeMissingTerminologyDefaultsToEmpty() throws {
+    @Test
+    func decodeMissingTerminologyDefaultsToEmpty() throws {
         let json = """
         {
           "selectedText": "process",
@@ -75,7 +82,8 @@ struct AIWordExplanationTests {
         #expect(explanation.terminology == [])
     }
 
-    @Test func decodeMissingRequiredFieldThrows() {
+    @Test
+    func decodeMissingRequiredFieldThrows() {
         #expect(throws: DecodingError.self) {
             _ = try AIWordExplanation.decode(
                 jsonContent: """
@@ -85,7 +93,8 @@ struct AIWordExplanationTests {
         }
     }
 
-    @Test func decodeWrongFieldTypeThrows() {
+    @Test
+    func decodeWrongFieldTypeThrows() {
         #expect(throws: DecodingError.self) {
             _ = try AIWordExplanation.decode(
                 jsonContent: """
@@ -95,7 +104,8 @@ struct AIWordExplanationTests {
         }
     }
 
-    @Test func decodeUnknownContextStatusThrows() {
+    @Test
+    func decodeUnknownContextStatusThrows() {
         #expect(throws: DecodingError.self) {
             _ = try AIWordExplanation.decode(
                 jsonContent: """
@@ -105,7 +115,8 @@ struct AIWordExplanationTests {
         }
     }
 
-    @Test func decodeStripsMarkdownCodeFences() throws {
+    @Test
+    func decodeStripsMarkdownCodeFences() throws {
         let fenced = """
         ```json
         {"selectedText": "process", "primaryMeaningZh": "进程", "explanationZh": "这里指进程。", "contextStatus": "contextual"}
@@ -116,7 +127,52 @@ struct AIWordExplanationTests {
         #expect(explanation.primaryMeaningZh == "进程")
     }
 
-    @Test func decodeMalformedJSONThrows() {
+    @Test
+    func decodeStripsLeadingThinkBlock() throws {
+        let thinking = """
+        <think>
+        让我想想这个词。
+        </think>
+        {"selectedText": "process", "primaryMeaningZh": "进程", "explanationZh": "这里指进程。", "contextStatus": "contextual"}
+        """
+
+        let explanation = try AIWordExplanation.decode(jsonContent: thinking)
+        #expect(explanation.primaryMeaningZh == "进程")
+    }
+
+    @Test
+    func decodeStripsThinkBlockBeforeCodeFence() throws {
+        let thinking = """
+        <think>推理内容</think>
+        ```json
+        {"selectedText": "process", "primaryMeaningZh": "进程", "explanationZh": "这里指进程。", "contextStatus": "contextual"}
+        ```
+        """
+
+        let explanation = try AIWordExplanation.decode(jsonContent: thinking)
+        #expect(explanation.primaryMeaningZh == "进程")
+    }
+
+    @Test
+    func decodeUnclosedThinkBlockFailsDecode() {
+        #expect(throws: DecodingError.self) {
+            _ = try AIWordExplanation.decode(
+                jsonContent: """
+                <think>推理内容但未闭合，正文也不会出现
+                """
+            )
+        }
+    }
+
+    @Test
+    func decodeKeepsThinkTextOutsideLeadingBlock() {
+        #expect(throws: DecodingError.self) {
+            _ = try AIWordExplanation.decode(jsonContent: "进程就是 process，<think>不是前缀</think>")
+        }
+    }
+
+    @Test
+    func decodeMalformedJSONThrows() {
         #expect(throws: DecodingError.self) {
             _ = try AIWordExplanation.decode(jsonContent: "进程就是 process。")
         }
@@ -124,7 +180,8 @@ struct AIWordExplanationTests {
 
     // MARK: - Validation: required fields and limits
 
-    @Test func validatedKeepsWellFormedExplanation() throws {
+    @Test
+    func validatedKeepsWellFormedExplanation() throws {
         let validated = try makeExplanation()
             .validated(queriedText: "process", sourceSentence: Self.sentence)
 
@@ -136,42 +193,48 @@ struct AIWordExplanationTests {
         #expect(validated.contextStatus == .contextual)
     }
 
-    @Test func validatedThrowsOnEmptyMeaning() {
+    @Test
+    func validatedThrowsOnEmptyMeaning() {
         #expect(throws: AIWordExplanation.ValidationError.emptyField(.primaryMeaningZh)) {
             _ = try makeExplanation(primaryMeaningZh: "")
                 .validated(queriedText: "process", sourceSentence: Self.sentence)
         }
     }
 
-    @Test func validatedThrowsOnEmptyExplanation() {
+    @Test
+    func validatedThrowsOnEmptyExplanation() {
         #expect(throws: AIWordExplanation.ValidationError.emptyField(.explanationZh)) {
             _ = try makeExplanation(explanationZh: "")
                 .validated(queriedText: "process", sourceSentence: Self.sentence)
         }
     }
 
-    @Test func validatedThrowsOnOverlongMeaning() {
+    @Test
+    func validatedThrowsOnOverlongMeaning() {
         #expect(throws: AIWordExplanation.ValidationError.fieldTooLong(.primaryMeaningZh, limit: 200)) {
             _ = try makeExplanation(primaryMeaningZh: String(repeating: "进", count: 201))
                 .validated(queriedText: "process", sourceSentence: Self.sentence)
         }
     }
 
-    @Test func validatedThrowsOnOverlongExplanation() {
+    @Test
+    func validatedThrowsOnOverlongExplanation() {
         #expect(throws: AIWordExplanation.ValidationError.fieldTooLong(.explanationZh, limit: 2000)) {
             _ = try makeExplanation(explanationZh: String(repeating: "释", count: 2001))
                 .validated(queriedText: "process", sourceSentence: Self.sentence)
         }
     }
 
-    @Test func validatedDropsOverlongPartOfSpeech() throws {
+    @Test
+    func validatedDropsOverlongPartOfSpeech() throws {
         let validated = try makeExplanation(partOfSpeech: String(repeating: "n", count: 31))
             .validated(queriedText: "process", sourceSentence: Self.sentence)
 
         #expect(validated.partOfSpeech == nil)
     }
 
-    @Test func validatedDropsEmptyPartOfSpeech() throws {
+    @Test
+    func validatedDropsEmptyPartOfSpeech() throws {
         let validated = try makeExplanation(partOfSpeech: "   ")
             .validated(queriedText: "process", sourceSentence: Self.sentence)
 
@@ -180,28 +243,32 @@ struct AIWordExplanationTests {
 
     // MARK: - Validation: selected-text echo
 
-    @Test func validatedAcceptsWhitespaceOnlyEchoDifference() throws {
+    @Test
+    func validatedAcceptsWhitespaceOnlyEchoDifference() throws {
         let validated = try makeExplanation(selectedText: "  process\n")
             .validated(queriedText: "process", sourceSentence: Self.sentence)
 
         #expect(validated.selectedText == "  process\n")
     }
 
-    @Test func validatedThrowsOnRewrittenEcho() {
+    @Test
+    func validatedThrowsOnRewrittenEcho() {
         #expect(throws: AIWordExplanation.ValidationError.selectedTextMismatch) {
             _ = try makeExplanation(selectedText: "processor")
                 .validated(queriedText: "process", sourceSentence: Self.sentence)
         }
     }
 
-    @Test func validatedThrowsOnEmptyQueriedText() {
+    @Test
+    func validatedThrowsOnEmptyQueriedText() {
         #expect(throws: AIWordExplanation.ValidationError.selectedTextMismatch) {
             _ = try makeExplanation()
                 .validated(queriedText: "", sourceSentence: Self.sentence)
         }
     }
 
-    @Test func validatedThrowsOnOverlongEcho() {
+    @Test
+    func validatedThrowsOnOverlongEcho() {
         #expect(throws: AIWordExplanation.ValidationError.fieldTooLong(.selectedText, limit: 2000)) {
             _ = try makeExplanation(selectedText: String(repeating: "p", count: 2001))
                 .validated(queriedText: String(repeating: "p", count: 2001), sourceSentence: Self.sentence)
@@ -210,14 +277,16 @@ struct AIWordExplanationTests {
 
     // MARK: - Validation: context honesty
 
-    @Test func validatedThrowsWhenSelectionOnlyAnswerClaimsContext() {
+    @Test
+    func validatedThrowsWhenSelectionOnlyAnswerClaimsContext() {
         #expect(throws: AIWordExplanation.ValidationError.fabricatedContextStatus) {
             _ = try makeExplanation()
                 .validated(queriedText: "process", sourceSentence: nil)
         }
     }
 
-    @Test func validatedKeepsHonestSelectionOnlyDowngrade() throws {
+    @Test
+    func validatedKeepsHonestSelectionOnlyDowngrade() throws {
         let validated = try makeExplanation(
             contextualEvidence: nil,
             contextStatus: .selectionOnly
@@ -228,28 +297,32 @@ struct AIWordExplanationTests {
         #expect(validated.contextualEvidence == nil)
     }
 
-    @Test func validatedKeepsEvidenceFragmentOfSentence() throws {
+    @Test
+    func validatedKeepsEvidenceFragmentOfSentence() throws {
         let validated = try makeExplanation(contextualEvidence: "run on the CPU")
             .validated(queriedText: "process", sourceSentence: Self.sentence)
 
         #expect(validated.contextualEvidence == "run on the CPU")
     }
 
-    @Test func validatedAcceptsEvidenceWithUnifiedWhitespace() throws {
+    @Test
+    func validatedAcceptsEvidenceWithUnifiedWhitespace() throws {
         let validated = try makeExplanation(contextualEvidence: "schedules each   process")
             .validated(queriedText: "process", sourceSentence: Self.sentence)
 
         #expect(validated.contextualEvidence == "schedules each   process")
     }
 
-    @Test func validatedDropsEvidenceNotInSentence() throws {
+    @Test
+    func validatedDropsEvidenceNotInSentence() throws {
         let validated = try makeExplanation(contextualEvidence: "runs on the GPU core")
             .validated(queriedText: "process", sourceSentence: Self.sentence)
 
         #expect(validated.contextualEvidence == nil)
     }
 
-    @Test func validatedDropsEvidenceWithoutSourceSentence() throws {
+    @Test
+    func validatedDropsEvidenceWithoutSourceSentence() throws {
         let validated = try makeExplanation(contextualEvidence: "schedules each process", contextStatus: .selectionOnly)
             .validated(queriedText: "process", sourceSentence: nil)
 
@@ -258,7 +331,8 @@ struct AIWordExplanationTests {
 
     // MARK: - Validation: terminology sanitation
 
-    @Test func validatedDropsEmptyTerminologyItems() throws {
+    @Test
+    func validatedDropsEmptyTerminologyItems() throws {
         let validated = try makeExplanation(
             terminology: [
                 TerminologyItem(term: "", meaningZh: "操作系统"),
@@ -271,7 +345,8 @@ struct AIWordExplanationTests {
         #expect(validated.terminology == [TerminologyItem(term: "CPU", meaningZh: "中央处理器")])
     }
 
-    @Test func validatedDropsOverlongTerminologyItems() throws {
+    @Test
+    func validatedDropsOverlongTerminologyItems() throws {
         let validated = try makeExplanation(
             terminology: [
                 TerminologyItem(term: String(repeating: "t", count: 101), meaningZh: "x"),
@@ -284,7 +359,8 @@ struct AIWordExplanationTests {
         #expect(validated.terminology == [TerminologyItem(term: "CPU", meaningZh: "中央处理器")])
     }
 
-    @Test func validatedCapsTerminologyItemCount() throws {
+    @Test
+    func validatedCapsTerminologyItemCount() throws {
         let items = (1 ... 25).map { TerminologyItem(term: "term\($0)", meaningZh: "词\($0)") }
 
         let validated = try makeExplanation(terminology: items)
@@ -295,16 +371,15 @@ struct AIWordExplanationTests {
         #expect(validated.terminology.last == TerminologyItem(term: "term20", meaningZh: "词20"))
     }
 
-    @Test func whitespaceOnlyRequiredFieldsAreRejected() {
+    @Test
+    func whitespaceOnlyRequiredFieldsAreRejected() {
         let answer = makeExplanation(primaryMeaningZh: "   ")
         #expect(throws: AIWordExplanation.ValidationError.self) {
             try answer.validated(queriedText: "process", sourceSentence: Self.sentence)
         }
     }
 
-    // MARK: - Private
-
-    static let sentence = "The operating system schedules each process to run on the CPU."
+    // MARK: Private
 
     private func makeExplanation(
         selectedText: String = "process",
@@ -314,7 +389,8 @@ struct AIWordExplanationTests {
         explanationZh: String = "这里指被操作系统调度运行的进程。",
         terminology: [TerminologyItem] = [TerminologyItem(term: "operating system", meaningZh: "操作系统")],
         contextStatus: AIWordExplanation.ContextStatus = .contextual
-    ) -> AIWordExplanation {
+    )
+        -> AIWordExplanation {
         AIWordExplanation(
             selectedText: selectedText,
             primaryMeaningZh: primaryMeaningZh,

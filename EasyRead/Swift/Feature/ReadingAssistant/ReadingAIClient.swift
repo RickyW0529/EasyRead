@@ -28,10 +28,16 @@ struct ReadingAIClient {
         ]
         body[configuration.providerID == "openai" ? "max_completion_tokens" : "max_tokens"] = 8192
         // Reading assistance prioritizes latency. Only send the vendor's declared wire shape.
-        switch configuration.provider.reasoning {
-        case .thinkingType: body["thinking"] = ["type": "disabled"]
-        case .enableThinking: body["enable_thinking"] = false
-        case .providerDefault: break
+        if configuration.providerID == "minimax", configuration.model.lowercased().hasPrefix("minimax-m3.1-") {
+            // M3.1 always reasons and defaults to max effort, which can exhaust
+            // the shared output budget before the reading JSON is complete.
+            body["reasoning_effort"] = "medium"
+        } else {
+            switch configuration.provider.reasoning {
+            case .thinkingType: body["thinking"] = ["type": "disabled"]
+            case .enableThinking: body["enable_thinking"] = false
+            case .providerDefault: break
+            }
         }
         var request = URLRequest(url: url, timeoutInterval: 50)
         request.httpMethod = "POST"

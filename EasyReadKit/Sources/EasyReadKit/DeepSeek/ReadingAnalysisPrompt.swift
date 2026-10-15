@@ -13,6 +13,8 @@ public enum ReadingAnalysisPrompt {
     For word/phrase: provide translation and wordExplanation; grammar must be null. Give the meaning appropriate to source_sentence.
     For sentence: provide translation and complete grammar analysis now; wordExplanation must be null.
     Preserve originalText and all nested originalSentence/selectedText fields verbatim, allowing whitespace normalization only.
+    For multiple sentences or paragraphs, originalText and grammar.originalSentence must contain the ENTIRE text, not just the first sentence.
+    Translate the ENTIRE selection. Both translation and grammar.translation are required for sentence output, even when their values are identical.
     When context_availability is selectionOnly or source_sentence is absent, contextStatus MUST be selection_only and contextualEvidence null.
     Otherwise cite only a literal fragment of source_sentence as evidence; never invent surrounding text.
     For grammar use the source language's own grammatical system, including Chinese, Japanese and other non-space-separated languages.

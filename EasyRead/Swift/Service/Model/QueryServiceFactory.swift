@@ -80,6 +80,19 @@ final class QueryServiceFactory: NSObject {
         return service
     }
 
+    /// Speech providers remain available even when they have no translation result card.
+    /// Keep this separate from registration so it cannot restore retired AI or dictionary cards.
+    func speechService(withTypeId typeId: String) -> QueryService? {
+        guard let type = TTSServiceType(rawValue: typeId) else { return nil }
+        switch type {
+        case .youdao: return YoudaoService()
+        case .baidu: return BaiduService()
+        case .bing: return BingService()
+        case .google: return GoogleService()
+        case .apple: return AppleService()
+        }
+    }
+
     func services(fromTypes types: [String]) -> [QueryService] {
         types.compactMap { service(withTypeId: $0) }
     }

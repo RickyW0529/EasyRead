@@ -273,7 +273,8 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 
     self.audioPlayer = [[EZAudioPlayer alloc] init];
     if (!self.youdaoService) {
-        self.youdaoService = [EZLocalStorage.shared service:EZServiceTypeYoudao windowType:self.windowType];
+        self.youdaoService = [QueryServiceFactory.shared speechServiceWithTypeId:EZServiceTypeYoudao];
+        self.youdaoService.windowType = self.windowType;
     }
 }
 
@@ -451,7 +452,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 - (EZQueryService *)defaultTTSService {
     EZServiceType defaultTTSServiceType = self.config.defaultTTSServiceType;
     if (![_defaultTTSService.serviceType isEqualToString:defaultTTSServiceType]) {
-        _defaultTTSService = [QueryServiceFactory.shared serviceWithTypeId:defaultTTSServiceType];
+        _defaultTTSService = [QueryServiceFactory.shared speechServiceWithTypeId:defaultTTSServiceType];
     }
     return _defaultTTSService;
 }

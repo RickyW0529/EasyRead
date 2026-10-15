@@ -10,7 +10,7 @@
 
 ### 用户请求
 
-参考 BranchReport 已有实现，支持多家 AI 供应商并 review。将 AI 开关、供应商和模型下拉框全部放入设置，保持查询窗口简洁；关闭 AI 时隐藏整个阅读助手卡片，只使用普通翻译和词典；移除重复的 DeepSeek 翻译卡。
+参考 BranchReport 已有实现，支持多家 AI 供应商并 review。将 AI 开关、供应商和模型下拉框全部放入设置，保持查询窗口简洁；关闭 AI 时隐藏整个阅读助手卡片，只使用普通翻译和词典；移除重复的 DeepSeek 翻译卡。后续用户要求重启，并报告点击无弹窗及应用崩溃。
 
 ### 变更
 
@@ -22,6 +22,8 @@
 - 从普通服务注册表和窗口列表移除 DeepSeek 卡；旧默认安装迁移至苹果词典与 Google 普通翻译，新安装采用同样的非 AI 默认服务。
 - 阅读卡仅展示结果与必要操作。AI 关闭时从表格行映射中移除卡片，已有窗口收到开关通知后重排。
 - 更新六种 locale 的设置、提示、加载及错误文案，同步新文件的 Xcode group 与 Sources 引用。
+
+- 后续修复查询窗口崩溃：窗口初始化仍从普通翻译注册表创建已隐藏的 Youdao 朗读服务，触发 `LocalStorage.service` 的 Debug 断言。增加独立朗读工厂，更新窗口、音频播放器和单词结果的调用，并让不支持的普通服务保持日志加 `nil` 的 optional 契约。
 
 ### 设计意图
 
@@ -37,6 +39,12 @@
 - 已修正：Defaults 含点号键名会触发库警告并影响 KVO；完整接口地址带尾斜杠会重复拼接路径；被移除 Google 服务的旧禁用元数据会阻止新插入的普通翻译备用服务工作。最后复验未出现新增 Defaults 键名警告，无未解决 finding。
 - 实现方式判断：统一兼容客户端与供应商目录符合本次范围；不需要恢复重复 AI 服务实例。保留旧 DeepSeek 类用于凭证迁移，未重新注册结果卡。
 - 手动检查：完成调用链、配置与请求取消路径的静态检查；未进行真实界面交互或所有供应商账号的网络联调。未新增或扩写测试，现有绿色测试不代表新增供应商端到端覆盖。
+
+- 崩溃诊断：2026-10-15 11:32:08 的 SIGTRAP 栈包含 `LocalStorage.service → setupServices → initWithWindowType`。此前窗口测试使用继承的 nib 初始化入口，未覆盖真实服务初始化；没有将测试通过视为该入口已验证。
+- 后续 `xcodebuild test` 运行 `ReverseTranslationTests` 与 `AppleSpeechServiceTests`：13 项现有测试、2 个 suite 通过。直接以 `--queryText ""` 启动 Debug 应用，日志确认固定查询窗口成功创建；系统窗口列表记录 480 × 267 窗口，进程持续运行后正常退出。截图未成功，未据此声称完成视觉验收。
+
+- 后续 Release 构建：`bash scripts/build-local-app.sh` 成功，`codesign --verify --deep --strict` 通过；新旧应用 designated requirement 完全一致，备份旧应用后安装回原路径并启动。系统窗口列表确认 Release 查询窗口可见（480 × 447），进程保持运行。重启时曾误启独立 Debug 应用导致辅助功能身份变化，现已退出 Debug 并恢复使用原 Release 身份。
+- 后续 Review：基线 `1fe8156ed134656131f98eca158e02b4584cc30f`，5 个生产文件及相关调用链；工作树 SHA-256 快照在审查后保持一致，无未解决 finding。独立朗读创建覆盖全部五种 TTS 类型，避免重新注册已隐藏的翻译卡，当前实现范围和复杂度合适。
 
 ### 受影响文件
 
@@ -54,6 +62,8 @@
 - `EasyRead/Swift/Service/Model/Storage/LocalStorage+ReadingAI.swift`
 - `EasyRead/Swift/View/SettingView/SettingView.swift`
 - `EasyRead/Swift/View/SettingView/Tabs/ServiceConfigurationView/KeychainInputCell.swift`
+- `EasyRead/objc/Service/AudioPlayer/EZAudioPlayer.m`
+- `EasyRead/objc/ViewController/View/WordResultView/EZWordResultView.m`
 - `EasyRead/objc/ViewController/Window/BaseQueryWindow/EZBaseQueryViewController.m`
 - `EasyRead/App/Localizable.xcstrings`
 - `EasyRead.xcodeproj/project.pbxproj`

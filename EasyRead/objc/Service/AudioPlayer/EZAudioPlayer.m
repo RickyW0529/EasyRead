@@ -124,7 +124,7 @@ static NSString *const kItemWhereFroms = @"com.apple.metadata:kMDItemWhereFroms"
 - (EZQueryService *)defaultTTSService {
     EZServiceType defaultTTSServiceType = MyConfiguration.shared.defaultTTSServiceType;
     if (![_defaultTTSService.serviceType isEqualToString:defaultTTSServiceType]) {
-        EZQueryService *defaultTTSService = [QueryServiceFactory.shared serviceWithTypeId:defaultTTSServiceType];
+        EZQueryService *defaultTTSService = [QueryServiceFactory.shared speechServiceWithTypeId:defaultTTSServiceType];
         _defaultTTSService = defaultTTSService;
         _defaultTTSService.audioPlayer = self;
 

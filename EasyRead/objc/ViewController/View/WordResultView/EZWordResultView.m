@@ -900,7 +900,7 @@ static BOOL EZResultHasAnkiContent(EZQueryResult *result) {
         }
 
         EZServiceType defaultTTSServiceType = MyConfiguration.shared.defaultTTSServiceType;
-        EZQueryService *defaultTTSService = [QueryServiceFactory.shared serviceWithTypeId:defaultTTSServiceType];
+        EZQueryService *defaultTTSService = [QueryServiceFactory.shared speechServiceWithTypeId:defaultTTSServiceType];
 
         // Determine accent based on user preference if language is English
         NSString *accentToUse = nil;

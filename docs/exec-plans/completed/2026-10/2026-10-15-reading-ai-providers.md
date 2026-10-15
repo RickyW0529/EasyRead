@@ -18,7 +18,7 @@
 ## 目标与范围
 
 - 目标结果：统一 AI 阅读卡，提供供应商配置与选择，复用旧 DeepSeek 凭证及模型。
-- 允许修改路径：阅读助手、服务注册和存储默认值、设置、String Catalog、Xcode 工程、任务文档。
+- 允许修改路径：阅读助手、服务注册和存储默认值、设置、String Catalog、Xcode 工程、任务文档；后续崩溃修复包含音频播放器与单词结果朗读入口。
 - 同任务 history：`docs/histories/2026-10/2026-10-15-reading-ai-providers.md`
 - 用户限制：参考 BranchReport；移除重复 AI 结果入口；开关、供应商和模型下拉框仅放在设置；关闭 AI 后整张阅读助手卡片消失，仅保留普通翻译和词典；完成 review。
 - 非目标：迁移 Rust 服务端、报告生成、embedding/rerank；复制源项目的密钥或私有部署地址。
@@ -41,6 +41,9 @@
 
 ## 进度
 
+- [x] 后续修复：用户重启后查询窗口崩溃。11:32:08 SIGTRAP 栈定位至窗口初始化请求未注册的 Youdao 朗读服务；分离朗读工厂，移除不符合 optional 返回契约的断言，验证真实窗口并部署同签名本地 Release。
+- 后续基线：`1fe8156ed134656131f98eca158e02b4584cc30f`；初始仅 workspace 锁文件被外部移除，排除该非任务差异。
+
 - [x] 现状和参考实现检查；初始 HEAD 为 `d8e5b89809d1d41f430e17f2c0e39a784f5a3658`，工作树干净。
 - [x] 实现及六种语言本地化。
 - [x] 验证、review、history 与计划归档；按仓库约定交付本地提交。
@@ -52,7 +55,11 @@
 - 验证环境存在锁文件被反复移除的问题，导致 `CpResource Package.resolved` 失败；构建期间使用临时包装脚本恢复 HEAD 的相同字节，最终退出码为 0。未修改锁文件内容或依赖版本，未把此环境规避称为工程修复。
 - SwiftFormat 仅格式化任务 Swift 文件；`git diff --check`、String Catalog JSON 解析、六种 locale 完整性、工程 plist 检查通过。
 - Review：检查任务相对初始 HEAD 的 17 个生产/工程/资源文件及新增文件；修正 Defaults 键名含点号、尾斜杠接口重复拼接、被删除 Google 服务残留禁用元数据的迁移问题；最终无未解决 finding。
-- 未验证：各供应商真实账号 API、真实界面人工操作；现有测试不等价于新增供应商端到端覆盖。
+- 首轮未验证：各供应商真实账号 API、真实界面人工操作；现有测试不等价于新增供应商端到端覆盖。
+- 后续崩溃修复：`ReverseTranslationTests` 与 `AppleSpeechServiceTests` 共 13 项现有测试、2 个 suite 通过。Debug 真实启动参数 `--queryText ""` 成功创建固定查询窗口（480 × 267）；进程持续运行，随后正常退出。未新增测试。
+
+- 后续 Release：`bash scripts/build-local-app.sh` 构建及严格签名校验通过；核对新旧应用 designated requirement 完全一致，备份后安装回原路径。Release 实际启动，系统窗口列表确认查询窗口可见，进程持续运行。
+- 后续 Review：以 `1fe8156ed134656131f98eca158e02b4584cc30f` 为基线审查 5 个生产文件及相关调用链，冻结并复验 SHA-256；没有未解决 finding。独立朗读工厂保持五种 TTS 供应商，不恢复被隐藏的翻译卡，当前实现足够。
 
 ## 完成条件
 

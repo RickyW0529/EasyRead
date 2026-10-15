@@ -255,7 +255,6 @@ final class LocalStorage: NSObject {
     @objc(service:windowType:)
     func service(_ serviceTypeId: String, windowType: EZWindowType) -> QueryService? {
         guard let service = QueryServiceFactory.shared.service(withTypeId: serviceTypeId) else {
-            assertionFailure("Unsupported service type: \(serviceTypeId)")
             logError("Unsupported service type: \(serviceTypeId)")
             return nil
         }

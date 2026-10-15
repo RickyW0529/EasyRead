@@ -48,7 +48,7 @@ struct ReadingAIProvider: Identifiable, Sendable {
             id: "minimax",
             name: "MiniMax",
             baseURL: "https://api.minimaxi.com/v1",
-            models: ["MiniMax-M2.7"],
+            models: ["MiniMax-M3", "MiniMax-M2.7"],
             reasoning: .enableThinking
         ),
         .init(

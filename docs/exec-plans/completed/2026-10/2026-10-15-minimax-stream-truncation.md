@@ -20,11 +20,12 @@
 
 ## 目标与范围
 
-- 目标结果：定位实际截断原因，使当前 MiniMax 模型可以返回完整且通过阅读结果校验的 JSON。
-- 允许修改路径：`EasyRead/Swift/Feature/ReadingAssistant/ReadingAIClient.swift`、`EasyReadKit/Sources/EasyReadKit/DeepSeek/ReadingAnalysisPrompt.swift`、本计划及同任务 history。
+- 目标结果：首轮定位并修复思考预算截断；后续按用户明确选择切到 MiniMax-M3 并关闭思考，修复 DONE 后继续等连接的行为。
+- 允许修改路径：`EasyRead/Swift/Feature/ReadingAssistant/ReadingAIClient.swift`、`EasyReadKit/Sources/EasyReadKit/DeepSeek/ReadingAnalysisPrompt.swift`、`EasyRead/Swift/Feature/ReadingAssistant/ReadingAIProvider.swift`、本计划及同任务 history。
 - 同任务 history：`docs/histories/2026-10/2026-10-15-minimax-stream-truncation.md`
 - 用户限制：保留已有工作区改动；不新增或扩写仓库测试；不 push 或创建 PR。
-- 非目标：更换用户模型、扩大所有供应商的 token/超时预算、实现渐进渲染、重构 SSE 传输。
+- 非目标：扩大所有供应商的 token/超时预算、实现渐进渲染、重构整个 SSE 传输。
+- 后续明确授权：用户再次遇到超时，选择切到同账号 MiniMax-M3 并关闭思考；修复 DONE 后继续等待连接的问题。
 - 验收标准：授权的真实原文请求完成且通过生产解码/校验；已有相关测试通过；Release 构建及签名通过并安装启动。
 
 ## 工作计划
@@ -59,6 +60,15 @@
 - review：仅审查本任务两处生产文件差异，未发现本次引入的有效 finding；保留已知 DONE 连接收尾问题。
 - `bash scripts/build-local-app.sh`：Release 构建和严格签名校验通过。
 - 新旧 designated requirement 相同；旧应用已备份，新版本安装回原用户 Applications 路径并启动。
+
+## 后续处理：关闭思考与流结束收尾
+
+- [x] 为 MiniMax-M3 发送 thinking disabled，保留 M3.1 的既有参数。
+- [x] 将 MiniMax-M3 加入预设并设为新用户默认模型。
+- [x] 收到 DONE 后立即终止观察，并保持任务取消、HTTP/传输错误和截断检查。
+- [x] 无思考响应 0 reasoning 字符；单句生产链路约 7 秒通过。客户端测试 11 个通过，review 无新增 finding；Release 构建和严格签名校验通过。
+- 已知限制：M3 无思考整段输出存在 JSON 错误或仅处理首句，不将其记为通过。
+- [x] 已备份并重新安装，退出后更新用户所选模型为 MiniMax-M3；进程、当前模型及二进制哈希核对通过；归档记录后按仓库规则本地提交。
 
 ## 完成条件
 

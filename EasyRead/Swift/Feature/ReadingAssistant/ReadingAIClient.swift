@@ -28,7 +28,9 @@ struct ReadingAIClient {
         ]
         body[configuration.providerID == "openai" ? "max_completion_tokens" : "max_tokens"] = 8192
         // Reading assistance prioritizes latency. Only send the vendor's declared wire shape.
-        if configuration.providerID == "minimax", configuration.model.lowercased().hasPrefix("minimax-m3.1-") {
+        if configuration.providerID == "minimax", configuration.model.lowercased() == "minimax-m3" {
+            body["thinking"] = ["type": "disabled"]
+        } else if configuration.providerID == "minimax", configuration.model.lowercased().hasPrefix("minimax-m3.1-") {
             // M3.1 always reasons and defaults to max effort, which can exhaust
             // the shared output budget before the reading JSON is complete.
             body["reasoning_effort"] = "medium"
@@ -105,7 +107,7 @@ struct ReadingAIClient {
         var finishReason: String?
         var reachedDone = false
         var hasUndecodableEvent = false
-        var consume: (String) -> () = { payload in
+        let consume: (String) -> () = { payload in
             if reachedDone { return }
             if payload == "[DONE]" {
                 reachedDone = true
@@ -133,9 +135,13 @@ struct ReadingAIClient {
             case .complete:
                 for payload in eventParser.flush() { consume(payload) }
             }
+            // DONE completes the protocol even if the server keeps the connection open.
+            if reachedDone { break }
         }
 
-        if let error = streamRequest.error { throw transportError(error) }
+        try Task.checkCancellation()
+        // Ending stream observation cancels the transport after a successful DONE.
+        if !reachedDone, let error = streamRequest.error { throw transportError(error) }
         if let status = streamRequest.response?.statusCode, !(200 ... 299).contains(status) {
             throw statusError(status)
         }

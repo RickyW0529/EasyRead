@@ -95,7 +95,7 @@ final class LocalStorage: NSObject {
             return defaultServiceTypeIDs
         }
 
-        return storedTypes
+        return migrateReadingAIServiceTypes(storedTypes, windowType: windowType)
     }
 
     /// Persists ordered service type identifiers for the given window.
@@ -416,11 +416,10 @@ final class LocalStorage: NSObject {
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
 
-    /// EasyRead defaults: the local Apple dictionary first, then DeepSeek (which stays
-    /// auto-query-off until the user configures an API key).
+    /// Non-AI results stay available independently of the reading assistant opt-in.
     private let defaultServiceTypeIDs: [String] = [
         ServiceType.appleDictionary.rawValue,
-        ServiceType.deepSeek.rawValue,
+        ServiceType.google.rawValue,
     ]
 
     /// Raw dictionary backing service query statistics.

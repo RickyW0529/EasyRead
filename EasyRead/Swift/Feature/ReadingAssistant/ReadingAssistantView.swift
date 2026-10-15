@@ -1,5 +1,4 @@
 // Copyright © 2026 EasyRead contributors. GPL-3.0.
-import Defaults
 import EasyReadKit
 import SwiftUI
 
@@ -11,18 +10,7 @@ struct ReadingAssistantView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("reading.ai.title").font(.headline)
-                Spacer()
-                Toggle("reading.ai.enable", isOn: Binding(
-                    get: { enableAI },
-                    set: { enabled in
-                        enableAI = enabled
-                        if enabled { model.resumeCommittedQuery() }
-                    }
-                )).disabled(keyMirror.isEmpty)
-            }
-            Text("reading.ai.privacy_notice").font(.caption).foregroundStyle(.secondary)
+            Text("reading.ai.title").font(.headline)
             if model.showsDictionaryHint {
                 Text("reading.dictionary.lookup_hint").font(.caption).foregroundStyle(.secondary)
             }
@@ -31,7 +19,7 @@ struct ReadingAssistantView: View {
                     .disabled(model.grammar == nil)
             }
 
-            if !model.hasKey {
+            if !model.isConfigured {
                 Text("reading.ai.no_key").font(.caption).foregroundStyle(.secondary)
             } else if !SelectionPolicy.default.validateSelection(model.text).isUsable {
                 Text("reading.ai.too_long").font(.caption).foregroundStyle(.secondary)
@@ -39,6 +27,10 @@ struct ReadingAssistantView: View {
                 Text("reading.ai.blocked").font(.caption).foregroundStyle(.secondary)
             }
 
+            if !model.isLoading, !model.wasCancelled, model.errorMessage.isEmpty,
+               model.translation.isEmpty, model.wordExplanation == nil, model.canRequest {
+                Button("reading.action.explain") { model.resumeCommittedQuery() }
+            }
             if model.isLoading {
                 HStack {
                     ProgressView().controlSize(.small)
@@ -87,7 +79,7 @@ struct ReadingAssistantView: View {
                     .textSelection(.enabled)
                 }
                 HStack {
-                    Text("reading.ai.source").font(.caption).foregroundStyle(.secondary)
+                    Text(verbatim: model.resultSource).font(.caption).foregroundStyle(.secondary)
                     Spacer()
                     Button("reading.action.copy") { model.copyResult() }
                 }
@@ -100,9 +92,6 @@ struct ReadingAssistantView: View {
     }
 
     // MARK: Private
-
-    @Default(.enableReadingAI) private var enableAI
-    @Default(.deepSeekAPIKeyMirror) private var keyMirror
 
     private func grammarDetails(_ answer: GrammarExplanation) -> some View {
         VStack(alignment: .leading, spacing: 10) {

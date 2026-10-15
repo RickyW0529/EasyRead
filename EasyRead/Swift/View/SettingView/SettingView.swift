@@ -6,6 +6,7 @@
 //  Copyright © 2023 izual. All rights reserved.
 //
 
+import SFSafeSymbols
 import SwiftUI
 
 // MARK: - SettingTab
@@ -19,6 +20,7 @@ enum SettingTab: Int {
     case privacy
     case favorites
     case about
+    case readingAI
 }
 
 // MARK: - SettingView
@@ -35,6 +37,10 @@ struct SettingView: View {
             ServiceTab()
                 .tabItem { Label("service", systemImage: "briefcase") }
                 .tag(SettingTab.service)
+
+            ReadingAISettingsView()
+                .tabItem { Label("reading.ai.settings", systemSymbol: .sparkles) }
+                .tag(SettingTab.readingAI)
 
             FavoritesTab()
                 .tabItem { Label("favorites.tab", systemImage: "star") }

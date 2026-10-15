@@ -8,13 +8,13 @@
 
 import Defaults
 import EasyReadKit
-import SwiftUI
 import SFSafeSymbols
+import SwiftUI
 
 // MARK: - KeychainInputCell
 
 /// Secure input cell whose value is stored in the macOS Keychain instead of
-/// UserDefaults (EasyRead: the DeepSeek API key, spec 7.2).
+/// Defaults. The supplied store isolates each provider's credential.
 ///
 /// The buffer only saves on an explicit action — the secret is never written
 /// on every keystroke — and `mirrorKey` (a non-sensitive Defaults value)
@@ -105,9 +105,11 @@ struct KeychainInputCell: View {
     private func syncStoredState() {
         let stored = store.hasValue
         hasStoredKey = stored
-        if !stored { Defaults[mirrorKey] = "" }
-        else if Defaults[mirrorKey].isEmpty { Defaults[mirrorKey] = UUID().uuidString }
-        if !stored { Defaults[.enableReadingAI] = false }
+        if !stored {
+            Defaults[mirrorKey] = ""
+        } else if Defaults[mirrorKey].isEmpty {
+            Defaults[mirrorKey] = UUID().uuidString
+        }
     }
 
     private func save() {

@@ -111,16 +111,11 @@ final class QueryServiceFactory: NSObject {
 
     // MARK: Private
 
-    /// EasyRead keeps the registration surface minimal: the local Apple dictionary is
-    /// the primary source, DeepSeek is the only AI provider (BYOK), and a few no-key
-    /// translation services remain as optional fallbacks.
-    ///
-    /// Removed entries are hidden, not deleted: their service classes stay in the
-    /// tree (GPL shared code inherited from Easydict) but are no longer exposed.
+    /// AI results belong exclusively to the reading assistant. This registry
+    /// contains dictionary and non-AI translation cards only.
     private let serviceRegistrations: [ServiceRegistration] = [
         .init(.appleDictionary, AppleDictionary.self, "apple_dictionary", apiKeyRequirement: .none),
         .init(.mDict, MDictService.self, "service.mdict.name", apiKeyRequirement: .none),
-        .init(.deepSeek, DeepSeekService.self, "deepseek_translate"),
         .init(.deepL, DeepLService.self, "deepL_translate", apiKeyRequirement: .none),
         .init(.google, GoogleService.self, "google_translate", apiKeyRequirement: .none),
         .init(.apple, AppleService.self, "apple_translate", apiKeyRequirement: .none),

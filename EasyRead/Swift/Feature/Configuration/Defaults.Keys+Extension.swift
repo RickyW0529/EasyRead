@@ -12,6 +12,7 @@ import Magnet
 
 /// Utils
 extension Defaults.Keys {
+    static let readingAIProvider = Key<String>("readingAIProvider", default: "deepseek")
     static let enableReadingAI = Key<Bool>("enableReadingAI", default: false)
     static let enableReadingHistory = Key<Bool>("enableReadingHistory", default: false)
     /// is first launch

@@ -401,11 +401,18 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
         _readingAssistantView.onHeightChange = ^{
             dispatch_async(dispatch_get_main_queue(), ^{
                 typeof(self) strongSelf = weakSelf;
-                if (!strongSelf) return;
+                if (!strongSelf || !ReadingAssistantHostView.isEnabled) return;
                 NSInteger readingRow = [strongSelf resultCellOffset] - 1;
+                if (readingRow >= strongSelf.tableView.numberOfRows) return;
                 [strongSelf.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:readingRow]];
                 [strongSelf updateWindowHeight];
             });
+        };
+        _readingAssistantView.onVisibilityChange = ^{
+            typeof(self) strongSelf = weakSelf;
+            if (!strongSelf) return;
+            [strongSelf.tableView reloadData];
+            [strongSelf updateWindowHeight];
         };
     }
     return _readingAssistantView;
@@ -1022,7 +1029,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
         return selectLanguageCell;
     }
 
-    if (row == [self resultCellOffset] - 1) {
+    if (ReadingAssistantHostView.isEnabled && row == [self resultCellOffset] - 1) {
         [self.readingAssistantView updateWithQueryModel:self.queryModel];
         return self.readingAssistantView;
     }
@@ -1044,7 +1051,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
         height = self.queryModel.queryViewHeight;
     } else if ([self isSelectLanguageCellAtRow:row]) {
         height = 35;
-    } else if (row == [self resultCellOffset] - 1) {
+    } else if (ReadingAssistantHostView.isEnabled && row == [self resultCellOffset] - 1) {
         // AppKit aborts the process when a variable row height is 0. The
         // reading row exists before any text is entered, so keep it positive.
         if (self.inputText.length == 0) {
@@ -1768,7 +1775,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 #pragma mark - Row Mapping
 
 - (NSInteger)resultCellOffset {
-    NSInteger offset = 1; // SwiftUI reading actions, before service result rows.
+    NSInteger offset = ReadingAssistantHostView.isEnabled ? 1 : 0;
 
     if (self.isInputFieldCellVisible) {
         offset += 1;

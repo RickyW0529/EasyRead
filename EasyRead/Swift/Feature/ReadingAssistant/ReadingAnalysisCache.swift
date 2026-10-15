@@ -16,6 +16,8 @@ final class ReadingAnalysisCache {
         let explanationLanguage: String
         let model: String
         let endpoint: String
+        let provider: String
+        let credentialRevision: String
     }
 
     static let shared = ReadingAnalysisCache()

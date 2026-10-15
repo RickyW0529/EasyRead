@@ -1,6 +1,662 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "reading.ai.select_model" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a model"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请选择模型"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請選擇模型"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モデルを選択"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona un modelo"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyberte model"
+          }
+        }
+      }
+    },
+    "reading.ai.configuration_hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings are saved automatically. API keys are stored separately in Keychain. Connection tests send a short test message and may incur API charges. Changing settings does not send the current selection."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置自动保存，各供应商密钥独立存入 Keychain。测试连接会发送简短测试消息，可能产生 API 费用。更改设置不会发送当前选中文字。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定自動儲存，各供應商金鑰獨立存入 Keychain。測試連線會傳送簡短測試訊息，可能產生 API 費用。變更設定不會傳送目前選取文字。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定は自動保存され、API キーは Keychain に個別に保存されます。接続テストは短いメッセージを送信し、API 料金が発生する場合があります。設定の変更では選択中のテキストは送信されません。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los ajustes se guardan automáticamente y las claves se almacenan por separado en Keychain. Las pruebas envían un mensaje breve y pueden generar cargos de API. Cambiar los ajustes no envía el texto seleccionado."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavenia sa ukladajú automaticky a kľúče samostatne do Keychain. Test pripojenia odosiela krátku správu a môže spôsobiť poplatky API. Zmena nastavení neodosiela vybraný text."
+          }
+        }
+      }
+    },
+    "reading.ai.invalid_configuration" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Complete the provider URL, model and API key in AI Translation settings."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请在 AI 翻译设置中填写有效的接口地址、模型和 API Key。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請在 AI 翻譯設定中填寫有效的介面位址、模型和 API Key。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 翻訳の設定で有効な URL、モデル、API キーを入力してください。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completa la URL, el modelo y la clave API en los ajustes de traducción con IA."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyplňte platnú URL, model a kľúč API v nastaveniach prekladu AI."
+          }
+        }
+      }
+    },
+    "reading.ai.http_error %lld" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The provider returned HTTP %lld. Check the endpoint, model and API permissions."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "供应商返回 HTTP %lld，请检查接口地址、模型和 API 权限。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "供應商傳回 HTTP %lld，請檢查介面位址、模型和 API 權限。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロバイダーが HTTP %lld を返しました。URL、モデル、API 権限を確認してください。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El proveedor devolvió HTTP %lld. Revisa la URL, el modelo y los permisos de la API."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poskytovateľ vrátil HTTP %lld. Skontrolujte adresu, model a oprávnenia API."
+          }
+        }
+      }
+    },
+    "reading.ai.models_loaded %lld" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loaded %lld models"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已获取 %lld 个模型"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已取得 %lld 個模型"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 個のモデルを取得しました"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se obtuvieron %lld modelos"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Načítaných %lld modelov"
+          }
+        }
+      }
+    },
+    "reading.ai.connection_success" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection successful"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "连接成功"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連線成功"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接続に成功しました"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conexión correcta"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pripojenie úspešné"
+          }
+        }
+      }
+    },
+    "reading.ai.test_connection" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test connection"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "测试连接"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "測試連線"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接続テスト"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probar conexión"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otestovať pripojenie"
+          }
+        }
+      }
+    },
+    "reading.ai.fetch_models" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fetch models"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "获取模型"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取得模型"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モデルを取得"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtener modelos"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Načítať modely"
+          }
+        }
+      }
+    },
+    "reading.ai.add_model" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新增"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pridať"
+          }
+        }
+      }
+    },
+    "reading.ai.custom_model" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom model ID"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自定义模型 ID"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自訂模型 ID"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスタムモデル ID"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID de modelo personalizado"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID vlastného modelu"
+          }
+        }
+      }
+    },
+    "reading.ai.optional_key" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An API key is optional for local or private gateways."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本地或私有网关可不填写 API Key。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本機或私人閘道可不填寫 API Key。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ローカルまたはプライベートゲートウェイでは API キーを省略できます。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La clave API es opcional para pasarelas locales o privadas."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kľúč API je voliteľný pre lokálne alebo súkromné brány."
+          }
+        }
+      }
+    },
+    "reading.ai.custom_provider" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom (OpenAI compatible)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自定义（OpenAI 兼容）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自訂（OpenAI 相容）"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスタム（OpenAI 互換）"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personalizado (compatible con OpenAI)"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vlastný (kompatibilný s OpenAI)"
+          }
+        }
+      }
+    },
+    "reading.ai.endpoint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Base URL"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接口地址"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "介面位址"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ベース URL"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL base"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Základná URL"
+          }
+        }
+      }
+    },
+    "reading.ai.model" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "模型"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "模型"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モデル"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modelo"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model"
+          }
+        }
+      }
+    },
+    "reading.ai.provider" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provider"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "供应商"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "供應商"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロバイダー"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proveedor"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poskytovateľ"
+          }
+        }
+      }
+    },
+    "reading.ai.settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI Translation"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 翻译"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 翻譯"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 翻訳"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traducción con IA"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preklad AI"
+          }
+        }
+      }
+    },
     "reading.context.unavailable" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -253,37 +909,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Dictionary looks up words and phrases. Use DeepSeek to translate sentences and paragraphs."
+            "value" : "Apple Dictionary looks up words and phrases. Translation services handle sentences and paragraphs."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "苹果词典用于查单词和短语；句子、段落由 DeepSeek 翻译。"
+            "value" : "苹果词典用于查单词和短语；句子和段落请使用翻译服务。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "蘋果詞典用於查單字和片語；句子、段落由 DeepSeek 翻譯。"
+            "value" : "蘋果詞典用於查單字和片語；句子和段落請使用翻譯服務。"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple 辞書は単語・語句の検索用です。文や段落の翻訳には DeepSeek を使用します。"
+            "value" : "Apple 辞書は単語や語句の検索用です。文や段落には翻訳サービスを使用してください。"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El diccionario de Apple busca palabras y expresiones. DeepSeek traduce oraciones y párrafos."
+            "value" : "El diccionario de Apple busca palabras y expresiones. Los servicios de traducción traducen oraciones y párrafos."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Slovník Apple vyhľadáva slová a frázy. Vety a odseky prekladá DeepSeek."
+            "value" : "Slovník Apple vyhľadáva slová a frázy. Na vety a odseky použite prekladové služby."
           }
         }
       }
@@ -335,37 +991,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enable DeepSeek"
+            "value" : "Enable AI translation"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "启用 DeepSeek"
+            "value" : "启用 AI 翻译"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "啟用 DeepSeek"
+            "value" : "啟用 AI 翻譯"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "DeepSeek を有効にする"
+            "value" : "AI 翻訳を有効にする"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activar DeepSeek"
+            "value" : "Activar traducción con IA"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Povoliť DeepSeek"
+            "value" : "Povoliť preklad AI"
           }
         }
       }
@@ -376,37 +1032,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When enabled, each query automatically prepares meanings, translations or grammar with DeepSeek and incurs API charges. Context is sent only when enabled in Privacy settings."
+            "value" : "When enabled, queries use the selected AI provider for meanings, translations and grammar; API charges may apply. Context is sent only when enabled in Privacy settings. When disabled, the AI card is hidden and queries use ordinary translation and dictionaries."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "启用后，查询会自动使用 DeepSeek 准备释义、翻译或语法解析，并产生 API 费用。仅在隐私设置开启后发送有限上下文。"
+            "value" : "启用后，查询会使用所选 AI 供应商生成释义、翻译和语法解析，可能产生 API 费用。仅在隐私设置开启后发送有限上下文。关闭后隐藏 AI 卡片，仅使用普通翻译和词典。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "啟用後，查詢會自動使用 DeepSeek 準備釋義、翻譯或語法解析，並產生 API 費用。僅在隱私設定開啟後傳送有限上下文。"
+            "value" : "啟用後，查詢會使用所選 AI 供應商產生釋義、翻譯和語法解析，可能產生 API 費用。僅在隱私設定開啟後傳送有限上下文。關閉後隱藏 AI 卡片，僅使用一般翻譯和詞典。"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "有効にすると、検索時に DeepSeek が意味・翻訳・文法解析を自動的に準備し、API 料金が発生します。文脈はプライバシー設定で有効な場合のみ送信されます。"
+            "value" : "有効にすると、選択した AI プロバイダーで意味・翻訳・文法を解析します。API 料金が発生する場合があります。文脈はプライバシー設定で許可した場合のみ送信されます。無効時は AI カードを非表示にし、通常の翻訳と辞書のみを使用します。"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Al activarlo, cada consulta prepara significados, traducciones o gramática con DeepSeek y genera cargos de API. El contexto solo se envía si se activa en Privacidad."
+            "value" : "Al activarlo, las consultas usan el proveedor de IA seleccionado para significados, traducciones y gramática; pueden generar cargos de API. El contexto solo se envía si se permite en Privacidad. Al desactivarlo, se oculta la tarjeta de IA y se usan traducciones y diccionarios convencionales."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Po povolení každý dopyt automaticky pripraví význam, preklad alebo gramatiku cez DeepSeek a účtujú sa poplatky API. Kontext sa odosiela iba po povolení v nastaveniach súkromia."
+            "value" : "Po povolení dopyty používajú vybraného poskytovateľa AI na významy, preklady a gramatiku; môžu sa účtovať poplatky API. Kontext sa odosiela iba po povolení v nastaveniach súkromia. Po vypnutí sa karta AI skryje a používajú sa bežné preklady a slovníky."
           }
         }
       }
@@ -417,37 +1073,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Local dictionaries remain available. Save a DeepSeek API key in Settings → Services to enable AI."
+            "value" : "Configure a provider and model in Settings → AI Translation."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "本地词典仍可使用。请在设置 → 服务中保存 DeepSeek API Key 后启用 AI。"
+            "value" : "请在设置 → AI 翻译中配置供应商和模型。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "本機詞典仍可使用。請在設定 → 服務中儲存 DeepSeek API Key 後啟用 AI。"
+            "value" : "請在設定 → AI 翻譯中設定供應商和模型。"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ローカル辞書は利用できます。設定 → サービスで DeepSeek API キーを保存してください。"
+            "value" : "設定 → AI 翻訳でプロバイダーとモデルを設定してください。"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Los diccionarios locales siguen disponibles. Guarda una clave de DeepSeek en Ajustes → Servicios."
+            "value" : "Configura un proveedor y un modelo en Ajustes → Traducción con IA."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lokálne slovníky sú dostupné. Uložte kľúč DeepSeek v Nastavenia → Služby."
+            "value" : "Nastavte poskytovateľa a model v Nastavenia → Preklad AI."
           }
         }
       }
@@ -540,37 +1196,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Waiting for DeepSeek…"
+            "value" : "Preparing AI translation…"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "正在等待 DeepSeek…"
+            "value" : "正在生成 AI 翻译…"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "正在等待 DeepSeek…"
+            "value" : "正在產生 AI 翻譯…"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "DeepSeek の応答を待っています…"
+            "value" : "AI 翻訳を生成中…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esperando a DeepSeek…"
+            "value" : "Generando traducción con IA…"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Čaká sa na DeepSeek…"
+            "value" : "Pripravuje sa preklad AI…"
           }
         }
       }
@@ -622,37 +1278,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AI explanation · DeepSeek · Selected text"
+            "value" : "AI explanation"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AI 解释 · DeepSeek · 选中文字"
+            "value" : "AI 解释"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AI 解釋 · DeepSeek · 選取文字"
+            "value" : "AI 解釋"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AI 解説 · DeepSeek · 選択テキスト"
+            "value" : "AI 解説"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Explicación de IA · DeepSeek · Texto seleccionado"
+            "value" : "Explicación de IA"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vysvetlenie AI · DeepSeek · Vybraný text"
+            "value" : "Vysvetlenie AI"
           }
         }
       }
@@ -3256,41 +3912,42 @@
       }
     },
     "deepseek.error.insufficient_balance" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your DeepSeek account is out of balance or quota. Please top up on the DeepSeek website."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La cuenta de DeepSeek no tiene saldo ni cuota. Recargue en el sitio web de DeepSeek."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DeepSeek アカウントの残高またはクォータが不足しています。DeepSeek の公式サイトでチャージしてください。"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Účet DeepSeek nemá dostatok kreditu ani kvóty. Doplnte kredit na webe DeepSeek."
+            "value" : "The provider account has insufficient balance or quota. Check your account on the provider’s website."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "DeepSeek 账户余额或配额不足，请前往 DeepSeek 官网充值。"
+            "value" : "供应商账户余额或配额不足，请前往供应商网站检查账户。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "DeepSeek 帳戶餘額或配額不足，請前往 DeepSeek 官網儲值。"
+            "value" : "供應商帳戶餘額或配額不足，請前往供應商網站檢查帳戶。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロバイダーの残高または利用枠が不足しています。公式サイトでアカウントを確認してください。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La cuenta del proveedor no tiene saldo o cuota suficientes. Revísala en el sitio web del proveedor."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Účet poskytovateľa nemá dostatočný kredit alebo kvótu. Skontrolujte účet na jeho webe."
           }
         }
       }
@@ -3336,41 +3993,42 @@
       }
     },
     "deepseek.error.invalid_response" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "DeepSeek returned a response that could not be parsed."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DeepSeek devolvió una respuesta que no se pudo analizar."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DeepSeek が解析できない応答を返しました。"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DeepSeek vrátil odpoveď, ktorú nebolo možné analyzovať."
+            "value" : "The AI provider returned a response that could not be parsed."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "DeepSeek 返回了无法解析的响应。"
+            "value" : "AI 供应商返回了无法解析的响应。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "DeepSeek 傳回了無法解析的回應。"
+            "value" : "AI 供應商傳回了無法解析的回應。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI プロバイダーが解析できない応答を返しました。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El proveedor de IA devolvió una respuesta que no se pudo analizar."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poskytovateľ AI vrátil odpoveď, ktorú nebolo možné spracovať."
           }
         }
       }
@@ -3456,41 +4114,42 @@
       }
     },
     "deepseek.error.server" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The DeepSeek service is temporarily unavailable. Please try again later."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El servicio de DeepSeek no está disponible temporalmente. Inténtelo más tarde."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DeepSeek サービスは一時的に利用できません。しばらくしてから再試行してください。"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Služba DeepSeek je dočasne nedostupná. Skúste to neskôr."
+            "value" : "The AI service is temporarily unavailable. Please try again later."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "DeepSeek 服务暂时不可用，请稍后再试。"
+            "value" : "AI 服务暂时不可用，请稍后再试。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "DeepSeek 服務暫時無法使用，請稍後再試。"
+            "value" : "AI 服務暫時無法使用，請稍後再試。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI サービスは一時的に利用できません。後でもう一度お試しください。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El servicio de IA no está disponible temporalmente. Inténtalo más tarde."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Služba AI je dočasne nedostupná. Skúste to neskôr."
           }
         }
       }

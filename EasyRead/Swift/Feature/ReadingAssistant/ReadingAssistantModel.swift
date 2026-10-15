@@ -11,8 +11,8 @@ final class ReadingAssistantModel: ObservableObject {
     // MARK: Lifecycle
 
     init() {
-        Defaults.publisher(.enableReadingAI, options: []).receive(on: DispatchQueue.main).sink { [weak self] change in
-            if !change.newValue, !Defaults[.enableReadingAI] { self?.invalidatePrivateResults() }
+        Defaults.publisher(.enableReadingAI, options: []).receive(on: DispatchQueue.main).sink { [weak self] _ in
+            self?.invalidatePrivateResults()
         }.store(in: &observers)
         Defaults.publisher(.enableContextExtraction, options: []).receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
@@ -22,15 +22,29 @@ final class ReadingAssistantModel: ObservableObject {
             .sink { [weak self] _ in
                 self?.invalidatePrivateResults()
             }.store(in: &observers)
-        Defaults.publisher(.deepSeekAPIKeyMirror, options: []).receive(on: DispatchQueue.main).sink { [weak self] _ in
+        Defaults.publisher(.readingAIProvider, options: []).receive(on: DispatchQueue.main).sink { [weak self] _ in
             self?.invalidatePrivateResults()
         }.store(in: &observers)
+        for provider in ReadingAIProvider.all {
+            let keys = [
+                ReadingAIConfiguration.endpointKey(for: provider),
+                ReadingAIConfiguration.modelKey(for: provider),
+                ReadingAIConfiguration.mirrorKey(for: provider),
+            ]
+            for key in keys {
+                Defaults.publisher(key, options: []).receive(on: DispatchQueue.main).sink { [weak self] _ in
+                    guard Defaults[.readingAIProvider] == provider.id else { return }
+                    self?.invalidatePrivateResults()
+                }.store(in: &observers)
+            }
+        }
     }
 
     // MARK: Internal
 
     @Published private(set) var text = ""
     @Published private(set) var translation = ""
+    @Published private(set) var resultSource = ""
     @Published private(set) var wordExplanation: AIWordExplanation?
     @Published private(set) var contextExcerpt: String?
     @Published private(set) var grammar: GrammarExplanation?
@@ -42,17 +56,18 @@ final class ReadingAssistantModel: ObservableObject {
     @Published var showsDetails = false
     var onLayoutChange: (() -> ())?
 
-    var hasKey: Bool { !service.apiKey.isEmpty }
+    var isConfigured: Bool { ReadingAIConfiguration.current().isReady }
     var showsDictionaryHint: Bool { kind == .sentence }
     var allowsAI: Bool { AXContextExtractor.allowsAI(snapshot: snapshot) }
     var canRequest: Bool {
-        Defaults[.enableReadingAI] && hasKey && SelectionPolicy.default.validateSelection(text).isUsable && allowsAI
+        Defaults[.enableReadingAI] && isConfigured && SelectionPolicy.default.validateSelection(text)
+            .isUsable && allowsAI
     }
 
     var rowHeight: CGFloat {
         if showsGrammar, grammar != nil { return showsDetails ? 560 : 460 }
         if wordExplanation != nil { return 380 }
-        return translation.isEmpty ? 150 : 300
+        return translation.isEmpty ? 100 : 300
     }
 
     func update(queryModel: QueryModel) {
@@ -124,7 +139,6 @@ final class ReadingAssistantModel: ObservableObject {
 
     // MARK: Private
 
-    private let service = DeepSeekService()
     private var task: Task<(), Never>?
     private var queryID: UUID?
     private var committedQueryID: UUID?
@@ -145,9 +159,8 @@ final class ReadingAssistantModel: ObservableObject {
         let sourceLanguage = sourceLanguage
         let targetLanguage = targetLanguage
         let explanationLanguage = I18nHelper.shared.localizeCode
-        let key = service.apiKey
-        let model = service.model
-        let endpoint = service.endpoint
+        let configuration = ReadingAIConfiguration.current()
+        clearResult()
         isLoading = true
         wasCancelled = false
         errorMessage = ""
@@ -165,7 +178,8 @@ final class ReadingAssistantModel: ObservableObject {
                 } else { captured = nil }
                 try Task.checkCancellation()
                 guard let self, requestID == activeRequest else { return }
-                guard canRequest, AXContextExtractor.allowsAI(snapshot: captured) else { throw CancellationError() }
+                guard canRequest, configuration == ReadingAIConfiguration.current(),
+                      AXContextExtractor.allowsAI(snapshot: captured) else { throw CancellationError() }
                 let source = captured?.availability == .selectionOnly ? nil : captured?.surroundingText
                 let availability = captured?.availability ?? .selectionOnly
                 let cacheKey = ReadingAnalysisCache.Key(
@@ -175,8 +189,10 @@ final class ReadingAssistantModel: ObservableObject {
                     sourceLanguage: sourceLanguage,
                     targetLanguage: targetLanguage,
                     explanationLanguage: explanationLanguage,
-                    model: model,
-                    endpoint: endpoint
+                    model: configuration.model,
+                    endpoint: configuration.endpoint,
+                    provider: configuration.providerID,
+                    credentialRevision: configuration.credentialRevision
                 )
                 let answer: ReadingAnalysis
                 if let cached = ReadingAnalysisCache.shared.value(for: cacheKey) {
@@ -190,16 +206,10 @@ final class ReadingAssistantModel: ObservableObject {
                         targetLanguage: targetLanguage,
                         explanationLanguage: explanationLanguage
                     )
-                    var configuration = DeepSeekChatClient.Configuration()
-                    configuration.requestTimeout = 40
-                    configuration.totalTimeout = 50
-                    configuration.maxOutputTokens = 8192
-                    guard let url = URL(string: endpoint) else { throw DeepSeekChatError.invalidResponse }
-                    let output = try await DeepSeekChatClient(endpoint: url, configuration: configuration).complete(
-                        model: model, messages: [
-                            .init(role: .system, content: ReadingAnalysisPrompt.systemPrompt),
-                            .init(role: .user, content: prompt),
-                        ], apiKey: key
+                    let output = try await ReadingAIClient().complete(
+                        configuration: configuration,
+                        system: ReadingAnalysisPrompt.systemPrompt,
+                        prompt: prompt
                     )
                     answer = try ReadingAnalysis.decode(
                         jsonContent: output,
@@ -209,7 +219,8 @@ final class ReadingAssistantModel: ObservableObject {
                 }
                 try Task.checkCancellation()
                 guard requestID == activeRequest else { return }
-                guard canRequest, AXContextExtractor.allowsAI(snapshot: captured) else { throw CancellationError() }
+                guard canRequest, configuration == ReadingAIConfiguration.current(),
+                      AXContextExtractor.allowsAI(snapshot: captured) else { throw CancellationError() }
                 if let captured {
                     guard ContextExtractionCoordinator.shared.snapshot(forInputText: selectedText)?
                         .selectionID == captured.selectionID else {
@@ -217,6 +228,7 @@ final class ReadingAssistantModel: ObservableObject {
                     }
                 }
                 ReadingAnalysisCache.shared.insert(answer, for: cacheKey)
+                resultSource = "\(configuration.provider.displayName) · \(configuration.model)"
                 kind = answer.kind
                 wordExplanation = answer.wordExplanation
                 contextExcerpt = answer.wordExplanation?.contextualEvidence ?? source
@@ -230,6 +242,8 @@ final class ReadingAssistantModel: ObservableObject {
                     wasCancelled = true
                 } else if let error = error as? DeepSeekChatError {
                     errorMessage = error.queryError.localizedDescription
+                } else if let error = error as? QueryError {
+                    errorMessage = error.localizedDescription
                 } else {
                     errorMessage = String(localized: "deepseek.error.invalid_response")
                 }
@@ -246,9 +260,11 @@ final class ReadingAssistantModel: ObservableObject {
         preparedQueryID = nil
         ReadingAnalysisCache.shared.removeAll()
         clearResult()
+        onLayoutChange?()
     }
 
     private func clearResult() {
+        resultSource = ""
         translation = ""
         wordExplanation = nil
         contextExcerpt = nil

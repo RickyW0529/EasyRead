@@ -52,7 +52,6 @@ final class ReadingAssistantModel: ObservableObject {
     @Published private(set) var errorMessage = ""
     @Published private(set) var isLoading = false
     @Published private(set) var wasCancelled = false
-    @Published var showsGrammar = false
     @Published var showsDetails = false
     var onLayoutChange: (() -> ())?
 
@@ -65,9 +64,25 @@ final class ReadingAssistantModel: ObservableObject {
     }
 
     var rowHeight: CGFloat {
-        if showsGrammar, grammar != nil { return showsDetails ? 560 : 460 }
+        if grammar != nil { return contentHeight > 1 ? contentHeight : (showsDetails ? 640 : 420) }
         if wordExplanation != nil { return 380 }
-        return translation.isEmpty ? 100 : 300
+        return translation.isEmpty ? 120 : 220
+    }
+
+    /// The card reports its laid-out height. The table row follows that height so details
+    /// expand in place instead of scrolling inside a fixed box.
+    func updateContentHeight(_ height: CGFloat) {
+        let next = ceil(height)
+        guard next > 1, abs(next - contentHeight) > 1 else { return }
+        contentHeight = next
+        onLayoutChange?()
+    }
+
+    /// Drop the measured height so the next table pass uses the expanded or collapsed fallback
+    /// until SwiftUI reports the new layout.
+    func prepareForDetailResize() {
+        contentHeight = 0
+        onLayoutChange?()
     }
 
     func update(queryModel: QueryModel) {
@@ -108,20 +123,13 @@ final class ReadingAssistantModel: ObservableObject {
 
     func retry() { request() }
 
-    /// Switching to grammar only changes presentation; it never creates a network request.
-    func revealGrammar() {
-        guard grammar != nil else { return }
-        showsGrammar.toggle()
-        onLayoutChange?()
-    }
-
     func copyResult() {
         var parts = [text, translation].filter { !$0.isEmpty }
         if let wordExplanation {
             parts += [wordExplanation.primaryMeaning, wordExplanation.explanation]
             if let contextExcerpt { parts.append(contextExcerpt) }
         }
-        if showsGrammar, let grammar {
+        if let grammar {
             parts.append(grammar.mainClause)
             parts += grammar.structures.map { "\($0.excerpt) — \($0.label)：\($0.explanation)" }
             parts += grammar.readingSteps
@@ -139,6 +147,7 @@ final class ReadingAssistantModel: ObservableObject {
 
     // MARK: Private
 
+    private var contentHeight: CGFloat = 0
     private var task: Task<(), Never>?
     private var queryID: UUID?
     private var committedQueryID: UUID?
@@ -234,7 +243,6 @@ final class ReadingAssistantModel: ObservableObject {
                 contextExcerpt = answer.wordExplanation?.contextualEvidence ?? source
                 translation = answer.kind == .sentence ? answer.translation : ""
                 grammar = answer.grammar
-                showsGrammar = false
                 showsDetails = false
             } catch {
                 guard let self, requestID == activeRequest else { return }
@@ -272,7 +280,7 @@ final class ReadingAssistantModel: ObservableObject {
         kind = nil
         errorMessage = ""
         wasCancelled = false
-        showsGrammar = false
         showsDetails = false
+        contentHeight = 0
     }
 }

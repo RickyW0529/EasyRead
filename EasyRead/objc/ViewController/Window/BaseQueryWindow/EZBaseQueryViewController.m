@@ -55,6 +55,8 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 @property (nonatomic, strong) EZQueryView *queryView;
 @property (nonatomic, strong) ReadingAssistantHostView *readingAssistantView;
 @property (nonatomic, strong) EZSelectLanguageCell *selectLanguageCell;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, EZResultView *> *resultViewCache;
+@property (nonatomic, assign) BOOL isRefreshingPanel;
 
 // queryText is self.queryModel.queryText;
 @property (nonatomic, copy, readonly) NSString *queryText;
@@ -270,6 +272,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     }
     self.services = services;
     self.serviceTypeIds = serviceTypeIds;
+    [self pruneResultViewCache];
 
     self.audioPlayer = [[EZAudioPlayer alloc] init];
     if (!self.youdaoService) {
@@ -387,7 +390,8 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
         [tableView setColumnAutoresizingStyle:NSTableViewUniformColumnAutoresizingStyle];
 
         tableView.headerView = nil;
-        tableView.intercellSpacing = CGSizeMake(2 * EZHorizontalCellSpacing_10, EZVerticalCellSpacing_7);
+        // The selection panel owns its padding. Cell spacing here only adds empty bands between rows.
+        tableView.intercellSpacing = CGSizeZero;
         tableView.gridColor = NSColor.clearColor;
         self.scrollView.documentView = tableView;
         [tableView sizeLastColumnToFit]; // must put in the end
@@ -402,18 +406,43 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
         _readingAssistantView.onHeightChange = ^{
             dispatch_async(dispatch_get_main_queue(), ^{
                 typeof(self) strongSelf = weakSelf;
-                if (!strongSelf || !ReadingAssistantHostView.isEnabled) return;
-                NSInteger readingRow = [strongSelf resultCellOffset] - 1;
-                if (readingRow >= strongSelf.tableView.numberOfRows) return;
-                [strongSelf.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:readingRow]];
+                if (!strongSelf) return;
+                [strongSelf notePanelRowHeight];
+                [strongSelf updateWindowHeight];
+            });
+        };
+        _readingAssistantView.onServiceTabChange = ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                typeof(self) strongSelf = weakSelf;
+                if (!strongSelf) return;
+                [strongSelf refreshSelectionPanelServices];
+                [strongSelf notePanelRowHeight];
                 [strongSelf updateWindowHeight];
             });
         };
         _readingAssistantView.onVisibilityChange = ^{
             typeof(self) strongSelf = weakSelf;
             if (!strongSelf) return;
-            [strongSelf.tableView reloadData];
+            [strongSelf.readingAssistantView updateWithQueryModel:strongSelf.queryModel];
+            [strongSelf notePanelRowHeight];
             [strongSelf updateWindowHeight];
+        };
+        _readingAssistantView.selectLanguage = ^(NSString *language, BOOL isSource) {
+            typeof(self) strongSelf = weakSelf;
+            if (!strongSelf || language.length == 0) return;
+            EZLanguage source = isSource ? language : strongSelf.queryModel.userSourceLanguage;
+            EZLanguage target = isSource ? strongSelf.queryModel.userTargetLanguage : language;
+            [strongSelf applyUserSourceLanguage:source targetLanguage:target];
+        };
+        _readingAssistantView.swapLanguages = ^{
+            typeof(self) strongSelf = weakSelf;
+            [strongSelf toggleTranslationLanguages];
+        };
+        _readingAssistantView.playTranslation = ^(NSString *text) {
+            typeof(self) strongSelf = weakSelf;
+            if (!strongSelf || text.length == 0) return;
+            [strongSelf.audioPlayer stop];
+            [strongSelf.audioPlayer playTextAudio:text textLanguage:strongSelf.queryModel.queryTargetLanguage];
         };
     }
     return _readingAssistantView;
@@ -708,9 +737,10 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 }
 
 - (void)toggleTranslationLanguages {
-    BOOL canSwap = [self.selectLanguageCell canToggleTranslationLanguages];
-    BOOL bothAutomatic = [self.queryModel.userSourceLanguage isEqualToString:EZLanguageAuto] &&
-        [self.queryModel.userTargetLanguage isEqualToString:EZLanguageAuto];
+    EZLanguage fromLang = self.queryModel.userSourceLanguage ?: @"";
+    EZLanguage toLang = self.queryModel.userTargetLanguage ?: @"";
+    BOOL canSwap = fromLang.length > 0 && toLang.length > 0 && ![fromLang isEqualToString:toLang];
+    BOOL bothAutomatic = [fromLang isEqualToString:EZLanguageAuto] && [toLang isEqualToString:EZLanguageAuto];
     if (canSwap || bothAutomatic) {
         BOOL isStreamingInProgress = self.firstService.isStream && !self.firstService.result.isStreamFinished;
         BOOL isResultReady = !self.firstService.result.isLoading && !isStreamingInProgress && !self.firstService.result.error;
@@ -725,6 +755,8 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
         }
 
         // Use the completed result's direction; shared language preferences may have changed.
+        // The old language cell swapped once more after writing that direction, so the input
+        // becomes the translation and the languages are the reverse pair.
         EZLanguage fromLanguage = self.firstService.result.from;
         EZLanguage toLanguage = self.firstService.result.to;
         BOOL hasReverseDirection = fromLanguage.length > 0 && toLanguage.length > 0 &&
@@ -732,15 +764,27 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
             ![toLanguage isEqualToString:EZLanguageAuto] &&
             ![fromLanguage isEqualToString:toLanguage];
         if ([translatedText ns_trim].length > 0 && hasReverseDirection) {
-            self.queryModel.userSourceLanguage = fromLanguage;
-            self.queryModel.userTargetLanguage = toLanguage;
             self.inputText = translatedText;
             self.queryModel.ocrImage = nil;
             self.queryModel.actionType = EZActionTypeInputQuery;
+            [self applyUserSourceLanguage:toLanguage targetLanguage:fromLanguage];
+            return;
         }
     }
 
-    [self.selectLanguageCell toggleTranslationLanguages];
+    if (!canSwap) {
+        return;
+    }
+    [self applyUserSourceLanguage:toLang targetLanguage:fromLang];
+}
+
+- (void)applyUserSourceLanguage:(EZLanguage)source targetLanguage:(EZLanguage)target {
+    MyConfiguration.shared.fromLanguage = source;
+    MyConfiguration.shared.toLanguage = target;
+    self.queryModel.userSourceLanguage = source;
+    self.queryModel.userTargetLanguage = target;
+    [self.readingAssistantView updateWithQueryModel:self.queryModel];
+    [self retryQueryWithLanguage:EZLanguageAuto];
 }
 
 - (void)stopPlayingQueryText {
@@ -989,7 +1033,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 #pragma mark - NSTableViewDataSource
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return self.services.count + [self resultCellOffset];
+    return [self showsInputFieldRow] ? 2 : 1;
 }
 
 #pragma mark - NSTableViewDelegate
@@ -998,7 +1042,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 - (nullable NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(nullable NSTableColumn *)tableColumn row:(NSInteger)row {
     //    MMLogInfo(@"tableView for row: %ld", row);
 
-    if ([self isInputFieldCellAtRow:row]) {
+    if ([self showsInputFieldRow] && row == 0) {
         self.queryView = [self createQueryView];
         self.queryView.associatedWindowType = self.windowType;
         [self.queryView initializeAimatedButtonAlphaValue:self.queryModel];
@@ -1006,39 +1050,8 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
         return self.queryView;
     }
 
-    if ([self isSelectLanguageCellAtRow:row]) {
-        EZSelectLanguageCell *selectLanguageCell = [self.tableView makeViewWithIdentifier:EZSelectLanguageCellId owner:self];
-        if (!selectLanguageCell) {
-            selectLanguageCell = [[EZSelectLanguageCell alloc] initWithFrame:[self tableViewContentBounds]];
-            selectLanguageCell.identifier = EZSelectLanguageCellId;
-        }
-        selectLanguageCell.queryModel = self.queryModel;
-        self.selectLanguageCell = selectLanguageCell;
-
-        mm_weakify(self);
-        [selectLanguageCell setEnterActionBlock:^(EZLanguage from, EZLanguage to) {
-            mm_strongify(self);
-            self.queryModel.userSourceLanguage = from;
-            self.queryModel.userTargetLanguage = to;
-
-            [self retryQueryWithLanguage:EZLanguageAuto];
-        }];
-        [selectLanguageCell setToggleTranslationLanguagesBlock:^{
-            mm_strongify(self);
-            [self toggleTranslationLanguages];
-        }];
-        return selectLanguageCell;
-    }
-
-    if (ReadingAssistantHostView.isEnabled && row == [self resultCellOffset] - 1) {
-        [self.readingAssistantView updateWithQueryModel:self.queryModel];
-        return self.readingAssistantView;
-    }
-
-    EZResultView *resultCell = [self resultCellAtRow:row];
-    resultCell.associatedWindowType = self.windowType;
-
-    return resultCell;
+    [self.readingAssistantView updateWithQueryModel:self.queryModel];
+    return self.readingAssistantView;
 }
 
 - (NSTableRowView *)tableView:(NSTableView *)tableView rowViewForRow:(NSInteger)row {
@@ -1048,27 +1061,11 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
     CGFloat height;
 
-    if ([self isInputFieldCellAtRow:row]) {
+    if ([self showsInputFieldRow] && row == 0) {
         height = self.queryModel.queryViewHeight;
-    } else if ([self isSelectLanguageCellAtRow:row]) {
-        height = 35;
-    } else if (ReadingAssistantHostView.isEnabled && row == [self resultCellOffset] - 1) {
-        // AppKit aborts the process when a variable row height is 0. The
-        // reading row exists before any text is entered, so keep it positive.
-        if (self.inputText.length == 0) {
-            height = 1;
-        } else {
-            CGFloat readingHeight = self.readingAssistantView.rowHeight;
-            height = readingHeight > 0 ? readingHeight : 190;
-        }
     } else {
-        EZQueryResult *result = [self serviceAtRow:row].result;
-        if (result.isShowing) {
-            // A non-zero value must be set, but the initial viewHeight is 0.
-            height = MAX(result.viewHeight, EZResultViewMiniHeight);
-        } else {
-            height = EZResultViewMiniHeight;
-        }
+        // AppKit aborts the process when a variable row height is 0.
+        height = MAX(self.readingAssistantView.rowHeight, 1);
     }
     //    MMLogInfo(@"row: %ld, height: %@", row, @(height));
 
@@ -1097,6 +1094,8 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 - (void)reloadTableViewDataWithLock:(BOOL)lockFlag completion:(nullable void (^)(void))completion {
     [CATransaction begin];
     [CATransaction setCompletionBlock:^{
+        [self refreshSelectionPanelServices];
+        [self notePanelRowHeight];
         [self updateWindowHeightWithLock:lockFlag];
         if (completion) {
             completion();
@@ -1181,6 +1180,13 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 
     // !!!: Since the caller may be in non-main thread, we need to dispatch to main thread, but canont always use dispatch_async, it will cause the animation not smooth.
     dispatch_block_on_main_safely(^{
+        if (self.isRefreshingPanel) {
+            if (completionHandler) {
+                completionHandler();
+            }
+            return;
+        }
+
         if (reloadData) {
             // !!!: Note: For NSView-based table views, this method drops the view-cells in the table row, but not the NSTableRowView instances.
 
@@ -1196,8 +1202,15 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
             context.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 
             // !!!: Must first notify the update tableView cell height, and then calculate the tableView height.
-            //            MMLogInfo(@"noteHeightOfRowsWithIndexesChanged: %@", rowIndexes);
-            [self.tableView noteHeightOfRowsWithIndexesChanged:rowIndexes];
+            BOOL updatesPanel = reloadData || [rowIndexes containsIndex:[self panelRowIndex]];
+            if (updatesPanel) {
+                [self refreshSelectionPanelServices];
+            }
+            NSMutableIndexSet *heightIndexes = [rowIndexes mutableCopy] ?: [NSMutableIndexSet indexSet];
+            if (updatesPanel) {
+                [heightIndexes addIndex:[self panelRowIndex]];
+            }
+            [self.tableView noteHeightOfRowsWithIndexesChanged:heightIndexes];
             [self updateWindowHeight];
         } completionHandler:^{
             //            MMLogInfo(@"completionHandler, updateTableViewRowIndexes: %@", rowIndexes);
@@ -1229,29 +1242,14 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 }
 
 - (void)updateSelectLanguageCell {
-    if (self.isSelectLanguageCellVisible) {
-        NSIndexSet *rowIndexes = [NSMutableIndexSet indexSetWithIndex:self.selectLanguageCellIndex];
-        [self.tableView reloadDataForRowIndexes:rowIndexes columnIndexes:[NSIndexSet indexSetWithIndex:0]];
-    }
+    [self.readingAssistantView updateWithQueryModel:self.queryModel];
 }
 
 
 // iterate all result cell, if cell height is not equal to the result cell height, update cell height.
 - (void)updateAllResultCellHeightIfNeed {
-    NSInteger offset = [self resultCellOffset];
-    NSInteger numberOfRows = [self.tableView numberOfRows];
-    for (NSInteger row = offset; row < numberOfRows; row++) {
-        EZQueryService *service = [self serviceAtRow:row];
-        EZQueryResult *result = service.result;
-        if (result) {
-            EZResultView *resultCell = [[[self.tableView rowViewAtRow:row makeIfNecessary:NO] subviews] firstObject];
-            CGFloat cellHeight = resultCell.height;
-            CGFloat resultHeight = result.viewHeight;
-            if (cellHeight != resultHeight) {
-                [self updateResultCellHeight:result];
-            }
-        }
-    }
+    [self refreshSelectionPanelServices];
+    [self notePanelRowHeight];
 }
 
 - (void)updateTableViewHeight {
@@ -1267,12 +1265,10 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 }
 
 - (nullable NSIndexSet *)indexSetOfResult:(EZQueryResult *)result {
-    NSInteger row = [self rowIndexOfResult:result];
-    if (row == NSNotFound) {
+    if ([self rowIndexOfResult:result] == NSNotFound) {
         return nil;
     }
-    NSInteger index = row + [self resultCellOffset];
-    return [NSIndexSet indexSetWithIndex:index];
+    return [NSIndexSet indexSetWithIndex:[self panelRowIndex]];
 }
 
 /// !!!: Maybe return NSNotFound
@@ -1381,18 +1377,18 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 }
 
 - (nullable EZResultView *)resultCellOfResult:(EZQueryResult *)result {
-    NSInteger index = [self.serviceTypeIds indexOfObject:result.serviceTypeWithUniqueIdentifier];
-    if (index != NSNotFound) {
-        NSInteger row = index + [self resultCellOffset];
-        EZResultView *resultCell = [[[self.tableView rowViewAtRow:row makeIfNecessary:NO] subviews] firstObject];
-
-        // ???: Why is it possible to return a EZSelectLanguageCell ?
-        if ([resultCell isKindOfClass:[EZResultView class]]) {
-            return resultCell;
-        }
+    if (!result.serviceTypeWithUniqueIdentifier.length) {
+        return nil;
     }
-
-    return nil;
+    EZResultView *cached = self.resultViewCache[result.serviceTypeWithUniqueIdentifier];
+    if (cached) {
+        return cached;
+    }
+    EZQueryService *service = [self serviceWithType:result.serviceTypeWithUniqueIdentifier];
+    if (!service) {
+        return nil;
+    }
+    return [self resultViewForService:service];
 }
 
 - (void)updateResultCell:(EZQueryResult *)result {
@@ -1579,64 +1575,120 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 }
 
 - (EZResultView *)resultCellAtRow:(NSInteger)row {
-    EZQueryService *service = [self serviceAtRow:row];
-    EZResultView *resultCell = [self.tableView makeViewWithIdentifier:EZResultViewId owner:self];
+    return [self resultViewForService:[self serviceAtRow:row]];
+}
 
+/// Cached service card. Dictionary HTML stays on this view when the table no longer has one row per service.
+- (EZResultView *)resultViewForService:(EZQueryService *)service {
+    if (!service) {
+        return nil;
+    }
+    NSString *key = service.serviceTypeWithUniqueIdentifier;
+    EZResultView *resultCell = self.resultViewCache[key];
     if (!resultCell) {
-        resultCell = [[EZResultView alloc] initWithFrame:[self tableViewContentBounds]];
+        CGFloat width = self.scrollView.width > 1 ? self.scrollView.width : 360;
+        resultCell = [[EZResultView alloc] initWithFrame:NSMakeRect(0, 0, width, EZResultViewMiniHeight)];
         resultCell.identifier = EZResultViewId;
+        if (!self.resultViewCache) {
+            self.resultViewCache = [NSMutableDictionary dictionary];
+        }
+        self.resultViewCache[key] = resultCell;
     }
-
-    EZQueryResult *result = service.result;
+    resultCell.associatedWindowType = self.windowType;
     resultCell.service = service;
-    resultCell.result = result;
+    if (resultCell.result != service.result) {
+        resultCell.result = service.result;
+    }
     [self setupResultCell:resultCell];
+    [self loadDictionaryHTMLForResultView:resultCell service:service];
+    return resultCell;
+}
 
+- (void)loadDictionaryHTMLForResultView:(EZResultView *)resultCell service:(EZQueryService *)service {
+    EZQueryResult *result = service.result;
     WKWebView *webView = nil;
-    if ([service.serviceType isEqualToString:EZServiceTypeAppleDictionary]) {
-        EZWebViewManager *webViewManager = result.webViewManager;
-        BOOL shouldRenderHTML = EZResultShouldRenderDictionaryHTML(result);
-        BOOL htmlChanged = ![webViewManager.loadedHTMLString isEqualToString:result.htmlString];
-        BOOL needLoadHTML = shouldRenderHTML && (!webViewManager.isLoaded || htmlChanged);
-        BOOL needUpdateIframe = shouldRenderHTML && webViewManager.needUpdateIframeHeight && webViewManager.isLoaded;
-        if (needLoadHTML || needUpdateIframe) {
-            webView = webViewManager.webView;
-            resultCell.wordResultView.webView = webView;
-        }
-
-        if (needLoadHTML) {
-            NSUInteger renderGeneration = [webViewManager beginRenderingHTML];
-            webViewManager.isLoaded = YES;
-            webViewManager.loadedHTMLString = result.htmlString;
-            WKNavigation *navigation = [webView loadHTMLString:result.htmlString baseURL:nil];
-            [webViewManager trackRenderingNavigation:navigation renderGeneration:renderGeneration];
-        } else if (needUpdateIframe) {
-            [webViewManager updateAllIframe];
-        }
-    } else if ([service.serviceType isEqualToString:EZServiceTypeMDict]) {
-        EZWebViewManager *webViewManager = result.webViewManager;
-        BOOL shouldRenderHTML = EZResultShouldRenderDictionaryHTML(result);
-        BOOL htmlChanged = ![webViewManager.loadedHTMLString isEqualToString:result.htmlString];
-        BOOL needLoadHTML = shouldRenderHTML && (!webViewManager.isLoaded || htmlChanged);
-        BOOL needUpdateIframe = shouldRenderHTML && webViewManager.needUpdateIframeHeight && webViewManager.isLoaded;
-        if (needLoadHTML || needUpdateIframe) {
-            webView = webViewManager.webView;
-            webView.appearance = nil;
-            resultCell.wordResultView.webView = webView;
-        }
-
-        if (needLoadHTML) {
-            NSUInteger renderGeneration = [webViewManager beginRenderingHTML];
-            webViewManager.isLoaded = YES;
-            webViewManager.loadedHTMLString = result.htmlString;
-            WKNavigation *navigation = [webView loadHTMLString:result.htmlString baseURL:nil];
-            [webViewManager trackRenderingNavigation:navigation renderGeneration:renderGeneration];
-        } else if (needUpdateIframe) {
-            [webViewManager updateAllIframe];
-        }
+    BOOL isMDict = [service.serviceType isEqualToString:EZServiceTypeMDict];
+    BOOL isAppleDictionary = [service.serviceType isEqualToString:EZServiceTypeAppleDictionary];
+    if (!isAppleDictionary && !isMDict) {
+        return;
     }
 
-    return resultCell;
+    EZWebViewManager *webViewManager = result.webViewManager;
+    BOOL shouldRenderHTML = EZResultShouldRenderDictionaryHTML(result);
+    BOOL htmlChanged = ![webViewManager.loadedHTMLString isEqualToString:result.htmlString];
+    BOOL needLoadHTML = shouldRenderHTML && (!webViewManager.isLoaded || htmlChanged);
+    BOOL needUpdateIframe = shouldRenderHTML && webViewManager.needUpdateIframeHeight && webViewManager.isLoaded;
+    if (needLoadHTML || needUpdateIframe) {
+        webView = webViewManager.webView;
+        if (isMDict) {
+            webView.appearance = nil;
+        }
+        resultCell.wordResultView.webView = webView;
+    }
+
+    if (needLoadHTML) {
+        NSUInteger renderGeneration = [webViewManager beginRenderingHTML];
+        webViewManager.isLoaded = YES;
+        webViewManager.loadedHTMLString = result.htmlString;
+        WKNavigation *navigation = [webView loadHTMLString:result.htmlString baseURL:nil];
+        [webViewManager trackRenderingNavigation:navigation renderGeneration:renderGeneration];
+    } else if (needUpdateIframe) {
+        [webViewManager updateAllIframe];
+    }
+}
+
+- (void)refreshSelectionPanelServices {
+    if (self.isRefreshingPanel) {
+        return;
+    }
+    self.isRefreshingPanel = YES;
+    [self.readingAssistantView updateServices:self.services];
+    NSArray<EZQueryService *> *visible = [self.readingAssistantView servicesForCurrentTab:self.services];
+    NSMutableArray<EZResultView *> *views = [NSMutableArray array];
+    NSMutableArray<NSNumber *> *heights = [NSMutableArray array];
+    for (EZQueryService *service in visible) {
+        EZResultView *view = [self resultViewForService:service];
+        if (!view) {
+            continue;
+        }
+        CGFloat height = MAX(service.result.viewHeight, EZResultViewMiniHeight);
+        [views addObject:view];
+        [heights addObject:@(height)];
+    }
+    [self.readingAssistantView displayServiceViews:views heights:heights];
+    self.isRefreshingPanel = NO;
+}
+
+- (void)notePanelRowHeight {
+    NSInteger row = [self panelRowIndex];
+    if (row >= self.tableView.numberOfRows) {
+        return;
+    }
+    [self.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:row]];
+}
+
+- (BOOL)showsInputFieldRow {
+    if (self.queryModel.ocrImage && self.isInputFieldCellVisible) {
+        return YES;
+    }
+    return self.windowType == EZWindowTypeMain && self.isInputFieldCellVisible;
+}
+
+- (NSInteger)panelRowIndex {
+    return [self showsInputFieldRow] ? 1 : 0;
+}
+
+- (void)pruneResultViewCache {
+    if (self.resultViewCache.count == 0) {
+        return;
+    }
+    NSSet<NSString *> *identifiers = [NSSet setWithArray:self.serviceTypeIds ?: @[]];
+    for (NSString *key in self.resultViewCache.allKeys) {
+        if (![identifiers containsObject:key]) {
+            [self.resultViewCache[key] removeFromSuperview];
+            [self.resultViewCache removeObjectForKey:key];
+        }
+    }
 }
 
 /// Configure callbacks for a reusable result cell.
@@ -1928,7 +1980,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     for (int i = 0; i < rowCount; i++) {
         CGFloat rowHeight = [self tableView:self.tableView heightOfRow:i];
         //        MMLogInfo(@"row: %d, Height: %.1f", i, rowHeight);
-        scrollViewContentHeight += (rowHeight + EZVerticalCellSpacing_7);
+        scrollViewContentHeight += rowHeight + self.tableView.intercellSpacing.height;
     }
     //    MMLogInfo(@"scrollViewContentHeight: %.1f", scrollViewContentHeight);
 

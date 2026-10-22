@@ -25,6 +25,11 @@ typedef NS_ENUM(NSInteger, EZTitlebarButtonType) {
 @interface EZTitlebar ()
 
 @property (nonatomic, strong) NSStackView *stackView;
+@property (nonatomic, strong) NSStackView *brandView;
+@property (nonatomic, strong) NSTextField *titleLabel;
+@property (nonatomic, strong) EZOpenLinkButton *playButton;
+@property (nonatomic, strong) EZOpenLinkButton *copyButton;
+@property (nonatomic, strong) EZOpenLinkButton *settingsButton;
 @property (nonatomic, strong) NSMenu *quickActionMenu;
 
 @property (nonatomic, assign) CGSize buttonSize;
@@ -57,8 +62,9 @@ typedef NS_ENUM(NSInteger, EZTitlebarButtonType) {
     self.buttonSize = CGSizeMake(self.buttonWidth, self.buttonWidth);
     self.imageSize = CGSizeMake(self.imageWidth, self.imageWidth);
     
-    [self addSubview:self.pinButton];
+    [self addSubview:self.brandView];
     [self addSubview:self.stackView];
+    [self installToolbarButtons];
 
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(updateTitlebar) name:NSNotification.linkButtonUpdated object:nil];
@@ -78,50 +84,71 @@ typedef NS_ENUM(NSInteger, EZTitlebarButtonType) {
     
     [_pinButton removeFromSuperview];
     [_stackView removeFromSuperview];
+    [_brandView removeFromSuperview];
     _stackView = nil;
+    _brandView = nil;
+    _titleLabel = nil;
     _quickActionButton = nil;
     _quickActionMenu = nil;
 
     [self updatePinButton];
     
-    [self addSubview:self.pinButton];
+    [self addSubview:self.brandView];
     [self addSubview:self.stackView];
+    [self installToolbarButtons];
     
+    [self setNeedsUpdateConstraints:YES];
+}
+
+- (void)viewDidMoveToWindow {
+    [super viewDidMoveToWindow];
     [self setNeedsUpdateConstraints:YES];
 }
 
 - (void)updateConstraints {
     CGFloat margin = EZHorizontalCellSpacing_10;
-    CGFloat topOffset = EZTitlebarHeight_28 - self.buttonWidth;
-    
-    [self.pinButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.mas_equalTo(self.buttonWidth);
-        make.left.inset(margin);
-        make.top.equalTo(self).offset(topOffset);
+    BOOL isMainWindow = NO;
+    if ([self.window isKindOfClass:[EZBaseQueryWindow class]]) {
+        isMainWindow = ((EZBaseQueryWindow *)self.window).windowType == EZWindowTypeMain;
+    }
+    // Main windows still show the traffic lights in this bar.
+    CGFloat leftInset = isMainWindow ? 78 : margin;
+
+    [self.brandView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).offset(leftInset);
+        make.centerY.equalTo(self);
+        make.right.lessThanOrEqualTo(self.stackView.mas_left).offset(-8);
     }];
-    
+
     [self.stackView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(topOffset);
+        make.centerY.equalTo(self);
         make.right.equalTo(self).offset(-margin);
     }];
-    
-    if (MyConfiguration.shared.showQuickActionButton) {
-        [self.stackView addArrangedSubview:self.quickActionButton];
-    }
-    
-    for (NSNumber *typeNumber in [self shortcutButtonTypes]) {
-        EZTitlebarButtonType buttonType = typeNumber.integerValue;
-        EZOpenLinkButton *button = [self buttonWithType:buttonType];
-        [self.stackView addArrangedSubview:button];
-    }
-    [self updateShortcutButtonsToolTip];
-    
+
     [super updateConstraints];
+}
+
+/// Right-to-left stack, so the first button sits at the trailing edge.
+- (void)installToolbarButtons {
+    for (NSView *view in self.stackView.arrangedSubviews.copy) {
+        [self.stackView removeArrangedSubview:view];
+        [view removeFromSuperview];
+    }
+    [self.stackView addArrangedSubview:self.settingsButton];
+    [self.stackView addArrangedSubview:self.copyButton];
+    [self.stackView addArrangedSubview:self.playButton];
+    [self.stackView addArrangedSubview:self.pinButton];
+    [self updateShortcutButtonsToolTip];
+    self.menu = self.quickActionMenu;
 }
 
 #pragma mark - Public Methods
 
 - (void)updateShortcutButtonsToolTip {
+    self.pinButton.toolTip = [self toolTipStrWithButtonType:EZTitlebarButtonTypePin];
+    self.playButton.toolTip = NSLocalizedString(@"selection.panel.speak_original", nil);
+    self.copyButton.toolTip = NSLocalizedString(@"selection.panel.copy_original", nil);
+    self.settingsButton.toolTip = NSLocalizedString(@"open_app_settings", nil);
     for (NSNumber *typeNumber in [self shortcutButtonTypes]) {
         EZTitlebarButtonType buttonType = typeNumber.integerValue;
         EZOpenLinkButton *button = [self buttonWithType:buttonType];
@@ -146,6 +173,41 @@ typedef NS_ENUM(NSInteger, EZTitlebarButtonType) {
 
 - (void)goToSettings {
     [[NSNotificationCenter defaultCenter] postNotificationName:EZOpenSettingsNotification object:nil];
+}
+
+- (void)openGoogleLink {
+    [self.googleButton openLink];
+}
+
+- (void)openAppleDictionaryLink {
+    [self.appleDictionaryButton openLink];
+}
+
+- (void)openEudicLink {
+    [self.eudicButton openLink];
+}
+
+- (NSArray<NSDictionary *> *)externalLinkMenuItems {
+    NSMutableArray *items = [NSMutableArray array];
+    if (MyConfiguration.shared.showGoogleQuickLink) {
+        [items addObject:@{
+            @"title" : @"open_in_google",
+            @"action" : NSStringFromSelector(@selector(openGoogleLink))
+        }];
+    }
+    if (MyConfiguration.shared.showAppleDictionaryQuickLink) {
+        [items addObject:@{
+            @"title" : @"open_in_apple_dictionary",
+            @"action" : NSStringFromSelector(@selector(openAppleDictionaryLink))
+        }];
+    }
+    if (MyConfiguration.shared.showEudicQuickLink) {
+        [items addObject:@{
+            @"title" : @"open_in_eudic",
+            @"action" : NSStringFromSelector(@selector(openEudicLink))
+        }];
+    }
+    return items;
 }
 
 #pragma mark - Getter && Setter
@@ -182,8 +244,102 @@ typedef NS_ENUM(NSInteger, EZTitlebarButtonType) {
         [self executeOnAppearanceChange:^(EZTitlebar *titlebar, BOOL isDarkMode) {
             [titlebar updatePinButtonImage];
         }];
+        [pinButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(self.buttonSize);
+        }];
     }
     return _pinButton;
+}
+
+- (NSStackView *)brandView {
+    if (!_brandView) {
+        NSImageView *iconView = [[NSImageView alloc] init];
+        iconView.imageScaling = NSImageScaleProportionallyUpOrDown;
+        NSImage *icon = [NSImage imageNamed:@"blue-white-icon"];
+        if (!icon) {
+            icon = NSApp.applicationIconImage;
+        }
+        if (!icon) {
+            icon = [NSImage ez_imageWithSymbolName:@"character.book.closed"];
+        }
+        iconView.image = icon;
+        iconView.wantsLayer = YES;
+        iconView.layer.cornerRadius = 4;
+        iconView.layer.masksToBounds = YES;
+        [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.mas_equalTo(16);
+        }];
+
+        NSTextField *titleLabel = [NSTextField labelWithString:NSLocalizedString(@"selection.panel.title", nil)];
+        titleLabel.font = [NSFont systemFontOfSize:13 weight:NSFontWeightSemibold];
+        titleLabel.textColor = NSColor.labelColor;
+        titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        titleLabel.maximumNumberOfLines = 1;
+        [titleLabel setContentCompressionResistancePriority:NSLayoutPriorityDefaultLow
+                                             forOrientation:NSLayoutConstraintOrientationHorizontal];
+        self.titleLabel = titleLabel;
+
+        NSStackView *brand = [NSStackView stackViewWithViews:@[ iconView, titleLabel ]];
+        brand.orientation = NSUserInterfaceLayoutOrientationHorizontal;
+        brand.alignment = NSLayoutAttributeCenterY;
+        brand.spacing = 6;
+        _brandView = brand;
+    }
+    return _brandView;
+}
+
+- (EZOpenLinkButton *)playButton {
+    if (!_playButton) {
+        mm_weakify(self);
+        _playButton = [self toolbarButtonWithSymbol:@"speaker.wave.2" click:^(EZButton *button) {
+            mm_strongify(self);
+            if (self.playActionBlock) {
+                self.playActionBlock();
+            }
+        }];
+    }
+    return _playButton;
+}
+
+- (EZOpenLinkButton *)copyButton {
+    if (!_copyButton) {
+        mm_weakify(self);
+        _copyButton = [self toolbarButtonWithSymbol:@"doc.on.doc" click:^(EZButton *button) {
+            mm_strongify(self);
+            if (self.copyActionBlock) {
+                self.copyActionBlock();
+            }
+        }];
+    }
+    return _copyButton;
+}
+
+- (EZOpenLinkButton *)settingsButton {
+    if (!_settingsButton) {
+        mm_weakify(self);
+        _settingsButton = [self toolbarButtonWithSymbol:@"gearshape" click:^(EZButton *button) {
+            mm_strongify(self);
+            [self goToSettings];
+        }];
+    }
+    return _settingsButton;
+}
+
+- (EZOpenLinkButton *)toolbarButtonWithSymbol:(NSString *)symbol click:(void (^)(EZButton *button))click {
+    EZOpenLinkButton *button = [[EZOpenLinkButton alloc] init];
+    NSImage *image = [NSImage ez_imageWithSymbolName:symbol];
+    button.clickBlock = click;
+    NSColor *lightTintColor = [NSColor mm_colorWithHexString:@"#797A7F"];
+    NSColor *darkTintColor = [NSColor mm_colorWithHexString:@"#C0C1C4"];
+    CGSize imageSize = CGSizeMake(16, 16);
+    [button executeOnAppearanceChange:^(EZButton *appearanceButton, BOOL isDarkMode) {
+        NSColor *tintColor = isDarkMode ? darkTintColor : lightTintColor;
+        appearanceButton.image = [[image imageWithTintColor:tintColor] resizeToSize:imageSize];
+    }];
+    [button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(self.buttonSize);
+    }];
+    return button;
 }
 
 - (NSStackView *)stackView {
@@ -193,6 +349,7 @@ typedef NS_ENUM(NSInteger, EZTitlebarButtonType) {
         _stackView.spacing = self.buttonPadding;
         _stackView.alignment = NSLayoutAttributeCenterY;
         _stackView.userInterfaceLayoutDirection = NSUserInterfaceLayoutDirectionRightToLeft;
+        _stackView.detachesHiddenViews = YES;
     }
     return _stackView;
 }
@@ -219,6 +376,7 @@ typedef NS_ENUM(NSInteger, EZTitlebarButtonType) {
                     @"action" : NSStringFromSelector(@selector(splitWords))
                 }
             ],
+            [self externalLinkMenuItems],
             @[
                 @{
                     @"title" : @"open_app_settings",

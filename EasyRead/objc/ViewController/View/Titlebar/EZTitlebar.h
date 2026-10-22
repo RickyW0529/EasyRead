@@ -32,6 +32,8 @@ typedef void(^EZTitlebarQuickActionBlock)(EZTitlebarQuickAction);
 @property (nonatomic, strong) EZOpenLinkButton *quickActionButton;
 
 @property (nonatomic, copy) EZTitlebarQuickActionBlock menuActionBlock;
+@property (nonatomic, copy, nullable) void (^playActionBlock)(void);
+@property (nonatomic, copy, nullable) void (^copyActionBlock)(void);
 
 - (void)updateShortcutButtonsToolTip;
 

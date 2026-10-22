@@ -681,6 +681,7 @@
 		FEA7B00C0000000000000021 /* ReadingAssistantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA7B00C0000000000000020 /* ReadingAssistantModel.swift */; };
 		FEA7B00C0000000000000023 /* ReadingAssistantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA7B00C0000000000000022 /* ReadingAssistantView.swift */; };
 		FEA7B00C0000000000000025 /* ReadingAssistantHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA7B00C0000000000000024 /* ReadingAssistantHostView.swift */; };
+		EAA016000000000000000001 /* SelectionPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA016000000000000000002 /* SelectionPanelView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1482,6 +1483,7 @@
 		FEA7B00C0000000000000020 /* ReadingAssistantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingAssistantModel.swift; sourceTree = "<group>"; };
 		FEA7B00C0000000000000022 /* ReadingAssistantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingAssistantView.swift; sourceTree = "<group>"; };
 		FEA7B00C0000000000000024 /* ReadingAssistantHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingAssistantHostView.swift; sourceTree = "<group>"; };
+		EAA016000000000000000002 /* SelectionPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionPanelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -4046,6 +4048,7 @@
 				EAA013001300130013001306 /* ReadingContextTip.swift */,
 				EAA013001300130013001308 /* ReadingAnalysisCache.swift */,
 				FEA7B00C0000000000000022 /* ReadingAssistantView.swift */,
+				EAA016000000000000000002 /* SelectionPanelView.swift */,
 				FEA7B00C0000000000000024 /* ReadingAssistantHostView.swift */,
 			);
 			path = ReadingAssistant;
@@ -4660,6 +4663,7 @@
 				EAA013001300130013001305 /* ReadingContextTip.swift in Sources */,
 				EAA013001300130013001307 /* ReadingAnalysisCache.swift in Sources */,
 				FEA7B00C0000000000000023 /* ReadingAssistantView.swift in Sources */,
+				EAA016000000000000000001 /* SelectionPanelView.swift in Sources */,
 				FEA7B00C0000000000000025 /* ReadingAssistantHostView.swift in Sources */,
 				0337D3CA2E66AA5000B08437 /* SystemUtility+AX.swift in Sources */,
 				03F19D7C2E08FB060046C6F2 /* AppleLanguageMapper.swift in Sources */,

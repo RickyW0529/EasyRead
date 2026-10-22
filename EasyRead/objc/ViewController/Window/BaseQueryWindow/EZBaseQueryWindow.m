@@ -72,6 +72,22 @@
         mm_strongify(self);
         [self.queryViewController receiveTitlebarAction:action];
     };
+    [self bindTitlebarActions];
+}
+
+- (void)bindTitlebarActions {
+    if (!self.titleBar) {
+        return;
+    }
+    mm_weakify(self);
+    self.titleBar.playActionBlock = ^{
+        mm_strongify(self);
+        [self.queryViewController togglePlayQueryText];
+    };
+    self.titleBar.copyActionBlock = ^{
+        mm_strongify(self);
+        [self.queryViewController copyQueryText];
+    };
 }
 
 
@@ -89,6 +105,7 @@
     
     viewController.baseQueryWindow = self;
     self.contentViewController = viewController;
+    [self bindTitlebarActions];
 }
 
 - (void)setPin:(BOOL)pin {

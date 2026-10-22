@@ -370,16 +370,22 @@ struct SelectionPanelView: View {
 
             if state.grammarExpanded {
                 if !chunks.isEmpty {
-                    WrapLayout(horizontalSpacing: 12, verticalSpacing: 8) {
-                        ForEach(chunks) { chunk in
-                            grammarChunk(chunk)
+                    annotatedSentence(chunks)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                let tagged = chunks.filter { $0.structure != nil }
+                if !tagged.isEmpty {
+                    WrapLayout(horizontalSpacing: 8, verticalSpacing: 6) {
+                        ForEach(tagged) { chunk in
+                            roleTag(chunk)
                         }
                     }
                 }
                 VStack(alignment: .leading, spacing: 6) {
                     ForEach(Array((visible.isEmpty ? grammar.structures : visible).enumerated()), id: \.offset) { _,
                         structure in
-                        grammarBullet(structure, limited: !state.grammarDetailsExpanded)
+                        grammarBullet(structure)
                     }
                 }
                 if hasFullAnalysis(grammar) {
@@ -397,31 +403,26 @@ struct SelectionPanelView: View {
         .panelContainer()
     }
 
-    private func grammarChunk(_ chunk: GrammarChunk) -> some View {
-        let color = chunk.structure.map { Color(nsColor: GrammarRole.color(for: $0)) }
-        return VStack(alignment: .leading, spacing: 3) {
-            Text(verbatim: chunk.text)
-                .font(.system(size: 14, weight: .semibold))
-                .underline(color != nil, color: color ?? .clear)
-            if let structure = chunk.structure, let color {
-                Text(verbatim: structure.label)
-                    .font(.system(size: 10, weight: .medium))
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .foregroundStyle(color)
-                    .background(Capsule().fill(color.opacity(0.2)))
-            }
-        }
+    private func roleTag(_ chunk: GrammarChunk) -> some View {
+        let color = chunk.structure.map { Color(nsColor: GrammarRole.color(for: $0)) } ?? .secondary
+        return Text(verbatim: chunk.structure?.label ?? "")
+            .font(.system(size: 10, weight: .medium))
+            .lineLimit(2)
+            .multilineTextAlignment(.leading)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2)
+            .foregroundStyle(color)
+            .background(Capsule().fill(color.opacity(0.2)))
     }
 
-    private func grammarBullet(_ structure: GrammarStructure, limited: Bool) -> some View {
+    private func grammarBullet(_ structure: GrammarStructure) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 6) {
             Circle().fill(Color(nsColor: GrammarRole.color(for: structure))).frame(width: 6, height: 6)
             Text(verbatim: "\(structure.excerpt)：\(structure.label)，\(structure.explanation)")
                 .font(.system(size: 12))
                 .foregroundStyle(.primary)
-                .lineLimit(limited ? 2 : nil)
                 .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
@@ -449,7 +450,7 @@ struct SelectionPanelView: View {
         if !extras.isEmpty {
             VStack(alignment: .leading, spacing: 4) {
                 ForEach(Array(extras.enumerated()), id: \.offset) { _, structure in
-                    grammarBullet(structure, limited: false)
+                    grammarBullet(structure)
                 }
             }
         }
@@ -477,6 +478,27 @@ struct SelectionPanelView: View {
         text.count > 180 || text.reduce(into: 0) { count, character in
             if character == "\n" { count += 1 }
         } >= 3
+    }
+
+    /// One wrapping paragraph. Separate chips leave a short phrase alone on a line and clip the next phrase.
+    private func annotatedSentence(_ chunks: [GrammarChunk]) -> Text {
+        chunks.enumerated().reduce(Text(verbatim: "")) { partial, item in
+            let (index, chunk) = item
+            let gap = index > 0 && chunkNeedsLeadingSpace(chunk, previous: chunks[index - 1])
+                ? Text(verbatim: " ") : Text(verbatim: "")
+            var piece = Text(verbatim: chunk.text).font(.system(size: 14, weight: .semibold))
+            if let structure = chunk.structure {
+                piece = piece.underline(true, color: Color(nsColor: GrammarRole.color(for: structure)))
+            }
+            return partial + gap + piece
+        }
+    }
+
+    private func chunkNeedsLeadingSpace(_ chunk: GrammarChunk, previous: GrammarChunk) -> Bool {
+        guard let first = chunk.text.first else { return false }
+        if first.isPunctuation || first.isWhitespace { return false }
+        if previous.text.last?.isWhitespace == true { return false }
+        return true
     }
 
     private func hasFullAnalysis(_ grammar: GrammarExplanation) -> Bool {
@@ -590,7 +612,7 @@ struct WrapLayout: Layout {
     var verticalSpacing: CGFloat = 8
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let width = proposal.width ?? subviews.map { $0.sizeThatFits(.unspecified).width }
+        let width = proposal.width ?? subviews.map { fittedSize($0, limit: .greatestFiniteMagnitude).width }
             .reduce(0, +)
         let rows = rows(in: max(width, 1), subviews: subviews)
         let height = rows.reduce(CGFloat(0)) { $0 + $1.height } + verticalSpacing * CGFloat(max(rows.count - 1, 0))
@@ -602,7 +624,7 @@ struct WrapLayout: Layout {
         for row in rows(in: bounds.width, subviews: subviews) {
             var x = bounds.minX
             for index in row.indexes {
-                let size = subviews[index].sizeThatFits(.unspecified)
+                let size = fittedSize(subviews[index], limit: bounds.width)
                 subviews[index].place(
                     at: CGPoint(x: x, y: y),
                     anchor: .topLeading,
@@ -626,8 +648,8 @@ struct WrapLayout: Layout {
         var current = Row()
         var used: CGFloat = 0
         for index in subviews.indices {
-            let size = subviews[index].sizeThatFits(.unspecified)
-            let itemWidth = min(size.width, width)
+            let size = fittedSize(subviews[index], limit: width)
+            let itemWidth = size.width
             let next = current.indexes.isEmpty ? itemWidth : used + horizontalSpacing + itemWidth
             if !current.indexes.isEmpty, next > width + 0.5 {
                 rows.append(current)
@@ -640,6 +662,12 @@ struct WrapLayout: Layout {
         }
         if !current.indexes.isEmpty { rows.append(current) }
         return rows
+    }
+
+    private func fittedSize(_ subview: LayoutSubview, limit: CGFloat) -> CGSize {
+        let cap = max(limit, 1)
+        let size = subview.sizeThatFits(ProposedViewSize(width: cap, height: nil))
+        return CGSize(width: min(max(size.width, 1), cap), height: max(size.height, 1))
     }
 }
 
@@ -662,7 +690,7 @@ struct LanguageMenuControl: NSViewRepresentable {
     }
 
     func updateNSView(_ button: LanguageMenuButton, context: Context) {
-        button.title = title
+        button.setMenuTitle(title)
         button.refreshChrome()
         context.coordinator.languages = languages
         context.coordinator.selected = selected
@@ -672,7 +700,8 @@ struct LanguageMenuControl: NSViewRepresentable {
     func sizeThatFits(_ proposal: ProposedViewSize, nsView: LanguageMenuButton, context: Context) -> CGSize? {
         let font = NSFont.systemFont(ofSize: 12, weight: .medium)
         let titleWidth = (title as NSString).size(withAttributes: [.font: font]).width
-        return CGSize(width: ceil(titleWidth) + 34, height: 26)
+        // 12 leading + title + 10 gap + 8 chevron + 12 trailing.
+        return CGSize(width: ceil(titleWidth) + 42, height: 26)
     }
 }
 
@@ -686,15 +715,37 @@ final class LanguageMenuButton: NSButton {
         isBordered = false
         bezelStyle = .recessed
         setButtonType(.momentaryPushIn)
-        font = .systemFont(ofSize: 12, weight: .medium)
-        imagePosition = .imageTrailing
-        imageScaling = .scaleProportionallyDown
-        let image = NSImage(systemSymbol: .chevronDown)
-        image.isTemplate = true
-        image.size = NSSize(width: 9, height: 6)
-        self.image = image
+        title = ""
+        image = nil
         wantsLayer = true
         layer?.cornerRadius = 8
+
+        titleLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        titleLabel.textColor = .labelColor
+        titleLabel.lineBreakMode = .byTruncatingTail
+        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
+        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
+        let symbol = NSImage(systemSymbol: .chevronDown)
+        symbol.isTemplate = true
+        chevron.image = symbol
+        chevron.contentTintColor = .secondaryLabelColor
+        chevron.imageScaling = .scaleProportionallyDown
+
+        let stack = NSStackView(views: [titleLabel, chevron])
+        stack.orientation = .horizontal
+        stack.alignment = .centerY
+        stack.spacing = 10
+        stack.edgeInsets = NSEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stack.centerYAnchor.constraint(equalTo: centerYAnchor),
+            chevron.widthAnchor.constraint(equalToConstant: 8),
+            chevron.heightAnchor.constraint(equalToConstant: 5),
+        ])
         refreshChrome()
     }
 
@@ -702,15 +753,29 @@ final class LanguageMenuButton: NSButton {
 
     // MARK: Internal
 
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        super.hitTest(point) == nil ? nil : self
+    }
+
     override func viewDidChangeEffectiveAppearance() {
         super.viewDidChangeEffectiveAppearance()
         refreshChrome()
     }
 
+    func setMenuTitle(_ value: String) {
+        titleLabel.stringValue = value
+    }
+
     func refreshChrome() {
-        contentTintColor = .labelColor
+        titleLabel.textColor = .labelColor
+        chevron.contentTintColor = .secondaryLabelColor
         layer?.backgroundColor = NSColor.labelColor.withAlphaComponent(0.08).cgColor
     }
+
+    // MARK: Private
+
+    private let titleLabel = NSTextField(labelWithString: "")
+    private let chevron = NSImageView()
 }
 
 // MARK: - LanguageMenuControl.Coordinator

@@ -1,6 +1,6 @@
 # 将全部 EasyRead 代码推送到用户仓库
 
-- 状态：active
+- 状态：completed
 - 创建日期：2026-10-23
 - 负责人：Codex
 - 关联 Issue/PR：none
@@ -42,13 +42,16 @@
 ## 进度
 
 - [x] 核对本地状态及远程分支，目标仓库未返回已有 refs。
-- [ ] 提交当前全部改动并推送 main。
-- [ ] 核验并归档交付记录。
+- [x] 提交当前全部改动并推送 main。
+- [x] 核验代码推送结果并归档交付记录；记录更新随随后文档提交同步到同一 main。
 
 ## 验证
 
 - 前轮同一代码快照：Xcode 构建及 AppleDictionaryTests 2/2 通过；额外 ReverseTranslationTests 失败，未宣称通过。
-- 本轮运行现有 EasyReadKit 测试；结果将在 history 记录。
+- 本轮现有 EasyReadKit 测试：138 个测试、12 个 suite 全部通过。
+- 快照提交 `25c365488e9346e230fcd50453c91f975504879f`，提交信息逐字校验为 `first commit`。
+- GitHub 接收完整历史并创建 main，`ls-remote` 返回相同 SHA，tracking 为 origin/main；快照提交后工作树干净。
+- origin 为用户仓库，upstream 保留原 Easydict 地址；使用本机已有 RickyW0529 登录，核验权限为 ADMIN。
 - 推送后以 `git ls-remote` 比较 SHA，并检查 tracking 和工作树。
 
 ## 完成条件

@@ -76,6 +76,17 @@ final class ReadingAssistantHostView: NSView {
         layoutServiceViews()
     }
 
+    /// Uses the query's natural text width, capped at a comfortable measure and the current display.
+    @objc(preferredWindowWidthForQueryText:availableWidth:)
+    func preferredWindowWidth(queryText: String, availableWidth: CGFloat) -> CGFloat {
+        let font = NSFont.systemFont(ofSize: 15)
+        let naturalWidth = queryText.components(separatedBy: .newlines)
+            .map { ($0 as NSString).size(withAttributes: [.font: font]).width }
+            .max() ?? 0
+        let minimum: CGFloat = state.tab == .sentence && model.grammar != nil ? 500 : 360
+        return min(max(naturalWidth + 64, minimum), min(availableWidth, 760))
+    }
+
     @objc(updateWithQueryModel:)
     func update(queryModel: QueryModel) {
         let queryText = queryModel.queryText

@@ -31,7 +31,21 @@ public enum SensitiveAppCategory: String, Sendable {
 /// boundary. `banking` detection uses keyword matching on the bundle id
 /// because bank app identifiers are not centrally enumerable.
 public struct SensitiveAppRules: Equatable, Sendable {
-    // MARK: Internal
+    // MARK: Lifecycle
+
+    public init(
+        ownBundleIDs: Set<String> = [
+            "com.easyread.EasyRead",
+            "com.easyread.EasyRead-debug",
+            "com.izual.Easydict",
+        ],
+        excludedBundleIDs: Set<String> = []
+    ) {
+        self.ownBundleIDs = ownBundleIDs
+        self.excludedBundleIDs = excludedBundleIDs
+    }
+
+    // MARK: Public
 
     /// Password managers and credential stores.
     public static let passwordManagerBundleIDs: Set<String> = [
@@ -88,18 +102,6 @@ public struct SensitiveAppRules: Equatable, Sendable {
 
     /// User-managed exclusion list. This is the authoritative boundary.
     public let excludedBundleIDs: Set<String>
-
-    public init(
-        ownBundleIDs: Set<String> = [
-            "com.easyread.EasyRead",
-            "com.easyread.EasyRead-debug",
-            "com.izual.Easydict",
-        ],
-        excludedBundleIDs: Set<String> = []
-    ) {
-        self.ownBundleIDs = ownBundleIDs
-        self.excludedBundleIDs = excludedBundleIDs
-    }
 
     /// Returns why the app is sensitive, or `nil` when context may be read.
     public func sensitiveCategory(for bundleID: String?) -> SensitiveAppCategory? {

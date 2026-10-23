@@ -27,6 +27,12 @@ import Foundation
 /// sentence that *starts* inside parentheses may be cut at their terminator.
 /// This only ever makes the extracted text shorter, never fabricated.
 public struct SentenceBoundaryDetector: Equatable, Sendable {
+    // MARK: Lifecycle
+
+    public init() {}
+
+    // MARK: Public
+
     /// Lowercase tokens (letters and inner dots) whose trailing period does
     /// not end a sentence.
     public static let abbreviations: Set<String> = [
@@ -37,8 +43,6 @@ public struct SentenceBoundaryDetector: Equatable, Sendable {
         "sec", "sept", "sr", "st", "sun", "tue", "tues", "thu", "thurs", "univ",
         "viz", "vs", "wed",
     ]
-
-    public init() {}
 
     /// Returns the UTF-16 range of the sentence in `text` that contains
     /// `location`.
@@ -88,6 +92,63 @@ public struct SentenceBoundaryDetector: Equatable, Sendable {
         8217, // ’
         8221, // ”
     ]
+
+    // MARK: Character classification
+
+    private static func isTerminator(_ c: unichar) -> Bool {
+        c == period || c == exclamation || c == question
+    }
+
+    private static func isNewline(_ c: unichar) -> Bool {
+        c == newline || c == carriageReturn
+    }
+
+    private static func isWhitespace(_ c: unichar) -> Bool {
+        c == 32 || c == 9 || c == 160 || c == 0x2028 || c == 0x2029
+    }
+
+    private static func isDigit(_ c: unichar) -> Bool {
+        c >= 48 && c <= 57
+    }
+
+    private static func isLetter(_ c: unichar) -> Bool {
+        (c >= 65 && c <= 90) || (c >= 97 && c <= 122) || (c >= 128 && c <= 255 && c != 215 && c != 247)
+    }
+
+    private static func isOpenBracket(_ c: unichar) -> Bool {
+        c == 40 || c == 91 || c == 123 // ( [ {
+    }
+
+    private static func isCloseBracket(_ c: unichar) -> Bool {
+        c == 41 || c == 93 || c == 125 // ) ] }
+    }
+
+    private static func isClosingPunctuation(_ c: unichar) -> Bool {
+        closingPunctuation.contains(c)
+    }
+
+    /// Whether a character can start a new sentence: uppercase letters,
+    /// digits, quotes, opening brackets and common markdown markers.
+    private static func isWordStartLike(_ c: unichar) -> Bool {
+        if c >= 65, c <= 90 { // A-Z
+            return true
+        }
+        if c >= 192, c <= 222, c != 215 { // Latin-1 uppercase
+            return true
+        }
+        if isDigit(c) {
+            return true
+        }
+        switch c {
+        case 34, 35, 39, 40, 42, 45, // " ' ( < [ {
+             60, 62, 91, 95, 123, // " ' ( < [ {
+             126, 171, // * # > - _ ~ “ ‘ «
+             8216, 8220: // * # > - _ ~ “ ‘ «
+            return true
+        default:
+            return false
+        }
+    }
 
     /// Scans backwards for the start of the sentence containing `location`.
     private func sentenceStart(before location: Int, in text: NSString) -> Int {
@@ -246,60 +307,5 @@ public struct SentenceBoundaryDetector: Equatable, Sendable {
             i += 1
         }
         return nil
-    }
-
-    // MARK: Character classification
-
-    private static func isTerminator(_ c: unichar) -> Bool {
-        c == period || c == exclamation || c == question
-    }
-
-    private static func isNewline(_ c: unichar) -> Bool {
-        c == newline || c == carriageReturn
-    }
-
-    private static func isWhitespace(_ c: unichar) -> Bool {
-        c == 32 || c == 9 || c == 160 || c == 0x2028 || c == 0x2029
-    }
-
-    private static func isDigit(_ c: unichar) -> Bool {
-        c >= 48 && c <= 57
-    }
-
-    private static func isLetter(_ c: unichar) -> Bool {
-        (c >= 65 && c <= 90) || (c >= 97 && c <= 122) || (c >= 128 && c <= 255 && c != 215 && c != 247)
-    }
-
-    private static func isOpenBracket(_ c: unichar) -> Bool {
-        c == 40 || c == 91 || c == 123 // ( [ {
-    }
-
-    private static func isCloseBracket(_ c: unichar) -> Bool {
-        c == 41 || c == 93 || c == 125 // ) ] }
-    }
-
-    private static func isClosingPunctuation(_ c: unichar) -> Bool {
-        closingPunctuation.contains(c)
-    }
-
-    /// Whether a character can start a new sentence: uppercase letters,
-    /// digits, quotes, opening brackets and common markdown markers.
-    private static func isWordStartLike(_ c: unichar) -> Bool {
-        if c >= 65 && c <= 90 { // A-Z
-            return true
-        }
-        if c >= 192 && c <= 222 && c != 215 { // Latin-1 uppercase
-            return true
-        }
-        if isDigit(c) {
-            return true
-        }
-        switch c {
-        case 34, 39, 40, 60, 91, 123, // " ' ( < [ {
-             42, 35, 62, 45, 95, 126, 8220, 8216, 171: // * # > - _ ~ “ ‘ «
-            return true
-        default:
-            return false
-        }
     }
 }

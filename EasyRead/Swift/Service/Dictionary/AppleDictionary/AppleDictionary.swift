@@ -113,8 +113,8 @@ class AppleDictionary: QueryService, @unchecked Sendable {
         to: Language
     ) async throws
         -> QueryResult {
-        let noResultError = QueryError(type: .noResult, message: String(localized: "reading.dictionary.lookup_hint"))
-
+        let generation = updateResultLock.withLock { resultGeneration }
+        let names = appleDictionaryNames
         return try await withCheckedThrowingContinuation { continuation in
             DispatchQueue.global(qos: .default).async { [weak self] in
                 guard let self else {
@@ -127,19 +127,46 @@ class AppleDictionary: QueryService, @unchecked Sendable {
                     return
                 }
 
+                // Resolve resources again after Dictionary.app downloads a selected dictionary.
+                let available = TTTDictionary.availableDictionaries()
+                let dictionaries = names.compactMap { name in
+                    available.first { $0.name == name }
+                }
+
                 // Note: this method may cost long time(>1.0s), if the html is very large.
-                let htmlString = queryAllIframeHTMLResult(
+                let lookup = renderEntries(
                     ofWord: text,
                     fromToLanguages: [from, to],
-                    inDictionaries: appleDictionaries
+                    inDictionaries: dictionaries
                 )
-                result?.htmlString = htmlString
-
-                let error: QueryError? = htmlString?.isEmpty != false ? noResultError : nil
-                if let error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(returning: result ?? QueryResult())
+                updateResultLock.withLock {
+                    guard self.resultGeneration == generation else {
+                        continuation.resume(throwing: CancellationError())
+                        return
+                    }
+                    let currentResult = self.result ?? QueryResult()
+                    self.result = currentResult
+                    currentResult.htmlString = lookup.html
+                    currentResult.htmlStrings = lookup.htmls
+                    currentResult.innerTexts = lookup.texts
+                    if lookup.html?.isEmpty == false {
+                        currentResult.promptURL = nil
+                        currentResult.promptTitle = nil
+                        continuation.resume(returning: currentResult)
+                    } else {
+                        let hasResources = dictionaries.contains { dictionary in
+                            guard let url = dictionary.dictionaryURL else { return false }
+                            return FileManager.default.fileExists(atPath: url.path)
+                        }
+                        currentResult.promptURL = "dict://\(text.encode())"
+                        currentResult.promptTitle = String(localized: "reading.dictionary.open_system")
+                        continuation.resume(throwing: QueryError(
+                            type: .noResult,
+                            message: hasResources
+                                ? String(localized: "reading.dictionary.not_found")
+                                : String(localized: "reading.dictionary.download_required")
+                        ))
+                    }
                 }
             }
         }
@@ -258,6 +285,21 @@ extension AppleDictionary {
         inDictionaries dictionaries: [TTTDictionary]
     )
         -> String? {
+        let lookup = renderEntries(ofWord: word, fromToLanguages: languages, inDictionaries: dictionaries)
+        result?.htmlStrings = lookup.htmls
+        result?.innerTexts = lookup.texts
+        return lookup.html
+    }
+
+    // MARK: Private
+
+    /// Builds a query-local snapshot so late background lookups cannot overwrite a newer result.
+    private func renderEntries(
+        ofWord word: String,
+        fromToLanguages languages: [Language]?,
+        inDictionaries dictionaries: [TTTDictionary]
+    )
+        -> (html: String?, htmls: [String], texts: [String]) {
         let startTime = CFAbsoluteTimeGetCurrent()
         removeLegacyHTMLDirectories()
 
@@ -313,16 +355,9 @@ extension AppleDictionary {
         let endTime = CFAbsoluteTimeGetCurrent()
         logInfo("Query all dicts cost: \(String(format: "%.1f", (endTime - startTime) * 1000)) ms")
 
-        guard let renderResult = DictionaryHTMLRenderer.render(word: word, sections: sections) else {
-            return nil
-        }
-
-        result?.htmlStrings = allEntryHTMLs
-        result?.innerTexts = allInnerTexts
-        return renderResult.htmlString
+        let renderResult = DictionaryHTMLRenderer.render(word: word, sections: sections)
+        return (renderResult?.htmlString, allEntryHTMLs, allInnerTexts)
     }
-
-    // MARK: Private
 
     private func queryEntryHTMLs(
         ofWord word: String,

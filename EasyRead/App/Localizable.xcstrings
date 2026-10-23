@@ -1641,6 +1641,75 @@
         }
       }
     },
+    "reading.dictionary.download_required" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Dictionary resources are not ready. Open Dictionary, enable the dictionaries you need in its settings, wait for the download to finish, then retry."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "苹果词典资源尚未就绪。请打开系统“词典”，在其设置中启用所需词典，等待下载完成后重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple 辭典資源尚未就緒。請開啟系統「辭典」，在其設定中啟用所需辭典，等待下載完成後重試。"
+          }
+        }
+      }
+    },
+    "reading.dictionary.not_found" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No entry found in the selected Apple dictionaries. Try another word or phrase, or check in Dictionary."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已选苹果词典未收录此词条。请尝试其他单词或短语，或在系统词典中查看。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已選 Apple 辭典未收錄此詞條。請嘗試其他單字或片語，或在系統辭典中查看。"
+          }
+        }
+      }
+    },
+    "reading.dictionary.open_system" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Dictionary"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "打开系统词典"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟系統辭典"
+          }
+        }
+      }
+    },
     "reading.dictionary.lookup_hint" : {
       "extractionState" : "manual",
       "localizations" : {

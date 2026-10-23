@@ -102,8 +102,22 @@ struct SelectionPanelView: View {
             labeledBox(title: "selection.panel.original") {
                 originalBox
             }
-            labeledBox(title: "selection.panel.translation") {
-                translationBox
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: 6) {
+                    Text("selection.panel.translation")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(.secondary)
+                    if !translationText.isEmpty {
+                        iconButton("selection.panel.speak_translation", symbol: .speakerWave2) {
+                            state.playTranslation?(translationText)
+                        }
+                        iconButton("selection.panel.copy_translation", symbol: .docOnDoc) {
+                            translationText.ns_copyAndShowToast(true)
+                        }
+                    }
+                    Spacer(minLength: 0)
+                }
+                translationBox.panelContainer()
             }
             tabBar
             tabContent
@@ -214,17 +228,6 @@ struct SelectionPanelView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-
-            if !translationText.isEmpty {
-                HStack(spacing: 0) {
-                    iconButton("selection.panel.speak_translation", symbol: .speakerWave2) {
-                        state.playTranslation?(translationText)
-                    }
-                    iconButton("selection.panel.copy_translation", symbol: .docOnDoc) {
-                        translationText.ns_copyAndShowToast(true)
-                    }
-                }
-            }
         }
     }
 
@@ -348,6 +351,7 @@ struct SelectionPanelView: View {
         }
         .buttonStyle(.plain)
         .help(help)
+        .accessibilityLabel(help)
     }
 
     private func grammarSection(_ grammar: GrammarExplanation) -> some View {
@@ -369,24 +373,32 @@ struct SelectionPanelView: View {
             .buttonStyle(.plain)
 
             if state.grammarExpanded {
-                if !chunks.isEmpty {
-                    annotatedSentence(chunks)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                let tagged = chunks.filter { $0.structure != nil }
-                if !tagged.isEmpty {
-                    WrapLayout(horizontalSpacing: 8, verticalSpacing: 6) {
-                        ForEach(tagged) { chunk in
-                            roleTag(chunk)
+                GrammarAnalysisLayout {
+                    if !chunks.isEmpty {
+                        GrammarPhraseFlow(chunks: chunks)
+                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(Array((visible.isEmpty ? grammar.structures : visible).enumerated()), id: \.offset) { _,
+                            structure in
+                            grammarBullet(structure)
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                    .fixedSize(horizontal: false, vertical: true)
                 }
-                VStack(alignment: .leading, spacing: 6) {
-                    ForEach(Array((visible.isEmpty ? grammar.structures : visible).enumerated()), id: \.offset) { _,
-                        structure in
-                        grammarBullet(structure)
+                .background {
+                    GeometryReader { proxy in
+                        if proxy.size.width >= GrammarAnalysisLayout.twoColumnMinimum {
+                            Rectangle()
+                                .fill(Color.primary.opacity(0.12))
+                                .frame(width: 1, height: proxy.size.height)
+                                .position(x: proxy.size.width / 2, y: proxy.size.height / 2)
+                        }
                     }
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
                 }
                 if hasFullAnalysis(grammar) {
                     Button(state.grammarDetailsExpanded ? "selection.panel.collapse" : "selection.panel.grammar.full") {
@@ -401,18 +413,6 @@ struct SelectionPanelView: View {
             }
         }
         .panelContainer()
-    }
-
-    private func roleTag(_ chunk: GrammarChunk) -> some View {
-        let color = chunk.structure.map { Color(nsColor: GrammarRole.color(for: $0)) } ?? .secondary
-        return Text(verbatim: chunk.structure?.label ?? "")
-            .font(.system(size: 10, weight: .medium))
-            .lineLimit(2)
-            .multilineTextAlignment(.leading)
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2)
-            .foregroundStyle(color)
-            .background(Capsule().fill(color.opacity(0.2)))
     }
 
     private func grammarBullet(_ structure: GrammarStructure) -> some View {
@@ -478,27 +478,6 @@ struct SelectionPanelView: View {
         text.count > 180 || text.reduce(into: 0) { count, character in
             if character == "\n" { count += 1 }
         } >= 3
-    }
-
-    /// One wrapping paragraph. Separate chips leave a short phrase alone on a line and clip the next phrase.
-    private func annotatedSentence(_ chunks: [GrammarChunk]) -> Text {
-        chunks.enumerated().reduce(Text(verbatim: "")) { partial, item in
-            let (index, chunk) = item
-            let gap = index > 0 && chunkNeedsLeadingSpace(chunk, previous: chunks[index - 1])
-                ? Text(verbatim: " ") : Text(verbatim: "")
-            var piece = Text(verbatim: chunk.text).font(.system(size: 14, weight: .semibold))
-            if let structure = chunk.structure {
-                piece = piece.underline(true, color: Color(nsColor: GrammarRole.color(for: structure)))
-            }
-            return partial + gap + piece
-        }
-    }
-
-    private func chunkNeedsLeadingSpace(_ chunk: GrammarChunk, previous: GrammarChunk) -> Bool {
-        guard let first = chunk.text.first else { return false }
-        if first.isPunctuation || first.isWhitespace { return false }
-        if previous.text.last?.isWhitespace == true { return false }
-        return true
     }
 
     private func hasFullAnalysis(_ grammar: GrammarExplanation) -> Bool {
@@ -574,7 +553,13 @@ struct GrammarChunk: Identifiable {
                     to: &chunks
                 )
             }
-            chunks.append(GrammarChunk(id: chunks.count, text: nsSource.substring(with: range), structure: structure))
+            var text = nsSource.substring(with: range)
+            if let previous = chunks.last, previous.structure == nil,
+               previous.text.allSatisfy({ "([{（【“\"".contains($0) }) {
+                text = previous.text + text
+                chunks.removeLast()
+            }
+            chunks.append(GrammarChunk(id: chunks.count, text: text, structure: structure))
             cursor = NSMaxRange(range)
         }
         if cursor < nsSource.length {
@@ -586,53 +571,57 @@ struct GrammarChunk: Identifiable {
     // MARK: Private
 
     private static func appendGap(_ text: String, to chunks: inout [GrammarChunk]) {
-        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        var trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
-        // Keep a trailing period with the phrase it closes, instead of a chunk that is only punctuation.
-        if trimmed.allSatisfy(\.isPunctuation), !chunks.isEmpty {
+        // Closing punctuation belongs to the preceding phrase; opening brackets belong to the next one.
+        let closing = trimmed.prefix { $0.isPunctuation && !"([{（【“\"".contains($0) }
+        if !closing.isEmpty, !chunks.isEmpty {
             let last = chunks[chunks.count - 1]
             chunks[chunks.count - 1] = GrammarChunk(
                 id: last.id,
-                text: last.text + trimmed,
+                text: last.text + closing,
                 structure: last.structure
             )
-            return
+            trimmed = String(trimmed.dropFirst(closing.count)).trimmingCharacters(in: .whitespacesAndNewlines)
         }
+        guard !trimmed.isEmpty else { return }
         chunks.append(GrammarChunk(id: chunks.count, text: trimmed, structure: nil))
     }
 }
 
-// MARK: - WrapLayout
+// MARK: - GrammarAnalysisLayout
 
-/// Places grammar fragments on as few rows as their measured widths allow.
-struct WrapLayout: Layout {
+/// Places the annotated sentence beside its explanations; narrow windows stack them.
+struct GrammarAnalysisLayout: Layout {
     // MARK: Internal
 
-    var horizontalSpacing: CGFloat = 10
-    var verticalSpacing: CGFloat = 8
+    static let twoColumnMinimum: CGFloat = 600
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let width = proposal.width ?? subviews.map { fittedSize($0, limit: .greatestFiniteMagnitude).width }
-            .reduce(0, +)
-        let rows = rows(in: max(width, 1), subviews: subviews)
-        let height = rows.reduce(CGFloat(0)) { $0 + $1.height } + verticalSpacing * CGFloat(max(rows.count - 1, 0))
-        return CGSize(width: max(width, 1), height: height)
+        let width = max(proposal.width ?? Self.twoColumnMinimum, 1)
+        let measuredRows = rows(in: width, subviews: subviews)
+        return CGSize(
+            width: width,
+            height: measuredRows.reduce(0) { $0 + $1.height }
+                + spacing * CGFloat(max(measuredRows.count - 1, 0))
+        )
     }
 
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
         var y = bounds.minY
         for row in rows(in: bounds.width, subviews: subviews) {
             var x = bounds.minX
+            let columns = bounds.width >= Self.twoColumnMinimum ? 2 : 1
+            let columnWidth = (bounds.width - CGFloat(columns - 1) * spacing) / CGFloat(columns)
             for index in row.indexes {
-                let size = fittedSize(subviews[index], limit: bounds.width)
                 subviews[index].place(
                     at: CGPoint(x: x, y: y),
                     anchor: .topLeading,
-                    proposal: ProposedViewSize(width: size.width, height: size.height)
+                    proposal: ProposedViewSize(width: columnWidth, height: row.height)
                 )
-                x += size.width + horizontalSpacing
+                x += columnWidth + spacing
             }
-            y += row.height + verticalSpacing
+            y += row.height + spacing
         }
     }
 
@@ -643,31 +632,19 @@ struct WrapLayout: Layout {
         var height: CGFloat = 0
     }
 
+    private let spacing: CGFloat = 20
+
     private func rows(in width: CGFloat, subviews: Subviews) -> [Row] {
         var rows: [Row] = []
-        var current = Row()
-        var used: CGFloat = 0
+        let columns = width >= Self.twoColumnMinimum ? 2 : 1
+        let columnWidth = (width - CGFloat(columns - 1) * spacing) / CGFloat(columns)
         for index in subviews.indices {
-            let size = fittedSize(subviews[index], limit: width)
-            let itemWidth = size.width
-            let next = current.indexes.isEmpty ? itemWidth : used + horizontalSpacing + itemWidth
-            if !current.indexes.isEmpty, next > width + 0.5 {
-                rows.append(current)
-                current = Row()
-                used = 0
-            }
-            current.indexes.append(index)
-            current.height = max(current.height, size.height)
-            used = current.indexes.count == 1 ? itemWidth : used + horizontalSpacing + itemWidth
+            if index % columns == 0 { rows.append(Row()) }
+            let size = subviews[index].sizeThatFits(ProposedViewSize(width: columnWidth, height: nil))
+            rows[rows.count - 1].indexes.append(index)
+            rows[rows.count - 1].height = max(rows[rows.count - 1].height, size.height)
         }
-        if !current.indexes.isEmpty { rows.append(current) }
         return rows
-    }
-
-    private func fittedSize(_ subview: LayoutSubview, limit: CGFloat) -> CGSize {
-        let cap = max(limit, 1)
-        let size = subview.sizeThatFits(ProposedViewSize(width: cap, height: nil))
-        return CGSize(width: min(max(size.width, 1), cap), height: max(size.height, 1))
     }
 }
 

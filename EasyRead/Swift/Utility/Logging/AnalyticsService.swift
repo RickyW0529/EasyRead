@@ -123,9 +123,8 @@ final class AnalyticsService: NSObject {
     private static let firebaseConfigurationToken: () = {
         // GoogleService-Info.plist is not bundled with EasyRead; FirebaseApp.configure()
         // would abort the process when the file is missing, so guard on its presence.
-        guard
-            Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil,
-            FirebaseApp.app() == nil
+        guard Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil,
+              FirebaseApp.app() == nil
         else {
             return
         }

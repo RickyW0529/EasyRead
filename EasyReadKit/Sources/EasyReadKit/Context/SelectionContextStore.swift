@@ -3,10 +3,11 @@ import Foundation
 
 /// A single in-memory selection, with generation checks for asynchronous context capture.
 public final class SelectionContextStore: @unchecked Sendable {
-    private let lock = NSLock()
-    private var snapshot: SelectionSnapshot?
+    // MARK: Lifecycle
 
     public init() {}
+
+    // MARK: Public
 
     public func store(_ snapshot: SelectionSnapshot) {
         lock.lock()
@@ -39,6 +40,11 @@ public final class SelectionContextStore: @unchecked Sendable {
         defer { lock.unlock() }
         snapshot = nil
     }
+
+    // MARK: Private
+
+    private let lock = NSLock()
+    private var snapshot: SelectionSnapshot?
 
     private static func normalized(_ text: String) -> String {
         text.replacingOccurrences(of: "\u{FFFC}", with: "")

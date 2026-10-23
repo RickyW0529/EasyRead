@@ -19,11 +19,29 @@ import Foundation
 /// account names embedded in prose cannot be detected reliably; the
 /// sensitive-app exclusion rules are the boundary for those cases.
 public struct ContextSanitizer: Equatable, Sendable {
+    // MARK: Lifecycle
+
+    public init() {}
+
+    // MARK: Public
+
     public static let urlMask = "<URL>"
     public static let pathMask = "<PATH>"
     public static let emailMask = "<EMAIL>"
 
-    public init() {}
+    /// Returns the text with URLs, file paths and email addresses masked.
+    public func sanitize(_ text: String) -> String {
+        guard !text.isEmpty else {
+            return text
+        }
+
+        var result = Self.mask(text, regex: Self.urlRegex, mask: Self.urlMask)
+        result = Self.mask(result, regex: Self.pathRegex, mask: Self.pathMask)
+        result = Self.mask(result, regex: Self.emailRegex, mask: Self.emailMask)
+        return result
+    }
+
+    // MARK: Private
 
     /// Matches http/https and bare www URLs, excluding trailing punctuation
     /// commonly attached to links in prose.
@@ -47,23 +65,11 @@ public struct ContextSanitizer: Equatable, Sendable {
         options: []
     )
 
-    /// Returns the text with URLs, file paths and email addresses masked.
-    public func sanitize(_ text: String) -> String {
-        guard !text.isEmpty else {
-            return text
-        }
-
-        var result = Self.mask(text, regex: Self.urlRegex, mask: Self.urlMask)
-        result = Self.mask(result, regex: Self.pathRegex, mask: Self.pathMask)
-        result = Self.mask(result, regex: Self.emailRegex, mask: Self.emailMask)
-        return result
-    }
-
     private static func mask(_ text: String, regex: NSRegularExpression?, mask: String) -> String {
         guard let regex else {
             return text
         }
-        let range = NSRange(text.startIndex..<text.endIndex, in: text)
+        let range = NSRange(text.startIndex ..< text.endIndex, in: text)
         return regex.stringByReplacingMatches(
             in: text,
             options: [],

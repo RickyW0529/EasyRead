@@ -53,12 +53,13 @@ final class MockURLProtocol: URLProtocol {
 /// Lock-protected mutable box for values written on the session queue and
 /// read by the test after `await` completes.
 final class LockedBox<T> {
-    private let lock = NSLock()
-    private var value: T
+    // MARK: Lifecycle
 
     init(_ value: T) {
         self.value = value
     }
+
+    // MARK: Internal
 
     func set(_ newValue: T) {
         lock.lock()
@@ -71,6 +72,11 @@ final class LockedBox<T> {
         defer { lock.unlock() }
         return value
     }
+
+    // MARK: Private
+
+    private let lock = NSLock()
+    private var value: T
 }
 
 // MARK: - SleepRecorder
@@ -78,8 +84,7 @@ final class LockedBox<T> {
 /// Records backoff delays instead of sleeping. Lock-protected, so the
 /// `@Sendable` sleeper closure can safely capture it.
 final class SleepRecorder: @unchecked Sendable {
-    private let lock = NSLock()
-    private var recordedDelays: [TimeInterval] = []
+    // MARK: Internal
 
     var delays: [TimeInterval] {
         lock.lock()
@@ -92,6 +97,11 @@ final class SleepRecorder: @unchecked Sendable {
             self.record(delay)
         }
     }
+
+    // MARK: Private
+
+    private let lock = NSLock()
+    private var recordedDelays: [TimeInterval] = []
 
     private func record(_ delay: TimeInterval) {
         lock.lock()
@@ -138,10 +148,7 @@ extension URLRequest {
 /// network traffic leaves the machine and no real API key is used.
 @Suite(.serialized)
 final class DeepSeekChatClientTests {
-    private static let endpoint = URL(string: "https://api.deepseek.com/chat/completions")!
-
-    /// Sessions created by the running test; invalidated in `deinit`.
-    private var sessions: [URLSession] = []
+    // MARK: Lifecycle
 
     init() {
         MockURLProtocol.handler = nil
@@ -152,9 +159,12 @@ final class DeepSeekChatClientTests {
         sessions.forEach { $0.finishTasksAndInvalidate() }
     }
 
+    // MARK: Internal
+
     // MARK: - Success and request shape
 
-    @Test func successReturnsContentAndBuildsSpecCompliantRequest() async throws {
+    @Test
+    func successReturnsContentAndBuildsSpecCompliantRequest() async throws {
         let requestBox = LockedBox<URLRequest?>(nil)
         MockURLProtocol.handler = { request in
             requestBox.set(request)
@@ -203,7 +213,8 @@ final class DeepSeekChatClientTests {
         #expect(!bodyString.contains("sk-test-secret-1234"))
     }
 
-    @Test func jsonOutputFalseOmitsResponseFormat() async throws {
+    @Test
+    func jsonOutputFalseOmitsResponseFormat() async throws {
         let requestBox = LockedBox<URLRequest?>(nil)
         MockURLProtocol.handler = { request in
             requestBox.set(request)
@@ -227,7 +238,8 @@ final class DeepSeekChatClientTests {
         #expect(body["stream"] as? Bool == false)
     }
 
-    @Test func missingAPIKeyThrowsWithoutSending() async {
+    @Test
+    func missingAPIKeyThrowsWithoutSending() async {
         let client = makeClient()
 
         await #expect(throws: DeepSeekChatError.missingAPIKey) {
@@ -242,7 +254,8 @@ final class DeepSeekChatClientTests {
 
     // MARK: - Error taxonomy (T08)
 
-    @Test func unauthorizedIsNotRetried() async {
+    @Test
+    func unauthorizedIsNotRetried() async {
         MockURLProtocol.handler = { _ in
             (Self.httpResponse(status: 401), Self.responseData(content: nil))
         }
@@ -256,7 +269,8 @@ final class DeepSeekChatClientTests {
         #expect(MockURLProtocol.requestCount == 1)
     }
 
-    @Test func forbiddenIsNotRetried() async {
+    @Test
+    func forbiddenIsNotRetried() async {
         MockURLProtocol.handler = { _ in
             (Self.httpResponse(status: 403), Self.responseData(content: nil))
         }
@@ -270,7 +284,8 @@ final class DeepSeekChatClientTests {
         #expect(MockURLProtocol.requestCount == 1)
     }
 
-    @Test func insufficientBalanceIsNotRetried() async {
+    @Test
+    func insufficientBalanceIsNotRetried() async {
         MockURLProtocol.handler = { _ in
             (Self.httpResponse(status: 402), Self.responseData(content: nil))
         }
@@ -284,7 +299,8 @@ final class DeepSeekChatClientTests {
         #expect(MockURLProtocol.requestCount == 1)
     }
 
-    @Test func unexpectedStatusIsNotRetried() async {
+    @Test
+    func unexpectedStatusIsNotRetried() async {
         MockURLProtocol.handler = { _ in
             (Self.httpResponse(status: 400), Self.responseData(content: nil))
         }
@@ -298,7 +314,8 @@ final class DeepSeekChatClientTests {
         #expect(MockURLProtocol.requestCount == 1)
     }
 
-    @Test func timeoutIsNotRetried() async {
+    @Test
+    func timeoutIsNotRetried() async {
         MockURLProtocol.handler = { _ in
             throw URLError(.timedOut)
         }
@@ -314,7 +331,8 @@ final class DeepSeekChatClientTests {
 
     // MARK: - Response decoding (T07: malformed output never reaches callers)
 
-    @Test func malformedBodyThrowsInvalidResponse() async {
+    @Test
+    func malformedBodyThrowsInvalidResponse() async {
         MockURLProtocol.handler = { _ in
             (Self.httpResponse(status: 200), Data("not json".utf8))
         }
@@ -327,7 +345,8 @@ final class DeepSeekChatClientTests {
         }
     }
 
-    @Test func missingChoicesThrowsInvalidResponse() async {
+    @Test
+    func missingChoicesThrowsInvalidResponse() async {
         MockURLProtocol.handler = { _ in
             (Self.httpResponse(status: 200), Data(#"{"id":"chat-1"}"#.utf8))
         }
@@ -340,7 +359,8 @@ final class DeepSeekChatClientTests {
         }
     }
 
-    @Test func emptyContentThrowsInvalidResponse() async {
+    @Test
+    func emptyContentThrowsInvalidResponse() async {
         MockURLProtocol.handler = { _ in
             (Self.httpResponse(status: 200), Self.responseData(content: ""))
         }
@@ -353,7 +373,8 @@ final class DeepSeekChatClientTests {
         }
     }
 
-    @Test func truncatedOutputThrowsTruncatedResponse() async {
+    @Test
+    func truncatedOutputThrowsTruncatedResponse() async {
         MockURLProtocol.handler = { _ in
             (Self.httpResponse(status: 200), Self.responseData(
                 content: #"{"primaryMeaning""#,
@@ -371,7 +392,8 @@ final class DeepSeekChatClientTests {
 
     // MARK: - Retry policy (spec 4.4)
 
-    @Test func rateLimitedRetriesWithExponentialBackoffAndSucceeds() async throws {
+    @Test
+    func rateLimitedRetriesWithExponentialBackoffAndSucceeds() async throws {
         let responses: [(HTTPURLResponse, Data)] = [
             (Self.httpResponse(status: 429), Self.responseData(content: nil)),
             (Self.httpResponse(status: 429), Self.responseData(content: nil)),
@@ -396,7 +418,8 @@ final class DeepSeekChatClientTests {
         #expect(sleepRecorder.delays == [0.5, 1.0])
     }
 
-    @Test func rateLimitedStopsAfterMaxRetries() async {
+    @Test
+    func rateLimitedStopsAfterMaxRetries() async {
         MockURLProtocol.handler = { _ in
             (Self.httpResponse(status: 429), Self.responseData(content: nil))
         }
@@ -413,7 +436,8 @@ final class DeepSeekChatClientTests {
         #expect(sleepRecorder.delays == [0.5, 1.0])
     }
 
-    @Test func retryAfterHeaderOverridesBackoffDelay() async throws {
+    @Test
+    func retryAfterHeaderOverridesBackoffDelay() async throws {
         let responses: [(HTTPURLResponse, Data)] = [
             (Self.httpResponse(status: 429, headers: ["Retry-After": "2"]), Self.responseData(content: nil)),
             (Self.httpResponse(status: 200), Self.responseData(content: "ok")),
@@ -437,7 +461,8 @@ final class DeepSeekChatClientTests {
         #expect(sleepRecorder.delays == [2])
     }
 
-    @Test func retryAfterHeaderIsCapped() async throws {
+    @Test
+    func retryAfterHeaderIsCapped() async throws {
         let responses: [(HTTPURLResponse, Data)] = [
             (Self.httpResponse(status: 429, headers: ["Retry-After": "30"]), Self.responseData(content: nil)),
             (Self.httpResponse(status: 200), Self.responseData(content: "ok")),
@@ -460,7 +485,8 @@ final class DeepSeekChatClientTests {
         #expect(sleepRecorder.delays == [5])
     }
 
-    @Test func serverErrorIsRetriedAndCanRecover() async throws {
+    @Test
+    func serverErrorIsRetriedAndCanRecover() async throws {
         let responses: [(HTTPURLResponse, Data)] = [
             (Self.httpResponse(status: 500), Self.responseData(content: nil)),
             (Self.httpResponse(status: 503), Self.responseData(content: nil)),
@@ -485,7 +511,8 @@ final class DeepSeekChatClientTests {
         #expect(sleepRecorder.delays == [0.5, 1.0])
     }
 
-    @Test func transientNetworkErrorIsRetried() async throws {
+    @Test
+    func transientNetworkErrorIsRetried() async throws {
         var failedOnce = false
         MockURLProtocol.handler = { _ in
             if failedOnce {
@@ -507,7 +534,8 @@ final class DeepSeekChatClientTests {
         #expect(sleepRecorder.delays == [0.5])
     }
 
-    @Test func budgetExhaustedSkipsRetry() async {
+    @Test
+    func budgetExhaustedSkipsRetry() async {
         var configuration = DeepSeekChatClient.Configuration()
         configuration.retryBaseDelay = 100
 
@@ -529,7 +557,8 @@ final class DeepSeekChatClientTests {
 
     // MARK: - Cancellation (T11)
 
-    @Test func cancellationDuringBackoffThrowsCancelled() async {
+    @Test
+    func cancellationDuringBackoffThrowsCancelled() async {
         MockURLProtocol.handler = { _ in
             (Self.httpResponse(status: 429), Self.responseData(content: nil))
         }
@@ -544,7 +573,8 @@ final class DeepSeekChatClientTests {
         #expect(MockURLProtocol.requestCount == 1)
     }
 
-    @Test func attemptTimeoutRespectsRemainingBudget() async throws {
+    @Test
+    func attemptTimeoutRespectsRemainingBudget() async throws {
         let requestBox = LockedBox<URLRequest?>(nil)
         MockURLProtocol.handler = { request in
             requestBox.set(request)
@@ -558,29 +588,18 @@ final class DeepSeekChatClientTests {
         #expect(try #require(requestBox.get()).timeoutInterval <= 0.2)
     }
 
-    // MARK: - Helpers
+    // MARK: Private
 
-    private func makeClient(
-        configuration: DeepSeekChatClient.Configuration = DeepSeekChatClient.Configuration(),
-        sleep: @escaping DeepSeekChatClient.Sleeper = { _ in }
-    ) -> DeepSeekChatClient {
-        let urlConfiguration = URLSessionConfiguration.ephemeral
-        urlConfiguration.protocolClasses = [MockURLProtocol.self]
-        let session = URLSession(configuration: urlConfiguration)
-        sessions.append(session)
+    private static let endpoint = URL(string: "https://api.deepseek.com/chat/completions")!
 
-        return DeepSeekChatClient(
-            endpoint: Self.endpoint,
-            session: session,
-            configuration: configuration,
-            sleep: sleep
-        )
-    }
+    /// Sessions created by the running test; invalidated in `deinit`.
+    private var sessions: [URLSession] = []
 
     private static func httpResponse(
         status: Int,
         headers: [String: String] = [:]
-    ) -> HTTPURLResponse {
+    )
+        -> HTTPURLResponse {
         HTTPURLResponse(
             url: endpoint,
             statusCode: status,
@@ -596,8 +615,28 @@ final class DeepSeekChatClientTests {
         }
 
         let payload: [String: Any] = [
-            "choices": [["index": 0, "message": message, "finish_reason": finishReason]]
+            "choices": [["index": 0, "message": message, "finish_reason": finishReason]],
         ]
         return try! JSONSerialization.data(withJSONObject: payload)
+    }
+
+    // MARK: - Helpers
+
+    private func makeClient(
+        configuration: DeepSeekChatClient.Configuration = DeepSeekChatClient.Configuration(),
+        sleep: @escaping DeepSeekChatClient.Sleeper = { _ in }
+    )
+        -> DeepSeekChatClient {
+        let urlConfiguration = URLSessionConfiguration.ephemeral
+        urlConfiguration.protocolClasses = [MockURLProtocol.self]
+        let session = URLSession(configuration: urlConfiguration)
+        sessions.append(session)
+
+        return DeepSeekChatClient(
+            endpoint: Self.endpoint,
+            session: session,
+            configuration: configuration,
+            sleep: sleep
+        )
     }
 }

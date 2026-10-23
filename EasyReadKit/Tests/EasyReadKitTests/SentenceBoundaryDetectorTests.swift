@@ -19,67 +19,78 @@ struct SentenceBoundaryDetectorTests {
 
     let detector = SentenceBoundaryDetector()
 
-    @Test func simpleSentence() {
+    @Test
+    func simpleSentence() {
         let text = "The operating system schedules each process to run on the CPU. Another sentence follows here."
         let range = detector.sentenceRange(containing: location(of: "Another", in: text), in: text)
         #expect(sentence(range, in: text) == "Another sentence follows here.")
     }
 
-    @Test func abbreviationEGDoesNotSplit() {
+    @Test
+    func abbreviationEGDoesNotSplit() {
         let text = "Modern CPUs are fast, e.g. the M-series chips. The kernel manages memory."
         let range = detector.sentenceRange(containing: location(of: "chips", in: text), in: text)
         #expect(sentence(range, in: text) == "Modern CPUs are fast, e.g. the M-series chips.")
     }
 
-    @Test func abbreviationIEDoesNotSplit() {
+    @Test
+    func abbreviationIEDoesNotSplit() {
         let text = "Some tools, i.e. the compiler, are slow. The linker is fast."
         let range = detector.sentenceRange(containing: location(of: "compiler", in: text), in: text)
         #expect(sentence(range, in: text) == "Some tools, i.e. the compiler, are slow.")
     }
 
-    @Test func abbreviationFigDoesNotSplit() {
+    @Test
+    func abbreviationFigDoesNotSplit() {
         let text = "Fig. 3 shows the architecture of the system. It has three layers."
         let range = detector.sentenceRange(containing: location(of: "architecture", in: text), in: text)
         #expect(sentence(range, in: text) == "Fig. 3 shows the architecture of the system.")
     }
 
-    @Test func nameInitialDoesNotSplit() {
+    @Test
+    func nameInitialDoesNotSplit() {
         let text = "This idea was proposed by J. Smith in 1998. It became popular."
         let range = detector.sentenceRange(containing: location(of: "Smith", in: text), in: text)
         #expect(sentence(range, in: text) == "This idea was proposed by J. Smith in 1998.")
     }
 
-    @Test func decimalNumberDoesNotSplit() {
+    @Test
+    func decimalNumberDoesNotSplit() {
         let text = "Increase the timeout to 3.5 seconds before retrying the request."
         let range = detector.sentenceRange(containing: location(of: "seconds", in: text), in: text)
         #expect(sentence(range, in: text) == text)
     }
 
-    @Test func terminatorInsideParenthesesDoesNotSplit() {
+    @Test
+    func terminatorInsideParenthesesDoesNotSplit() {
         let text = "The kernel (see section 2.1) manages memory. It also schedules processes."
         let range = detector.sentenceRange(containing: location(of: "memory", in: text), in: text)
         #expect(sentence(range, in: text) == "The kernel (see section 2.1) manages memory.")
     }
 
-    @Test func closingQuoteAfterTerminator() {
+    @Test
+    func closingQuoteAfterTerminator() {
         let text = "He said \"Stop.\" Then he left the room."
         let range = detector.sentenceRange(containing: location(of: "left", in: text), in: text)
         #expect(sentence(range, in: text) == "Then he left the room.")
     }
 
-    @Test func newlineIsHardBoundary() {
+    @Test
+    func newlineIsHardBoundary() {
         let text = "First line ends here.\nSecond line starts here."
         let range = detector.sentenceRange(containing: location(of: "Second", in: text), in: text)
         #expect(sentence(range, in: text) == "Second line starts here.")
     }
 
-    @Test func noTerminatorReturnsWholeText() {
+    @Test
+    func noTerminatorReturnsWholeText() {
         let text = "the quick brown fox jumps over the lazy dog"
         let range = detector.sentenceRange(containing: location(of: "fox", in: text), in: text)
         #expect(sentence(range, in: text) == text)
     }
 
-    @Test func lowercaseAfterPeriodIsNotBoundary() {
+    @Test
+    func lowercaseAfterPeriodIsNotBoundary() {
         // Conservative: a lowercase continuation means the period does not end
         // the sentence, so the extracted range only grows.
         let text = "We waited, and waited. then it happened."
@@ -87,7 +98,8 @@ struct SentenceBoundaryDetectorTests {
         #expect(sentence(range, in: text) == text)
     }
 
-    @Test func ellipsisIsSingleBoundary() {
+    @Test
+    func ellipsisIsSingleBoundary() {
         let text = "Wait... Then it happened."
         var range = detector.sentenceRange(containing: location(of: "Wait", in: text), in: text)
         #expect(sentence(range, in: text) == "Wait...")
@@ -95,17 +107,20 @@ struct SentenceBoundaryDetectorTests {
         #expect(sentence(range, in: text) == "Then it happened.")
     }
 
-    @Test func terminatorInsideBackticksIgnoredWhenTracked() {
+    @Test
+    func terminatorInsideBackticksIgnoredWhenTracked() {
         let text = "Install the tool `make install. Then run` the tests and verify."
         let range = detector.sentenceRange(containing: location(of: "tool", in: text), in: text)
         #expect(sentence(range, in: text) == text)
     }
 
-    @Test func emptyTextReturnsEmptyRange() {
+    @Test
+    func emptyTextReturnsEmptyRange() {
         #expect(detector.sentenceRange(containing: 0, in: "") == NSRange(location: 0, length: 0))
     }
 
-    @Test func specCorpusSentences() {
+    @Test
+    func specCorpusSentences() {
         let corpus = [
             "The operating system schedules each process to run on the CPU.",
             "The bank approved the loan after reviewing the application.",

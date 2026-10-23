@@ -89,11 +89,8 @@ struct StreamConfigurationView: View {
 
     var isEditable = true
 
-    @Default(.deepSeekAPIKeyMirror) private var keychainMirror
-    @Default(.enableReadingAI) private var enableReadingAI
     @Default var apiKey: String
     @Default var endpoint: String
-
     // show system prompt and user prompt, according to service.enableCustomPrompt
     @Default var showCustomPromptTextEditor: Bool
 
@@ -295,6 +292,9 @@ struct StreamConfigurationView: View {
 
     @State private var isFetchModelsPresented = false
 
+    @Default(.deepSeekAPIKeyMirror) private var keychainMirror
+    @Default(.enableReadingAI) private var enableReadingAI
+
     private var canFetchModels: Bool {
         isEditable && service.canFetchRemoteModels
     }
@@ -302,7 +302,8 @@ struct StreamConfigurationView: View {
     private var isFetchModelsDisabled: Bool {
         guard service.canFetchRemoteModels else { return true }
         if !isEditable { return true }
-        if service.apiKeyRequirement().needsUserProvidedKey, (usesKeychainAPIKey ? keychainMirror : apiKey).trim().isEmpty {
+        if service.apiKeyRequirement().needsUserProvidedKey,
+           (usesKeychainAPIKey ? keychainMirror : apiKey).trim().isEmpty {
             return true
         }
         return shouldValidateFetchEndpoint && !isValidEndpoint(service.endpoint)
@@ -312,7 +313,8 @@ struct StreamConfigurationView: View {
         guard service.canFetchRemoteModels else {
             return "service.configuration.fetch_models.title"
         }
-        if service.apiKeyRequirement().needsUserProvidedKey, (usesKeychainAPIKey ? keychainMirror : apiKey).trim().isEmpty {
+        if service.apiKeyRequirement().needsUserProvidedKey,
+           (usesKeychainAPIKey ? keychainMirror : apiKey).trim().isEmpty {
             return "missing_secret_key_error"
         }
         if shouldValidateFetchEndpoint, !isValidEndpoint(service.endpoint) {

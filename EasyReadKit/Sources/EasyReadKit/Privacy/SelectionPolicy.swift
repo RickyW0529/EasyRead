@@ -16,22 +16,24 @@ import Foundation
 /// at most 2,000 characters, and the context sent around a selection is at
 /// most 600 characters, trimmed on real sentence boundaries with a hard cap.
 public struct SelectionPolicy: Equatable, Sendable {
-    /// Maximum number of characters allowed in one selection.
-    public let maxSelectionLength: Int
-
-    /// Maximum number of characters of surrounding context (total, before and
-    /// after the selection combined).
-    public let maxContextLength: Int
+    // MARK: Lifecycle
 
     public init(maxSelectionLength: Int = 2_000, maxContextLength: Int = 600) {
         self.maxSelectionLength = maxSelectionLength
         self.maxContextLength = maxContextLength
     }
 
-    // MARK: Internal
+    // MARK: Public
 
     /// Default limits from the development spec.
     public static let `default` = SelectionPolicy()
+
+    /// Maximum number of characters allowed in one selection.
+    public let maxSelectionLength: Int
+
+    /// Maximum number of characters of surrounding context (total, before and
+    /// after the selection combined).
+    public let maxContextLength: Int
 
     /// Validates a raw selected text.
     ///
@@ -62,6 +64,8 @@ public enum SelectionValidation: Equatable, Sendable {
     /// The selection is longer than `SelectionPolicy.maxSelectionLength`.
     /// The value is the trimmed character count.
     case tooLong(length: Int)
+
+    // MARK: Public
 
     /// Whether the selection can be used for queries.
     public var isUsable: Bool {

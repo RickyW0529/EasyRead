@@ -84,6 +84,8 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 
 @property (nonatomic, strong) MyConfiguration *config;
 @property (nonatomic, strong) id fontSizeObserver;
+@property (nonatomic, copy) NSString *autoSizedQueryText;
+@property (nonatomic, weak) NSScreen *autoSizedScreen;
 
 @end
 
@@ -959,7 +961,9 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
             [service.result convertToTraditionalChineseResult];
         }
 
-        BOOL hideResult = !result.manualShow && !result.hasTranslatedResult && result.isWarningErrorType;
+        // Keep Apple Dictionary's resource/download and missing-entry guidance visible.
+        BOOL isAppleDictionary = [service.serviceType isEqualToString:EZServiceTypeAppleDictionary];
+        BOOL hideResult = !isAppleDictionary && !result.manualShow && !result.hasTranslatedResult && result.isWarningErrorType;
         if (hideResult) {
             result.isShowing = NO;
         }
@@ -1873,6 +1877,29 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 }
 
 - (void)updateWindowHeightWithLock:(BOOL)lockFlag {
+    NSWindow *window = self.baseQueryWindow ?: self.view.window;
+    if (!window) {
+        self.lockResizeWindow = NO;
+        return;
+    }
+    NSScreen *currentScreen = window.screen ?: [EZCoordinateUtils screenForRect:window.frame] ?: NSScreen.mainScreen;
+    CGRect screenVisibleFrame = currentScreen.visibleFrame;
+
+    // Fit a new query to its content; retain a manual width until the query or display changes.
+    NSString *queryText = self.queryModel.queryText ?: @"";
+    if (![self.autoSizedQueryText isEqualToString:queryText] || self.autoSizedScreen != currentScreen) {
+        self.autoSizedQueryText = queryText;
+        self.autoSizedScreen = currentScreen;
+        CGFloat preferredWidth = [self.readingAssistantView preferredWindowWidthForQueryText:queryText
+                                                                            availableWidth:screenVisibleFrame.size.width];
+        CGRect widthFrame = window.frame;
+        widthFrame.size.width = preferredWidth;
+        widthFrame = [EZCoordinateUtils getSafeAreaFrame:widthFrame inScreenVisibleFrame:screenVisibleFrame];
+        self.isUpdatingWindowFrameInternally = YES;
+        [window setFrame:widthFrame display:YES];
+        [self.view layoutSubtreeIfNeeded];
+        self.isUpdatingWindowFrameInternally = NO;
+    }
     if (lockFlag) {
         self.lockResizeWindow = YES;
     }
@@ -1880,10 +1907,13 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
         MMLogInfo(@"updateWindowViewHeightWithLock");
 
     CGFloat tableViewHeight = [self getScrollViewContentHeight];
-    CGFloat height = [self getRestrainedScrollViewHeight:tableViewHeight];
+    CGFloat minimumHeight = [EZLayoutManager.shared minimumWindowSize:self.windowType].height;
+    CGFloat height = MAX(tableViewHeight, minimumHeight);
     //    MMLogInfo(@"getRestrainedScrollViewHeight: %@", @(height));
 
-    CGSize maxWindowSize = [EZLayoutManager.shared maximumWindowSize:self.windowType];
+    MyConfiguration *configuration = self.config ?: MyConfiguration.shared;
+    CGFloat heightFraction = MIN(MAX(configuration.maxWindowHeightPercentage, 1), 100) / 100.0;
+    CGSize maxWindowSize = CGSizeMake(screenVisibleFrame.size.width, screenVisibleFrame.size.height * heightFraction);
 
     CGFloat titleBarHeight = EZTitlebarHeight_28; // system title bar height is 28
 
@@ -1900,12 +1930,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     showingWindowHeight = MIN(showingWindowHeight, maxWindowSize.height);
 
     // Since changing height will cause position change, adjust y to keep top-left coordinate stable.
-    NSWindow *window = self.baseQueryWindow ?: self.view.window;
-    if (!window) {
-        self.lockResizeWindow = NO;
-        return;
-    }
-
     CGFloat deltaHeight = window.height - showingWindowHeight;
     CGFloat y = window.y + deltaHeight;
 
@@ -1915,8 +1939,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     // so on multi-monitor setups it can yank the window back to the old display.
     // window.screen picks the display with the largest overlap, which handles
     // cross-screen drags better than our own first-intersect lookup.
-    NSScreen *currentScreen = window.screen ?: [EZCoordinateUtils screenForRect:newFrame] ?: NSScreen.mainScreen;
-    CGRect screenVisibleFrame = currentScreen.visibleFrame;
     CGRect safeFrame = [EZCoordinateUtils getSafeAreaFrame:newFrame inScreenVisibleFrame:screenVisibleFrame];
 
     if (ez_frame_equal_with_tolerance(window.frame,
@@ -1958,18 +1980,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
             [self.baseQueryWindow makeFirstResponder:self.queryView.textView];
         }
     }
-}
-
-- (CGFloat)getRestrainedScrollViewHeight:(CGFloat)scrollViewContentHeight {
-    CGFloat height = scrollViewContentHeight;
-
-    CGSize minimumWindowSize = [EZLayoutManager.shared minimumWindowSize:self.windowType];
-    CGSize maximumWindowSize = [EZLayoutManager.shared maximumWindowSize:self.windowType];
-
-    height = MAX(height, minimumWindowSize.height);
-    height = MIN(height, maximumWindowSize.height);
-
-    return height;
 }
 
 /// Manually calculate tableView row height.

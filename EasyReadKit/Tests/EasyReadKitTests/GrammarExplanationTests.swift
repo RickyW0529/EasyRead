@@ -1,10 +1,13 @@
+@testable import EasyReadKit
 // Copyright © 2026 EasyRead contributors. GPL-3.0.
 import Foundation
 import Testing
-@testable import EasyReadKit
 
 /// Offline contract tests; these validate evidence, not model accuracy.
-@Suite struct GrammarExplanationTests {
+@Suite
+struct GrammarExplanationTests {
+    // MARK: Internal
+
     static let sentences = [
         "The operating system schedules each process to run on the CPU.",
         "The bank approved the loan after reviewing the application.",
@@ -37,59 +40,67 @@ import Testing
         "Had the request been cancelled, no result would have appeared.",
         "The value is immutable; therefore, concurrent readers are safe.",
         "The runtime stores a café label next to an emoji 🧠.",
-        "The function returns\na value that the runtime caches."
+        "The function returns\na value that the runtime caches.",
     ]
 
-    private func payload(_ sentence: String, excerpt: String? = nil) throws -> String {
-        let object: [String: Any] = [
-            "originalSentence": sentence, "translationZh": "中文翻译", "mainClause": "主语与谓语",
-            "structures": [["excerpt": excerpt ?? sentence, "labelZh": "结构", "explanationZh": "说明"]],
-            "readingSteps": ["先读主干"], "terminology": []
-        ]
-        return String(decoding: try JSONSerialization.data(withJSONObject: object), as: UTF8.self)
-    }
-
-    @Test(arguments: sentences) func acceptsVerifiedStructures(_ sentence: String) throws {
+    @Test(arguments: sentences)
+    func acceptsVerifiedStructures(_ sentence: String) throws {
         let answer = try GrammarExplanation.decode(jsonContent: payload(sentence)).validated(queriedSentence: sentence)
         #expect(answer.originalSentence == sentence)
         #expect(answer.structures.first?.excerpt == sentence)
         #expect(answer.translationZh == "中文翻译")
     }
 
-    @Test func rejectsInventedExcerpt() throws {
+    @Test
+    func rejectsInventedExcerpt() throws {
         let sentence = "The process runs."
         let answer = try GrammarExplanation.decode(jsonContent: payload(sentence, excerpt: "The kernel sleeps"))
         #expect(throws: GrammarExplanation.ValidationError.self) { try answer.validated(queriedSentence: sentence) }
     }
 
-    @Test func rejectsRewrittenOriginal() throws {
+    @Test
+    func rejectsRewrittenOriginal() throws {
         let answer = try GrammarExplanation.decode(jsonContent: payload("The process sleeps."))
-        #expect(throws: GrammarExplanation.ValidationError.self) { try answer.validated(queriedSentence: "The process runs.") }
+        #expect(throws: GrammarExplanation.ValidationError.self) {
+            try answer.validated(queriedSentence: "The process runs.")
+        }
     }
 
-    @Test func permitsOnlyWhitespaceNormalization() throws {
+    @Test
+    func permitsOnlyWhitespaceNormalization() throws {
         let answer = try GrammarExplanation.decode(jsonContent: payload("The process runs."))
         #expect(try answer.validated(queriedSentence: "The\nprocess  runs.").originalSentence == "The process runs.")
     }
 
-    @Test func rejectsWhitespaceTranslation() throws {
+    @Test
+    func rejectsWhitespaceTranslation() throws {
         let json = try payload("The process runs.").replacingOccurrences(of: "中文翻译", with: "  ")
         let answer = try GrammarExplanation.decode(jsonContent: json)
-        #expect(throws: GrammarExplanation.ValidationError.self) { try answer.validated(queriedSentence: "The process runs.") }
+        #expect(throws: GrammarExplanation.ValidationError.self) {
+            try answer.validated(queriedSentence: "The process runs.")
+        }
     }
 
-    @Test func rejectsOversizedFields() throws {
-        let json = try payload("The process runs.").replacingOccurrences(of: "先读主干", with: String(repeating: "x", count: 2001))
+    @Test
+    func rejectsOversizedFields() throws {
+        let json = try payload("The process runs.").replacingOccurrences(
+            of: "先读主干",
+            with: String(repeating: "x", count: 2001)
+        )
         let answer = try GrammarExplanation.decode(jsonContent: json)
-        #expect(throws: GrammarExplanation.ValidationError.self) { try answer.validated(queriedSentence: "The process runs.") }
+        #expect(throws: GrammarExplanation.ValidationError.self) {
+            try answer.validated(queriedSentence: "The process runs.")
+        }
     }
 
-    @Test func rejectsMalformedJSON() {
+    @Test
+    func rejectsMalformedJSON() {
         #expect(throws: DecodingError.self) { try GrammarExplanation.decode(jsonContent: "{oops}") }
         #expect(throws: DecodingError.self) { try GrammarExplanation.decode(jsonContent: "{}") }
     }
 
-    @Test func promptKeepsInjectionInData() throws {
+    @Test
+    func promptKeepsInjectionInData() throws {
         let source = Self.sentences[8]
         let prompt = try SentencePrompt.userPrompt(sentence: source, grammar: true)
         let object = try #require(JSONSerialization.jsonObject(with: Data(prompt.utf8)) as? [String: Any])
@@ -97,5 +108,16 @@ import Testing
         #expect(object["task"] as? String == "sentence_grammar")
         #expect(SentencePrompt.systemPrompt.contains("untrusted data"))
         #expect(object["sourceBundleID"] == nil)
+    }
+
+    // MARK: Private
+
+    private func payload(_ sentence: String, excerpt: String? = nil) throws -> String {
+        let object: [String: Any] = [
+            "originalSentence": sentence, "translationZh": "中文翻译", "mainClause": "主语与谓语",
+            "structures": [["excerpt": excerpt ?? sentence, "labelZh": "结构", "explanationZh": "说明"]],
+            "readingSteps": ["先读主干"], "terminology": [],
+        ]
+        return String(decoding: try JSONSerialization.data(withJSONObject: object), as: UTF8.self)
     }
 }

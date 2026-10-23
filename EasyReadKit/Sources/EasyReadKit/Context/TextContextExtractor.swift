@@ -19,21 +19,7 @@ import Foundation
 /// ambiguous (the selection occurs multiple times) or the context had to be
 /// hard-capped, it reports `nearbyText`.
 public struct TextContextExtractor: Equatable, Sendable {
-    /// Extracted context ready to be stored in a `SelectionSnapshot`.
-    public struct Result: Equatable, Sendable {
-        /// Length-limited, sanitized surrounding text. `nil` when no context
-        /// could be captured.
-        public let surroundingText: String?
-
-        /// How trustworthy `surroundingText` is.
-        public let availability: ContextAvailability
-
-        public static let selectionOnly = Result(surroundingText: nil, availability: .selectionOnly)
-    }
-
-    public var policy: SelectionPolicy
-    public var detector: SentenceBoundaryDetector
-    public var sanitizer: ContextSanitizer
+    // MARK: Lifecycle
 
     public init(
         policy: SelectionPolicy = .default,
@@ -44,6 +30,24 @@ public struct TextContextExtractor: Equatable, Sendable {
         self.detector = detector
         self.sanitizer = sanitizer
     }
+
+    // MARK: Public
+
+    /// Extracted context ready to be stored in a `SelectionSnapshot`.
+    public struct Result: Equatable, Sendable {
+        public static let selectionOnly = Result(surroundingText: nil, availability: .selectionOnly)
+
+        /// Length-limited, sanitized surrounding text. `nil` when no context
+        /// could be captured.
+        public let surroundingText: String?
+
+        /// How trustworthy `surroundingText` is.
+        public let availability: ContextAvailability
+    }
+
+    public var policy: SelectionPolicy
+    public var detector: SentenceBoundaryDetector
+    public var sanitizer: ContextSanitizer
 
     /// Extracts the context around `selectedText` from `fullText`.
     ///
@@ -59,8 +63,9 @@ public struct TextContextExtractor: Equatable, Sendable {
         fullText: String?,
         selectedText: String,
         selectedRange: NSRange?
-    ) -> Result {
-        guard case .valid(let trimmedSelection) = policy.validateSelection(selectedText) else {
+    )
+        -> Result {
+        guard case let .valid(trimmedSelection) = policy.validateSelection(selectedText) else {
             return .selectionOnly
         }
 
@@ -111,6 +116,20 @@ public struct TextContextExtractor: Equatable, Sendable {
 
     // MARK: Private
 
+    /// Characters that may trail a sentence's last content character: gap
+    /// whitespace, extra terminators (ellipsis, `?!`) and closing quotes or
+    /// brackets. Walking backwards over them lands on the previous
+    /// sentence's final content character.
+    private static let sentenceTailCharacters: Set<unichar> = [
+        32, 9, 10, 13, 160, // space, tab, newline, carriage return, no-break space
+        46, 33, 63, // . ! ?
+        34, 39, 41, 93, 125, 187, 8217, 8221, // " ' ) ] } » ’ ”
+    ]
+
+    private static func isGapCharacter(_ c: unichar) -> Bool {
+        c == 32 || c == 9 || c == 10 || c == 13 || c == 160
+    }
+
     /// Locates the trimmed selection in the full text.
     ///
     /// A reported Accessibility range is trusted when its (trimmed) content
@@ -122,7 +141,8 @@ public struct TextContextExtractor: Equatable, Sendable {
         reportedRange: NSRange?,
         in text: NSString,
         availability: inout ContextAvailability
-    ) -> NSRange? {
+    )
+        -> NSRange? {
         if let reportedRange, reportedRange.length > 0, reportedRange.location >= 0,
            NSMaxRange(reportedRange) <= text.length {
             let reportedText = text.substring(with: reportedRange)
@@ -175,7 +195,8 @@ public struct TextContextExtractor: Equatable, Sendable {
         aroundSentence sentence: NSRange,
         selection: NSRange,
         in text: NSString
-    ) -> (range: NSRange, hardCapped: Bool) {
+    )
+        -> (range: NSRange, hardCapped: Bool) {
         let length = text.length
         let maxLength = policy.maxContextLength
 
@@ -266,18 +287,4 @@ public struct TextContextExtractor: Equatable, Sendable {
         }
         return range
     }
-
-    private static func isGapCharacter(_ c: unichar) -> Bool {
-        c == 32 || c == 9 || c == 10 || c == 13 || c == 160
-    }
-
-    /// Characters that may trail a sentence's last content character: gap
-    /// whitespace, extra terminators (ellipsis, `?!`) and closing quotes or
-    /// brackets. Walking backwards over them lands on the previous
-    /// sentence's final content character.
-    private static let sentenceTailCharacters: Set<unichar> = [
-        32, 9, 10, 13, 160, // space, tab, newline, carriage return, no-break space
-        46, 33, 63, // . ! ?
-        34, 39, 41, 93, 125, 187, 8217, 8221, // " ' ) ] } » ’ ”
-    ]
 }

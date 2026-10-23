@@ -6,11 +6,11 @@
 //  Copyright © 2026 izual. All rights reserved.
 //
 
+import AppKit
 import AXSwift
 import Defaults
 import EasyReadKit
 import Foundation
-import AppKit
 
 // MARK: - AXContextExtractor
 
@@ -25,6 +25,24 @@ import AppKit
 /// Privacy: only the availability and the sensitive-app category are logged;
 /// the selected text, the extracted context and the bundle id never are.
 struct AXContextExtractor: ContextExtracting {
+    // MARK: Internal
+
+    /// Runs before every selection strategy, including clipboard/browser fallbacks.
+    static func shouldBlockCurrentSelection() -> Bool {
+        let app = NSWorkspace.shared.frontmostApplication
+        let rules = makeRules()
+        if rules.isSensitive(bundleID: app?.bundleIdentifier) { return true }
+        guard let app, let application = Application(app),
+              let element = try? application.focusedUIElement() else { return false }
+        return isProtected(element, rules: rules)
+    }
+
+    /// Re-evaluates exclusions at send time, including changes made after capture.
+    static func allowsAI(snapshot: SelectionSnapshot?) -> Bool {
+        if let snapshot, makeRules().isSensitive(bundleID: snapshot.sourceBundleID) { return false }
+        return true
+    }
+
     func captureContext(selectedText: String) async -> SelectionSnapshot {
         let trimmedSelection = selectedText.trimmingCharacters(in: .whitespacesAndNewlines)
         // Read the frontmost application once: a second read for the AX
@@ -59,9 +77,10 @@ struct AXContextExtractor: ContextExtracting {
             return .selectionOnly(selectedText: trimmedSelection, sourceBundleID: bundleID)
         }
         var countValue: CFTypeRef?
-        guard AXUIElementCopyAttributeValue(element.element, kAXNumberOfCharactersAttribute as CFString, &countValue) == .success,
-              let count = countValue as? Int, count >= range.location,
-              range.length <= count - range.location else {
+        guard AXUIElementCopyAttributeValue(element.element, kAXNumberOfCharactersAttribute as CFString, &countValue) ==
+            .success,
+            let count = countValue as? Int, count >= range.location,
+            range.length <= count - range.location else {
             return .selectionOnly(selectedText: trimmedSelection, sourceBundleID: bundleID)
         }
         let lower = max(0, range.location - 300)
@@ -95,29 +114,13 @@ struct AXContextExtractor: ContextExtracting {
         )
     }
 
-    /// Runs before every selection strategy, including clipboard/browser fallbacks.
-    static func shouldBlockCurrentSelection() -> Bool {
-        let app = NSWorkspace.shared.frontmostApplication
-        let rules = makeRules()
-        if rules.isSensitive(bundleID: app?.bundleIdentifier) { return true }
-        guard let app, let application = Application(app),
-              let element = try? application.focusedUIElement() else { return false }
-        return isProtected(element, rules: rules)
-    }
+    // MARK: Private
 
     private static func isProtected(_ element: UIElement, rules: SensitiveAppRules) -> Bool {
         let subrole: String? = try? element.attribute(.subrole)
         return rules.isProtectedElement(roleValue: try? element.roleValue())
             || rules.isProtectedElement(roleValue: subrole)
     }
-
-    /// Re-evaluates exclusions at send time, including changes made after capture.
-    static func allowsAI(snapshot: SelectionSnapshot?) -> Bool {
-        if let snapshot, makeRules().isSensitive(bundleID: snapshot.sourceBundleID) { return false }
-        return true
-    }
-
-    // MARK: Private
 
     /// Sensitive-app rules with this app's own bundle id added and the
     /// user-managed exclusion list applied.

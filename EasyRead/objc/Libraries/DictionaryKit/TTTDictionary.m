@@ -196,36 +196,24 @@ extern CFArrayRef DCSCopyRecordsForSearchString(DCSDictionaryRef, CFStringRef, u
 @implementation TTTDictionary
 
 + (nullable instancetype)dictionaryNamed:(NSString *)name {
-    static NSDictionary *_availableDictionariesKeyedByName = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSMutableDictionary *mutableAvailableDictionariesKeyedByName = [NSMutableDictionary dictionaryWithCapacity:[[self availableDictionaries] count]];
-        for (TTTDictionary *dictionary in [self availableDictionaries]) {
-            mutableAvailableDictionariesKeyedByName[dictionary.name] = dictionary;
+    for (TTTDictionary *dictionary in [self availableDictionaries]) {
+        if ([dictionary.name isEqualToString:name]) {
+            return dictionary;
         }
-        
-        _availableDictionariesKeyedByName = [NSDictionary dictionaryWithDictionary:mutableAvailableDictionariesKeyedByName];
-    });
-    
-    return _availableDictionariesKeyedByName[name];
+    }
+    return nil;
 }
 
 + (NSSet<TTTDictionary *> *)availableDictionaries {
-    // Cost < 0.1s
-    static NSSet *_availableDictionaries = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSMutableSet *mutableDictionaries = [NSMutableSet set];
-        for (id dictionary in (__bridge_transfer NSArray *)DCSCopyAvailableDictionaries()) {
-            TTTDictionary *availableDictionary = [[TTTDictionary alloc] initWithDictionaryRef:(__bridge DCSDictionaryRef)dictionary];
-            if (availableDictionary) {
-                [mutableDictionaries addObject:availableDictionary];
-            }
+    // Dictionary.app can finish downloading resources while EasyRead is running.
+    NSMutableSet *mutableDictionaries = [NSMutableSet set];
+    for (id dictionary in (__bridge_transfer NSArray *)DCSCopyAvailableDictionaries()) {
+        TTTDictionary *availableDictionary = [[TTTDictionary alloc] initWithDictionaryRef:(__bridge DCSDictionaryRef)dictionary];
+        if (availableDictionary) {
+            [mutableDictionaries addObject:availableDictionary];
         }
-        _availableDictionaries = [NSSet setWithSet:mutableDictionaries];
-    });
-    return _availableDictionaries;
+    }
+    return [NSSet setWithSet:mutableDictionaries];
 }
 
 /// Active dictionaries are dictionaries that are currently enabled in Dictionary.app
@@ -368,13 +356,11 @@ extern CFArrayRef DCSCopyRecordsForSearchString(DCSDictionaryRef, CFStringRef, u
 }
 
 - (NSArray<TTTDictionaryEntry *> *)entriesForSearchTerm:(NSString *)term searchType:(TTTDictionarySearchType)searchType {
-    CFRange termRange = DCSGetTermRangeInString(self.dictionary, (__bridge CFStringRef)term, 0);
-    if (termRange.location == kCFNotFound) {
-        return nil;
+    if (term.length == 0) {
+        return @[];
     }
-    
-    term = [term substringWithRange:NSMakeRange(termRange.location, termRange.length)];
-    
+    // The caller supplies the complete headword, including spaces and hyphens.
+    // Term-range detection at offset zero can reduce a phrase to its first word.
     NSArray *records = (__bridge_transfer NSArray *)DCSCopyRecordsForSearchString(self.dictionary, (__bridge CFStringRef)term, searchType, 0);
     NSMutableArray *mutableEntries = [NSMutableArray arrayWithCapacity:[records count]];
     if (records) {

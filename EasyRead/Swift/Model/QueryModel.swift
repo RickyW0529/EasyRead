@@ -197,7 +197,7 @@ open class QueryModel: NSObject, NSCopying {
     /// window, so a later selection of the same text in a different app
     /// must not keep the previous query's snapshot. No match in the store
     /// means no context (honest degradation), never a stale one.
-    @objc
+
     func attachContextSnapshot() {
         readingQueryID = UUID()
         contextSnapshot = [ActionType.autoSelectQuery, .shortcutQuery].contains(actionType)

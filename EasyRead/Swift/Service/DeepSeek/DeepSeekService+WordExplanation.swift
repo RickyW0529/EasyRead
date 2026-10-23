@@ -6,8 +6,8 @@
 //  Copyright © 2026 izual. All rights reserved.
 //
 
-import EasyReadKit
 import Defaults
+import EasyReadKit
 import Foundation
 
 // MARK: - DeepSeekService + Word Explanation
@@ -27,7 +27,8 @@ extension DeepSeekService {
         text: String,
         from: Language,
         to: Language
-    ) -> AsyncThrowingStream<String, Error>? {
+    )
+        -> AsyncThrowingStream<String, Error>? {
         guard from == .english,
               queryType(text: text, from: from, to: to) == .dictionary,
               !apiKey.isEmpty
@@ -68,7 +69,8 @@ extension DeepSeekService {
         text: String,
         snapshot: SelectionSnapshot?,
         url: URL
-    ) -> AsyncThrowingStream<String, Error> {
+    )
+        -> AsyncThrowingStream<String, Error> {
         AsyncThrowingStream { continuation in
             if let currentTask, !currentTask.isCancelled {
                 currentTask.cancel()
@@ -185,7 +187,8 @@ extension DeepSeekService {
     static func explanationMarkdown(
         _ explanation: AIWordExplanation,
         snapshot: SelectionSnapshot?
-    ) -> String {
+    )
+        -> String {
         var headline = "**\(explanation.primaryMeaningZh)**"
         if let partOfSpeech = explanation.partOfSpeech, !partOfSpeech.isEmpty {
             headline += " · \(partOfSpeech)"

@@ -18,6 +18,26 @@ import Foundation
 /// else in this snapshot stays on the local machine: `sourceBundleID` exists
 /// only for local policy decisions and must never be uploaded.
 public struct SelectionSnapshot: Equatable, Sendable {
+    // MARK: Lifecycle
+
+    public init(
+        selectedText: String,
+        surroundingText: String?,
+        availability: ContextAvailability,
+        sourceBundleID: String?,
+        timestamp: Date = Date(),
+        selectionID: UUID = UUID()
+    ) {
+        self.selectedText = selectedText
+        self.surroundingText = surroundingText
+        self.availability = availability
+        self.sourceBundleID = sourceBundleID
+        self.timestamp = timestamp
+        self.selectionID = selectionID
+    }
+
+    // MARK: Public
+
     /// The text the user selected, trimmed.
     public let selectedText: String
 
@@ -39,27 +59,12 @@ public struct SelectionSnapshot: Equatable, Sendable {
     /// a late response can never be attached to a different selection.
     public let selectionID: UUID
 
-    public init(
-        selectedText: String,
-        surroundingText: String?,
-        availability: ContextAvailability,
-        sourceBundleID: String?,
-        timestamp: Date = Date(),
-        selectionID: UUID = UUID()
-    ) {
-        self.selectedText = selectedText
-        self.surroundingText = surroundingText
-        self.availability = availability
-        self.sourceBundleID = sourceBundleID
-        self.timestamp = timestamp
-        self.selectionID = selectionID
-    }
-
     /// A snapshot without any context, for sensitive or unsupported sources.
     public static func selectionOnly(
         selectedText: String,
         sourceBundleID: String?
-    ) -> SelectionSnapshot {
+    )
+        -> SelectionSnapshot {
         SelectionSnapshot(
             selectedText: selectedText,
             surroundingText: nil,

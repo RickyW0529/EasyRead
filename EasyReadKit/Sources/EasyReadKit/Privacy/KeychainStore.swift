@@ -15,12 +15,16 @@ import Security
 /// failing operation's payload (the secret itself) must never appear in
 /// an error description or a log.
 public struct KeychainStoreError: Error, Equatable, Sendable {
-    /// The `OSStatus` returned by the Security framework.
-    public let status: OSStatus
+    // MARK: Lifecycle
 
     public init(status: OSStatus) {
         self.status = status
     }
+
+    // MARK: Public
+
+    /// The `OSStatus` returned by the Security framework.
+    public let status: OSStatus
 }
 
 // MARK: - KeychainStore
@@ -32,15 +36,29 @@ public struct KeychainStoreError: Error, Equatable, Sendable {
 /// reports or logs. Saving an empty string deletes the item, so "clear the
 /// key" is a plain `save("")`.
 public struct KeychainStore: Equatable, Sendable {
+    // MARK: Lifecycle
+
+    public init(service: String, account: String) {
+        self.service = service
+        self.account = account
+    }
+
+    // MARK: Public
+
     /// The Keychain item's `kSecAttrService`.
     public let service: String
 
     /// The Keychain item's `kSecAttrAccount`.
     public let account: String
 
-    public init(service: String, account: String) {
-        self.service = service
-        self.account = account
+    /// Whether a secret is currently stored.
+    public var hasValue: Bool {
+        // `try?` flattens the double optional (`read()` returns `String?`),
+        // so a thrown error and "no item stored" both land here as nil.
+        guard let secret = try? read() else {
+            return false
+        }
+        return !secret.isEmpty
     }
 
     /// Reads the stored secret.
@@ -109,15 +127,7 @@ public struct KeychainStore: Equatable, Sendable {
         }
     }
 
-    /// Whether a secret is currently stored.
-    public var hasValue: Bool {
-        // `try?` flattens the double optional (`read()` returns `String?`),
-        // so a thrown error and "no item stored" both land here as nil.
-        guard let secret = try? read() else {
-            return false
-        }
-        return !secret.isEmpty
-    }
+    // MARK: Private
 
     private func baseQuery() -> [String: Any] {
         [

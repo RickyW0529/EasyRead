@@ -3,10 +3,10 @@
 EasyRead is a derivative of [tisfeng/Easydict](https://github.com/tisfeng/Easydict),
 based on commit `cfda6e2f`. Copyright notices in inherited source files and the
 [GPL-3.0 license](LICENSE) are retained. Existing source/resource authorship is not
-reassigned to EasyRead. Consult [upstream tracking](docs/user-docs/en/EASYREAD_UPSTREAM.md).
+reassigned to EasyRead. See the [upstream source project](https://github.com/tisfeng/Easydict).
 
 Dependencies remain declared in `Podfile`, `Podfile.lock`,
-`Easydict.xcodeproj/project.pbxproj` and the workspace's SwiftPM resolution files.
+`EasyRead.xcodeproj/project.pbxproj` and the workspace's SwiftPM resolution files.
 Their source license files and CocoaPods acknowledgments remain authoritative;
 this document is not a replacement or a complete legal audit of every asset.
 Preserve required notices when distributing binaries and corresponding source.

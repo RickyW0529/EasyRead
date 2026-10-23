@@ -1,6 +1,6 @@
-# 在 Easydict 中使用 MDict
+# 在 EasyRead 中使用 MDict
 
-Easydict 可以直接查询本地 MDict 词典，无需先转换为 Apple `.dictionary` 格式，也不需要
+EasyRead 可以直接查询本地 MDict 词典，无需先转换为 Apple `.dictionary` 格式，也不需要
 API Key。
 
 ## 支持的文件
@@ -8,17 +8,17 @@ API Key。
 - `.mdx`：词典正文，导入词典时必需。
 - `.mdd`：图片、样式、发音等资源，可选。
 
-请仅使用你有权使用的词典文件。Easydict 不提供第三方词典下载。
+请仅使用你有权使用的词典文件。EasyRead 不提供第三方词典下载。
 
 ## 导入词典
 
 1. 将同一部词典的 `.mdx` 和 `.mdd` 放在同一个文件夹中，并保留匹配的文件名。
-2. 打开 Easydict“设置 → 服务”，添加或打开 MDict 服务。
-3. 点击导入按钮并选择 `.mdx` 文件。Easydict 会自动发现同目录下匹配的 `.mdd` 文件。
+2. 打开 EasyRead“设置 → 服务”，添加或打开 MDict 服务。
+3. 点击导入按钮并选择 `.mdx` 文件。EasyRead 会自动发现同目录下匹配的 `.mdd` 文件。
 4. 如果资源文件没有自动关联，也可以在同一位置单独选择对应的 `.mdd` 文件。
 5. 确认词典已启用；有多部词典时可拖动调整查询顺序。
 
-Easydict 保存的是原文件路径，不会复制词典。导入后请勿移动、重命名或删除 `.mdx`/`.mdd`
+EasyRead 保存的是原文件路径，不会复制词典。导入后请勿移动、重命名或删除 `.mdx`/`.mdd`
 文件，否则需要重新导入。
 
 ## 管理词典
@@ -50,4 +50,4 @@ Easydict 保存的是原文件路径，不会复制词典。导入后请勿移�
 
 - `.dictionary` 文件由 macOS“词典”App 管理，请使用
   [Apple Dictionary 指南](./How-to-use-macOS-system-dictionary-in-Easydict.md)。
-- `.mdx`/`.mdd` 文件由 Easydict 的 MDict 服务直接管理，请使用本文流程。
+- `.mdx`/`.mdd` 文件由 EasyRead 的 MDict 服务直接管理，请使用本文流程。

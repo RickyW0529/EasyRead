@@ -146,8 +146,7 @@ jobs:
         # `COMBINE_HIDPI_IMAGES=NO` cover (1), (2) and (3) respectively. Only these three
         # workarounds are needed: the other tools this build spawns (touch, ibtool, actool)
         # ship an x86_64 slice and are unaffected. All three are build-only changes that do
-        # not affect the sources being analyzed or any shipped artifact; see
-        # docs/histories/2026-09/2026-09-25-codeql-swiftpm-manifest-sandbox.md.
+        # not affect the sources being analyzed or any shipped artifact.
         run: |
           xcodebuild build \
             -workspace EasyRead.xcworkspace \

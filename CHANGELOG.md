@@ -1,16 +1,15 @@
 # Changelog
 
-## Unreleased — EasyRead V1 development
+## Unreleased — EasyRead development
 
-- Forked Easydict at `cfda6e2f`; renamed the product and bundle identifiers to EasyRead.
-- Defaulted to Apple Dictionary, with AI and telemetry off; removed the upstream update channel.
-- Added bounded, opt-in reading context extraction and sensitive-source exclusions.
-- Stored DeepSeek keys in Keychain, with connection testing and classified failures.
-- Added structured word/phrase explanations, explicit sentence translation and grammar parsing.
-- Validated echoed source text and grammar excerpts; bounded retries, deadlines and cancellation.
-- Added a progressive SwiftUI reading card with copy, retry and cancellation.
-- Disabled automatic query history by default and removed reading text from active query logs.
-- Added offline contract tests and development/privacy/upstream documentation.
+- Developed from Easydict with the EasyRead product and bundle names; retained GPL-3.0 and upstream attribution.
+- Added dictionary-first reading with Apple Dictionary and optional local MDict imports.
+- Added configurable AI reading providers, API endpoints and models, with keys stored in Keychain.
+- Combined original text, translation, dictionary results and sentence analysis in one selection panel.
+- Added continuous grammar underlines with labels below them and explanations beside the sentence.
+- Made query windows adapt to content and available screen space.
+- Added opt-in bounded context extraction, sensitive-source exclusions, cancellation and source-text validation.
+- Added standalone context, privacy, transport and grammar tests in EasyReadKit.
 
-App builds, signed artifacts, runtime screenshots and manual compatibility checks
-are pending full Xcode verification. No EasyRead release has been published.
+The project is under development and is currently tried through local source builds.
+No distribution-signed and notarized EasyRead release has been published.

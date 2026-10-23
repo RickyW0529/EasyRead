@@ -87,10 +87,6 @@ node_modules/
 # macOS Finder custom icon file (contains carriage return in filename, invalid on Windows)
 Icon?
 
-# `Icon?` also matches managed `icons` directories on case-insensitive macOS.
-!.agents/skills/fireworks-tech-graph/assets/icons/
-!.agents/skills/fireworks-tech-graph/assets/icons/**
-
 .sentryclirc
 
 # Python
@@ -117,3 +113,34 @@ BuildTools/.swiftpm
 
 # Agent goal-session state (transient, not repo governance)
 .claude-goal.md
+
+# Local AI tooling and development records are not part of the published project.
+/.agents/
+/.claude/
+/AGENTS.md
+/DEVELOPMENT_SPEC.md
+/skills-lock.json
+/docs/agents/
+/docs/exec-plans/
+/docs/histories/
+/docs/references/
+/docs/design-docs/
+
+# Retired upstream documentation and social/release automation, retained locally.
+/appcast.xml
+/changelog/
+/docs/releases/
+/docs/assets/star-history/
+/scripts/star-history/
+/.github/ISSUE_TEMPLATE/
+/.github/pull_request_template.md
+/.github/workflows/greetings.yml
+/.github/workflows/issue-translator.yml
+/.github/workflows/star_fork_notification.yml
+/.github/workflows/update-star-history.yml
+/docs/user-docs/*/GUIDE.md
+/docs/user-docs/*/SERVICES.md
+/docs/user-docs/*/SPONSOR_LIST.md
+/docs/user-docs/*/How-to-translate-Easydict.md
+/docs/user-docs/en/EASYREAD_TEST_PLAN.md
+/docs/user-docs/en/EASYREAD_UPSTREAM.md

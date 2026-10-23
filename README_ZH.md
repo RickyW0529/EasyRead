@@ -1,53 +1,97 @@
-# EasyRead macOS 阅读助手
+# EasyRead
 
 中文 · [English](README.md)
 
-EasyRead 是基于 [Easydict](https://github.com/tisfeng/Easydict) 开发的英语阅读助手，
-遵循 [GPL-3.0](LICENSE)，目标系统为 macOS 13 及以上。目前处于开发阶段，已通过本地
-Xcode 构建，可供试用；正式分发签名、公证与发布尚未完成。
+面向 macOS 的英语阅读助手。遇到不熟悉的词、术语或长难句时，在一个划词面板里完成查词、
+翻译和语法理解，减少阅读过程中的来回切换。
 
-## 使用
+## 基于 Easydict 开发与致谢
 
-1. 在支持的应用中选词，或在查询窗口手动输入。无需 API Key 或网络即可使用 Apple 系统词典；
-   需先在 macOS「词典」App 中下载并启用相应词库。
-   [系统词典设置](docs/user-docs/zh/How-to-use-macOS-system-dictionary-in-Easydict.md)。
-2. 如需 AI，在设置 → 服务 → DeepSeek 中保存自己的 API Key（存入 Keychain），测试连接，
-   再主动开启 DeepSeek。API 会按 [DeepSeek 官方规则](https://api-docs.deepseek.com/quick_start/pricing/)
-   计费；默认模型为 `deepseek-flash`，阅读操作关闭 thinking，仅访问官方 HTTPS API。
-3. 阅读卡提供「解释单词／短语」「翻译句子」「解析句子」。解析成功后先显示中文翻译，
-   语法详情按需展开；支持取消、重试、复制。AI 故障不影响独立的本地词典结果。
-   句子解析必须点击触发，不自动生成长篇报告。
-4. 上下文提取默认关闭。可在设置 → 隐私中开启并配置排除应用。仅通过 Accessibility 读取
-   限定范围；不支持时明确降级为仅选中文字，不猜测原句。
+EasyRead 基于开源项目 [Easydict](https://github.com/tisfeng/Easydict) 开发，沿用了它在
+划词捕获、查询窗口、系统词典和翻译服务上的基础能力。感谢 **tisfeng 及所有 Easydict
+贡献者**提供这些扎实的开源工作。
 
-AI、自动查询历史与遥测默认关闭；可选本地 MDict 导入与继承的非 AI 翻译服务仍在设置中保留。
-V1 唯一可配置 AI 是 DeepSeek。详见 [PRIVACY.md](PRIVACY.md)。
+EasyRead 在此基础上聚焦英语阅读理解，把词典释义、译文和语法解析放进同一个阅读面板。
+本项目是 Easydict 的衍生项目，继续遵循 [GPL-3.0](LICENSE)，保留原有版权声明与
+[第三方归属说明](THIRD_PARTY_NOTICES.md)。
 
-## 权限与限制
+## 目标用户是谁？
 
-辅助功能权限用于划词；拒绝权限后仍可手动输入和访问设置。原生密码字段、密码管理器、
-终端及排除应用在选区提取前被拦截。敏感来源识别无法覆盖所有软件，请主动添加排除应用。
-Safari、Chrome、Preview、VS Code、Obsidian 暴露的 Accessibility 能力不同，不能保证均可取得
-原句。超过 2,000 字符的阅读操作会提示缩小选区，语法片段与原文不符时拒绝展示。
-离线测试证明数据契约，不证明 AI 理解一定正确。
+适合已经有一定英语基础，但阅读时仍会被生词、专业术语和复杂句子打断的 Mac 用户：
 
-已使用 Xcode 27 完成应用构建；跨应用划词、真实 DeepSeek 响应与界面验收仍需试用验证。
+- **学生与研究者**：阅读英文论文、教材、课程资料。
+- **开发者与专业读者**：阅读技术文档、英文参考资料和行业文章。
+- **英语学习者**：不只想知道中文意思，也想看懂句子的组成和表达方式。
 
-## 构建
+只需了解一个词时，可以直接查本地词典；需要理解语境或长句时，再使用 AI 辅助。
 
-安装完整 Xcode（含 macOS SDK）和 CocoaPods，配置 `xcode-select` 后在仓库运行：
+## 怎么使用 EasyRead？
+
+### 1. 构建并打开应用
+
+项目仍在开发中，目前通过源码构建试用。需要完整 Xcode、macOS SDK 和 CocoaPods，
+应用支持 macOS 13 及以上版本。
 
 ```bash
+git clone https://github.com/RickyW0529/EasyRead.git
+cd EasyRead
 pod install
 open EasyRead.xcworkspace
 ```
 
-使用共享 **EasyRead** scheme；源码目录、工程、Swift 模块和 Objective-C 桥接均为 EasyRead。
-Debug 构建默认支持本机临时签名，也可配置自己的开发签名团队。首次解析依赖需网络；分发签名、公证仍需单独完成。
-纯逻辑验证可运行 `swift test --package-path EasyReadKit`，Keychain 测试仅使用随机测试条目。
-完整命令及实际验证记录见 [测试计划](docs/user-docs/en/EASYREAD_TEST_PLAN.md)。
+在 Xcode 中选择 **EasyRead** scheme 后运行。固定本机签名身份、安装路径与划词授权的步骤，
+见[本地构建指南](docs/user-docs/zh/Local-development-build.md)。
 
-贡献规则见 [CONTRIBUTING.md](CONTRIBUTING.md) 与 [AGENTS.md](AGENTS.md)。
-[开发任务书](DEVELOPMENT_SPEC.md)、[架构](docs/design-docs/easyread-reading-flow.md)、
-[上游跟进](docs/user-docs/en/EASYREAD_UPSTREAM.md)、[第三方归属](THIRD_PARTY_NOTICES.md)
-与 [变更记录](CHANGELOG.md) 描述本 fork 的边界。分发时保留 GPL、上游版权与对应源码。
+### 2. 先配置本地词典
+
+打开 macOS「词典」App，在设置中勾选需要的词典，等待资源下载完成；再在 EasyRead 的服务设置中
+启用「苹果词典」。配置完成后，本地查词不需要 AI API Key，也不依赖网络。
+
+需要划词时，按提示授予辅助功能权限；也可以在查询窗口手动输入。不同应用提供的辅助功能能力
+不同，能否取得选中文字取决于来源应用。
+
+### 3. 按需开启 AI 阅读
+
+进入 **设置 → AI 翻译**，选择服务商，按需填写自己的 API Key 并选择模型，点击「测试连接」，
+确认可用后开启 AI 阅读。也可以配置自定义接口地址和模型名称。密钥保存在 macOS Keychain 中，
+API 的可用性与费用由所选服务决定。
+
+AI 默认关闭。开启后，提交符合条件的查询会自动生成阅读辅助结果。上下文提取在「隐私」设置中
+单独开启；开启且成功取得上下文时，有限的周边文本也可能发送给所选 AI 服务。
+具体见[隐私与数据流](PRIVACY.md)。
+
+### 4. 在划词面板中阅读
+
+在支持的应用中选中文字，通过已配置的划词操作或快捷键唤起 EasyRead：
+
+- **原文与翻译结果**：对照阅读，译文标题旁可以朗读和复制。
+- **句子解析**：原文片段下方有对应语法标签，空间足够时，逐项解释在右侧并排显示。
+- **词典**：查看苹果词典及其他已启用词典的释义。
+- **其他译文**：对照其他已启用服务的翻译结果。
+
+查询窗口随内容和屏幕可用空间调整尺寸；长内容可以展开或滚动查看，窄窗口会改为上下排版。
+AI 请求失败不会阻止独立的本地词典查询。
+
+## 为什么使用 AI 辅助翻译？
+
+译文能告诉你一段话「说了什么」，阅读学习还需要理解「为什么这样表达」。AI 可以帮助连接
+原文、词义和句子结构：
+
+- **结合语境理解词义**：例如操作系统文档中的 *process* 通常指「进程」，需要结合上下文
+  区分它与日常语言里的其他含义。
+- **拆解长难句**：把主语、谓语、修饰成分和插入语对应到原文片段，减少读到句尾却找不到主干的情况。
+- **通过对照积累阅读能力**：原文、译文和解释同时保留，看完解释后还能回到英语本身，理解术语和表达。
+
+本地词典适合快速、离线地查定义，AI 则补充词典难以直接提供的解释。AI 也可能理解错误，
+重要内容应结合原文核对。
+
+## 参与开发
+
+应用源码位于 `EasyRead/`，应用测试位于 `EasyReadTests/`；上下文和隐私逻辑位于可独立验证的
+`EasyReadKit/`。
+
+```bash
+swift test --package-path EasyReadKit
+```
+
+构建和贡献说明见 [CONTRIBUTING.md](CONTRIBUTING.md)。

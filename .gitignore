@@ -86,6 +86,8 @@ node_modules/
 
 # macOS Finder custom icon file (contains carriage return in filename, invalid on Windows)
 Icon?
+# Keep application resources: Icon? also matches the Icons directory.
+!/EasyRead/App/Icons/
 
 .sentryclirc
 

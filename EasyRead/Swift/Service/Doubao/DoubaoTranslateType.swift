@@ -1,6 +1,6 @@
 //
 //  DoubaoTranslateType.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Liaoworking on 2025/9/30.
 //  Copyright © 2025 izual. All rights reserved.

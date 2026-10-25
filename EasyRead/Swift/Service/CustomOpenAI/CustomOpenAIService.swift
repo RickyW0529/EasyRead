@@ -1,6 +1,6 @@
 //
 //  CustomOpenAIService.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by phlpsong on 2024/2/16.
 //  Copyright © 2024 izual. All rights reserved.

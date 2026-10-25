@@ -1,6 +1,6 @@
 //
 //  ChinseseMarker.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2025/3/30.
 //  Copyright © 2025 izual. All rights reserved.

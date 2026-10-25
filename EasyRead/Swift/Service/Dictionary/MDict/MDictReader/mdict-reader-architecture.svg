@@ -31,7 +31,7 @@
   <text x="48" y="72" class="subtitle">复用持久化 metadata cache，按需解压 key/record block，并在候选 block 内精确过滤返回文本定义或资源 Data。</text>
 
   <rect x="40" y="104" width="880" height="492" rx="10" ry="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
-  <text x="62" y="134" class="group-title">Easydict/Swift/Service/Dictionary/MDict/MDictReader</text>
+  <text x="62" y="134" class="group-title">EasyRead/Swift/Service/Dictionary/MDict/MDictReader</text>
 
   <rect x="66" y="164" width="828" height="146" rx="8" ry="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5" stroke-dasharray="7 5"/>
   <text x="88" y="191" class="lane-title">后台初始化解析</text>

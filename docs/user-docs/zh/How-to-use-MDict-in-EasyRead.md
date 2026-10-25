@@ -49,5 +49,5 @@ EasyRead 保存的是原文件路径，不会复制词典。导入后请勿移�
 ## Apple Dictionary 与 MDict 的区别
 
 - `.dictionary` 文件由 macOS“词典”App 管理，请使用
-  [Apple Dictionary 指南](./How-to-use-macOS-system-dictionary-in-Easydict.md)。
+  [Apple Dictionary 指南](./How-to-use-macOS-system-dictionary-in-EasyRead.md)。
 - `.mdx`/`.mdd` 文件由 EasyRead 的 MDict 服务直接管理，请使用本文流程。

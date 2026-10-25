@@ -1,6 +1,6 @@
 //
 //  CaiyunResponse.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Kyle on 2023/11/24.
 //  Copyright © 2023 izual. All rights reserved.

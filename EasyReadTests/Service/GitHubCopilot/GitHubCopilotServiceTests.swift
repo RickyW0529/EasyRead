@@ -1,6 +1,6 @@
 //
 //  GitHubCopilotServiceTests.swift
-//  EasydictTests
+//  EasyReadTests
 //
 //  Created by tisfeng on 2026/09/27.
 //  Copyright © 2026 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  I18nHelper.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by choykarl on 2024/3/4.
 //  Copyright © 2024 izual. All rights reserved.

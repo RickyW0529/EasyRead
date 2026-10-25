@@ -1,6 +1,6 @@
 //
 //  YoudaoOCRResponse.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2025/1/3.
 //  Copyright © 2025 izual. All rights reserved.

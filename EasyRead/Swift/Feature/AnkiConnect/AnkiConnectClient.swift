@@ -1,6 +1,6 @@
 //
 //  AnkiConnectClient.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by leexiaobu on 2026/6/29.
 //  Copyright © 2026 izual. All rights reserved.

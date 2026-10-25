@@ -1,6 +1,6 @@
 //
 //  ClaudeCodeEffort.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Karl on 2026/08/30.
 //  Copyright © 2026 izual. All rights reserved.

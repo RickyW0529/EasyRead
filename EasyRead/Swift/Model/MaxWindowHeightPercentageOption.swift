@@ -1,6 +1,6 @@
 //
 //  MaxWindowHeightPercentageOption.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by AI Agent on 2025-06-19.
 //  Copyright © 2025 izual. All rights reserved.

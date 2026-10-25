@@ -1,6 +1,6 @@
 //
 //  AppleOCREngine+WarmUp.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2026/9/26.
 //  Copyright © 2026 izual. All rights reserved.

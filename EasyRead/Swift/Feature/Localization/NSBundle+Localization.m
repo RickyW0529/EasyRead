@@ -1,6 +1,6 @@
 //
 //  NSBundle+Localization.m
-//  Easydict
+//  EasyRead
 //
 //  Created by choykarl on 2024/3/23.
 //  Copyright © 2024 izual. All rights reserved.

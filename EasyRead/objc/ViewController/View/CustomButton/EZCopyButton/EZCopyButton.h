@@ -1,6 +1,6 @@
 //
 //  EZCopyButton.h
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2023/4/24.
 //  Copyright © 2023 izual. All rights reserved.

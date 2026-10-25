@@ -1,6 +1,6 @@
 //
 //  CodexRequestCoordinatorTests.swift
-//  EasydictTests
+//  EasyReadTests
 //
 //  Created by Alfred on 2026/09/07.
 //

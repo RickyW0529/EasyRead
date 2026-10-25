@@ -1,6 +1,6 @@
 //
 //  EZDeviceSystemInfo.h
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2023/7/12.
 //  Copyright © 2023 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  MarkdownLabel.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Lin on 2026/4/30.
 //  Copyright © 2026 izual. All rights reserved.

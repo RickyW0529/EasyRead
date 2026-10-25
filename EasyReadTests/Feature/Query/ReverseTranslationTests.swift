@@ -1,6 +1,6 @@
 //
 //  ReverseTranslationTests.swift
-//  EasydictTests
+//  EasyReadTests
 //
 //  Created by tisfeng on 2026/9/5.
 //

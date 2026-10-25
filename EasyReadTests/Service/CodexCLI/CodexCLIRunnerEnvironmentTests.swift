@@ -1,6 +1,6 @@
 //
 //  CodexCLIRunnerEnvironmentTests.swift
-//  EasydictTests
+//  EasyReadTests
 //
 //  Created by long2ice on 2026/09/13.
 //  Copyright © 2026 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  QueryServiceRecord.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2023/12/13.
 //  Copyright © 2023 izual. All rights reserved.

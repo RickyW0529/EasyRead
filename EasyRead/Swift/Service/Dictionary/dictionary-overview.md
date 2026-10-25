@@ -1,6 +1,6 @@
 # 词典服务
 
-`Dictionary` 聚合 Easydict 的词典类服务和它们共用的 HTML 结果渲染基础设施。它只包含以本地
+`Dictionary` 聚合 EasyRead 的词典类服务和它们共用的 HTML 结果渲染基础设施。它只包含以本地
 或系统词典条目为核心的查询能力，不包含 Apple 翻译、OCR、语音或语言检测等平台能力。
 
 ![词典服务架构](./dictionary-architecture.svg)

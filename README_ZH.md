@@ -27,10 +27,14 @@ EasyRead 在此基础上聚焦英语阅读理解，把词典释义、译文和�
 
 ## 怎么使用 EasyRead？
 
-### 1. 构建并打开应用
+### 1. 安装或源码构建
 
-项目仍在开发中，目前通过源码构建试用。需要完整 Xcode、macOS SDK 和 CocoaPods，
-应用支持 macOS 13 及以上版本。
+下载 **[v0.1.0 预览版](https://github.com/RickyW0529/EasyRead/releases/tag/v0.1.0)**，
+支持 Apple Silicon 芯片及 macOS 13 以上系统。ZIP 和 DMG 包含同一应用，下载页附有 SHA256 校验文件。
+该预览版使用开发证书签名，**尚未经过 Apple 公证**，macOS Gatekeeper 可能阻止打开。
+详情见[发行说明](docs/user-docs/en/Release-v0.1.0.md)。
+
+也可从源码构建，需要完整 Xcode、macOS SDK 和 CocoaPods：
 
 ```bash
 git clone https://github.com/RickyW0529/EasyRead.git

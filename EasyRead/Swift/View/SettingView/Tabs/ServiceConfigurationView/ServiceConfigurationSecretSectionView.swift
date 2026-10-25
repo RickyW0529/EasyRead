@@ -1,6 +1,6 @@
 //
 //  ServiceConfigurationSecretSectionView.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by phlpsong on 2024/1/31.
 //  Copyright © 2024 izual. All rights reserved.

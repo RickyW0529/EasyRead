@@ -1,6 +1,6 @@
 //
 //  BuildConfig.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by isfeng on 2025/12/22.
 //  Copyright © 2025 izual. All rights reserved.

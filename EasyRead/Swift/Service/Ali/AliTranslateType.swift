@@ -1,6 +1,6 @@
 //
 //  AliTranslateType.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by choykarl on 2023/12/20.
 //  Copyright © 2023 izual. All rights reserved.

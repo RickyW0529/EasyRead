@@ -1,6 +1,6 @@
 //
 //  AppleScriptTask.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2024/9/8.
 //

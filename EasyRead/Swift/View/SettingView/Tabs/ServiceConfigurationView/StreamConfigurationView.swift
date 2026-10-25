@@ -1,6 +1,6 @@
 //
 //  StreamConfigurationView.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2024/6/20.
 //  Copyright © 2024 izual. All rights reserved.

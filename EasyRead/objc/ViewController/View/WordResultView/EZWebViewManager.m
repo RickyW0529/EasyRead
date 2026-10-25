@@ -1,6 +1,6 @@
 //
 //  EZWebViewManager.m
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2023/8/29.
 //  Copyright © 2023 izual. All rights reserved.

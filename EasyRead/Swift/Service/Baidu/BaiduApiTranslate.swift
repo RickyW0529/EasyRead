@@ -1,6 +1,6 @@
 //
 //  EZBaiduApiTranslate.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by karl on 2024/7/13.
 //  Copyright © 2024 izual. All rights reserved.

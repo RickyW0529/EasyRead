@@ -28,7 +28,7 @@ third-party dictionary downloads.
 ## Use MDX/MDD dictionaries
 
 MDX/MDD files are not Apple `.dictionary` bundles. EasyRead now includes a native MDict service, so
-you can import them without conversion. See [Use MDict in EasyRead](./How-to-use-MDict-in-Easydict.md).
+you can import them without conversion. See [Use MDict in EasyRead](./How-to-use-MDict-in-EasyRead.md).
 
 ## Troubleshooting
 

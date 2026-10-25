@@ -1,6 +1,6 @@
 //
 //  AppleSpeechServiceTests.swift
-//  EasydictTests
+//  EasyReadTests
 //
 //  Created by tisfeng on 2026/3/19.
 //  Copyright © 2026 izual. All rights reserved.

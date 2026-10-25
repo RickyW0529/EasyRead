@@ -1,6 +1,6 @@
 //
 //  QueryRecordManager.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Copilot on 2025/11/19.
 //  Copyright © 2025 izual. All rights reserved.

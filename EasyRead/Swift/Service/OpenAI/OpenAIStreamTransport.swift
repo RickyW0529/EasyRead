@@ -1,6 +1,6 @@
 //
 //  OpenAIStreamTransport.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2026/9/8.
 //  Copyright © 2026 izual. All rights reserved.

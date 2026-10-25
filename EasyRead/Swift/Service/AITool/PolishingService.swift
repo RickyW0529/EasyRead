@@ -1,6 +1,6 @@
 //
 //  PolishingService.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Jerry on 2024-07-11.
 //  Copyright © 2024 izual. All rights reserved.

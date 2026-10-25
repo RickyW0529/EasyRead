@@ -1,6 +1,6 @@
 //
 //  ServiceTabListViews.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by MoonMao on 2026/5/27.
 //  Copyright © 2026 izual. All rights reserved.

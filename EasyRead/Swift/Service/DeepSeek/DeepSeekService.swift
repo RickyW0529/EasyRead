@@ -1,6 +1,6 @@
 //
 //  DeepSeekService.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by GarethNg on 2025/2/19.
 //  Copyright © 2025 izual. All rights reserved.

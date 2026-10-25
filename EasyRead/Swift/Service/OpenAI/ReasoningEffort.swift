@@ -1,6 +1,6 @@
 //
 //  ReasoningEffort.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by bsythegreat on 2026/06/14.
 //  Copyright © 2026 izual. All rights reserved.

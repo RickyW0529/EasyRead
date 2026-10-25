@@ -1,6 +1,6 @@
 //
 //  AppleDictionaryTests.swift
-//  EasydictTests
+//  EasyReadTests
 //
 //  Created by tisfeng on 2026/9/16.
 //  Copyright © 2026 izual. All rights reserved.

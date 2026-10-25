@@ -1,6 +1,6 @@
 //
 //  NSImage+EZSymbolmage.h
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2023/4/23.
 //  Copyright © 2023 izual. All rights reserved.

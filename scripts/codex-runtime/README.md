@@ -11,7 +11,7 @@
 
 ## 翻译能力配置
 
-`<版本>/translation-models.json` 是 Easydict 的静态翻译能力配置，不是未经修改的官方目录。
+`<版本>/translation-models.json` 是 EasyRead 的静态翻译能力配置，不是未经修改的官方目录。
 旧版来源为官方 `rust-v0.134.0`、commit `a75c443fdb64db48c3cf4bdb247c7ee52c0144c9` 的
 `codex-rs/models-manager/models.json`；原文件 SHA-256 为
 `b21200fd39c430f750cf10030c13bb19a91fdbc07792abdbda09e0ce6479161a`。
@@ -26,7 +26,7 @@ Astra、Sol、Terra、Luna 与 gpt-5.5。组件历史目录中的存在不等于
 - `apply_patch_tool_type=null`：不注册补丁工具。
 - `experimental_supported_tools=[]`：不增加实验工具。
 
-运行时使用官方 `model_catalog_json` 静态加载器，不刷新远程模型目录；Easydict
+运行时使用官方 `model_catalog_json` 静态加载器，不刷新远程模型目录；EasyRead
 先精确匹配 slug，拒绝 CLI 的未知模型与前缀 fallback。本机 CLI 不使用此目录。
 不得仅靠 filesystem profile 或 `exec --json` 结果过滤隔离工具：真实反例已证明该版本
 进程内图片读取不受前者限制，且被拒工具调用也可能没有 JSONL item。

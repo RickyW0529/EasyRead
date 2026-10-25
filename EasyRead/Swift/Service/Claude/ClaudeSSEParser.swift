@@ -1,6 +1,6 @@
 //
 //  ClaudeSSEParser.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2026/4/8.
 //  Copyright © 2026 izual. All rights reserved.

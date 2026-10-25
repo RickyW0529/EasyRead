@@ -32,7 +32,7 @@
   <text x="48" y="72" class="subtitle">Service/Dictionary 聚合系统词典、MDict 离线词典和共享 HTML 渲染层。</text>
 
   <rect x="38" y="98" width="884" height="362" rx="10" ry="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
-  <text x="60" y="128" class="group-title">Easydict/Swift/Service/Dictionary</text>
+  <text x="60" y="128" class="group-title">EasyRead/Swift/Service/Dictionary</text>
 
   <rect x="70" y="184" width="166" height="86" rx="8" ry="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
   <text x="153" y="216" text-anchor="middle" class="box-title">查询入口</text>

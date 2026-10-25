@@ -1,6 +1,6 @@
 //
 //  AutoPlayAudioExtensions.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by swi on 2025/2/13.
 //  Copyright © 2025 izual. All rights reserved.

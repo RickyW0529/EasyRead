@@ -1,6 +1,6 @@
 //
 //  VolcanoTranslateType.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Jerry on 2024-08-11.
 //  Copyright © 2024 izual. All rights reserved.

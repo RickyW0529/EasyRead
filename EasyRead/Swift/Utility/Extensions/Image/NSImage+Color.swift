@@ -1,6 +1,6 @@
 //
 //  NSImage+Color.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by isfeng on 2025/11/17.
 //  Copyright © 2025 izual. All rights reserved.

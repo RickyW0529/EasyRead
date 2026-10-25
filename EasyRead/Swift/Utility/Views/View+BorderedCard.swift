@@ -1,6 +1,6 @@
 //
 //  View+BorderedCard.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Easydict on 2026/1/9.
 //  Copyright © 2026 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  EDAudioView.h
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2022/11/8.
 //  Copyright © 2022 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
-//  NSStringEasydictBridge.swift
-//  Easydict
+//  NSStringEasyReadBridge.swift
+//  EasyRead
 //
 //  Created by GitHub Copilot on 2025/02/17.
 //

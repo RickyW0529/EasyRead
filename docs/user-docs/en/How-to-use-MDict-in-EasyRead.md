@@ -56,5 +56,5 @@ resource layouts.
 ## Apple Dictionary versus MDict
 
 - For `.dictionary` bundles managed by the macOS Dictionary app, follow the
-  [Apple Dictionary guide](./How-to-use-macOS-system-dictionary-in-Easydict.md).
+  [Apple Dictionary guide](./How-to-use-macOS-system-dictionary-in-EasyRead.md).
 - For `.mdx`/`.mdd` files managed directly by EasyRead, follow this guide.

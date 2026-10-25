@@ -1,6 +1,6 @@
 //
 //  EZLoadingAnimationView.h
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2023/1/8.
 //  Copyright © 2023 izual. All rights reserved.

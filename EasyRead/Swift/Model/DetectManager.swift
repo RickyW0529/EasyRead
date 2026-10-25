@@ -1,6 +1,6 @@
 //
 //  DetectManager.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2022/11/5.
 //  Copyright © 2024 izual. All rights reserved.

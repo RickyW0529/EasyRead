@@ -1,6 +1,6 @@
 //
 //  GitHubCopilotError.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2026/09/24.
 //

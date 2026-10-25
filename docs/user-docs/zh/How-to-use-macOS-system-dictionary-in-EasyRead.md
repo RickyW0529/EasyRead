@@ -26,7 +26,7 @@ EasyRead 可以查询 macOS“词典”App 中已经启用的系统词典和 `.d
 ## 使用 MDX/MDD 词典
 
 MDX/MDD 不属于 Apple `.dictionary` 格式。EasyRead 已提供原生 MDict 服务，可以直接导入，
-不需要转换。参阅[在 EasyRead 中使用 MDict](./How-to-use-MDict-in-Easydict.md)。
+不需要转换。参阅[在 EasyRead 中使用 MDict](./How-to-use-MDict-in-EasyRead.md)。
 
 ## 常见问题
 

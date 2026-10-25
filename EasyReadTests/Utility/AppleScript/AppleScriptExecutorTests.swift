@@ -1,6 +1,6 @@
 //
 //  AppleScriptExecutorTests.swift
-//  EasydictTests
+//  EasyReadTests
 //
 //  Created by tisfeng on 2026/4/12.
 //

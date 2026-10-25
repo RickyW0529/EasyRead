@@ -1,6 +1,6 @@
 //
 //  MiniMaxService.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2026/2/20.
 //  Copyright © 2026 izual. All rights reserved.

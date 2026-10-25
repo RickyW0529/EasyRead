@@ -1,6 +1,6 @@
 //
 //  MainMenuShortcutCommand.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Sharker on 2024/2/4.
 //  Copyright © 2024 izual. All rights reserved.

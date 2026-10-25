@@ -1,6 +1,6 @@
 //
 //  NiuTransService.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2025/11/28.
 //  Copyright © 2025 izual. All rights reserved.
@@ -180,7 +180,7 @@ extension NiuTransService {
             "src_text": text.truncated(5000),
             "from": sourceLangCode,
             "to": targetLangCode,
-            "source": "Easydict",
+            "source": "EasyRead",
         ]
 
         let request = AF.request(

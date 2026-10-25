@@ -1,6 +1,6 @@
 //
 //  DisabledAppTab.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by phlpsong on 2024/1/15.
 //  Copyright © 2024 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  AIToolService.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Jerry on 2024-07-12.
 //  Copyright © 2024 izual. All rights reserved.

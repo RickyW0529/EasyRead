@@ -1,6 +1,6 @@
 //
 //  Dictionary+Extension.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2024/8/19.
 //

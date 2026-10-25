@@ -1,6 +1,6 @@
 //
 //  EZResultRowView.h
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2022/12/29.
 //  Copyright © 2022 izual. All rights reserved.

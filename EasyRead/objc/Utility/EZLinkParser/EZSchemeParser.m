@@ -1,6 +1,6 @@
 //
 //  EZLinkParser.m
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2023/2/25.
 //  Copyright © 2023 izual. All rights reserved.
@@ -167,7 +167,7 @@
      easyread://writeKeyValue?EZOpenAIAPIKey=sk-zob
      easyread://writeKeyValue?EZOpenAIServiceUsageStatusKey=1
      easyread://writeKeyValue?EZOpenAIModelKey=gpt-3.5-turbo
-     easydict://writeKeyValue?EZOpenAIEndPointKey=https://api.ohmygpt.com/azure/v1/chat/completions
+     easyread://writeKeyValue?EZOpenAIEndPointKey=https://api.ohmygpt.com/azure/v1/chat/completions
      easyread://writeKeyValue?EZOpenAIDictionaryKey=0
      easyread://writeKeyValue?EZOpenAISentenceKey=0
      

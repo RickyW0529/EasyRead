@@ -1,6 +1,6 @@
 //
 //  DeepLServiceTests.swift
-//  EasydictTests
+//  EasyReadTests
 //
 //  Created by tisfeng on 2026/8/15.
 //

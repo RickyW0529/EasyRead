@@ -1,6 +1,6 @@
 //
 //  MyConfiguration.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by ljk on 2024/1/2.
 //  Copyright © 2024 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  Screenshot+UserDefaults.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2025/3/17.
 //  Copyright © 2025 izual. All rights reserved.
@@ -15,22 +15,34 @@ extension Screenshot {
 
     /// Has requested permission key
     private var hasRequestedPermissionKey: String {
-        "easydict.screenshot.hasRequestedPermission"
+        migratedPreferenceKey("hasRequestedPermission")
     }
 
     /// Last screenshot rect key
     private var lastScreenshotRectKey: String {
-        "easydict.screenshot.lastScreenshotRect"
+        migratedPreferenceKey("lastScreenshotRect")
     }
 
     /// Last screen key
     private var lastScreenKey: String {
-        "easydict.screenshot.lastScreen"
+        migratedPreferenceKey("lastScreen")
     }
 
     /// Last screen frame key
     private var lastScreenFrameKey: String {
-        "easydict.screenshot.lastScreenFrame"
+        migratedPreferenceKey("lastScreenFrame")
+    }
+
+    /// Moves historical preferences within this app's defaults domain without changing saved geometry.
+    private func migratedPreferenceKey(_ name: String) -> String {
+        let key = "easyread.screenshot.\(name)"
+        let legacyKey = "easydict.screenshot.\(name)"
+        let defaults = UserDefaults.standard
+        if defaults.object(forKey: key) == nil, let value = defaults.object(forKey: legacyKey) {
+            defaults.set(value, forKey: key)
+            defaults.removeObject(forKey: legacyKey)
+        }
+        return key
     }
 
     /// Whether screen capture permission has been requested

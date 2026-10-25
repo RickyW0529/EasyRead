@@ -1,7 +1,7 @@
 # Dark Reader
 
 This directory vendors a minified browser API build from `darkreader@4.9.128`
-for Easydict WebView features. Feature-specific pages opt in to the shared
+for EasyRead WebView features. Feature-specific pages opt in to the shared
 local runtime, so they keep working offline without enabling it for every
 WebView.
 

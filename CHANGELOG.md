@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased — EasyRead development
+## v0.1.0 — First preview
 
 - Developed from Easydict with the EasyRead product and bundle names; retained GPL-3.0 and upstream attribution.
 - Added dictionary-first reading with Apple Dictionary and optional local MDict imports.
@@ -11,5 +11,13 @@
 - Added opt-in bounded context extraction, sensitive-source exclusions, cancellation and source-text validation.
 - Added standalone context, privacy, transport and grammar tests in EasyReadKit.
 
-The project is under development and is currently tried through local source builds.
-No distribution-signed and notarized EasyRead release has been published.
+- Added invalid-JSON repair, query-owned context and reliable analysis retry.
+- Unified displayed, copied and reverse translation results and restored context evidence.
+- Protected HTTP selection access with a Keychain-backed Bearer token.
+- Fixed the reproduced crash during repeated Apple Dictionary lookups.
+- Standardized EasyRead project names and migrated screenshot preference keys.
+
+Apple Silicon preview packages are available from the
+[v0.1.0 release](https://github.com/RickyW0529/EasyRead/releases/tag/v0.1.0).
+The app is development-signed and not notarized. See the
+[release notes](docs/user-docs/en/Release-v0.1.0.md) for requirements and limitations.

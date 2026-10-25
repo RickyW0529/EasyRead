@@ -1,6 +1,6 @@
 //
 //  ShortcutManager+Validator.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Sharker on 2024/1/29.
 //  Copyright © 2024 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  View+Builder.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2024/12/1.
 //  Copyright © 2024 izual. All rights reserved.

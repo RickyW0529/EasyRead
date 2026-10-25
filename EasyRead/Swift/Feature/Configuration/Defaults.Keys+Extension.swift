@@ -1,6 +1,6 @@
 //
 //  Configuration+Defaults.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by 戴藏龙 on 2024/1/12.
 //  Copyright © 2024 izual. All rights reserved.

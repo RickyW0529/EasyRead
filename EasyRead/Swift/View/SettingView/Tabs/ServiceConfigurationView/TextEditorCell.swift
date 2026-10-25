@@ -1,6 +1,6 @@
 //
 //  TextEditorCell.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2024/5/27.
 //  Copyright © 2024 izual. All rights reserved.

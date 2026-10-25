@@ -1,6 +1,6 @@
 //
 //  DeviceSystemInfo.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2025/12/22.
 //  Copyright © 2025 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  String+EncryptAES.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2023/12/4.
 //  Copyright © 2023 izual. All rights reserved.

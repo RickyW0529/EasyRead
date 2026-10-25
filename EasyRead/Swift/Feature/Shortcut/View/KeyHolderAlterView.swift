@@ -1,6 +1,6 @@
 //
 //  KeyHolderAlterView.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Sharker on 2024/2/6.
 //  Copyright © 2024 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  ZhipuService.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Daniel on 2025/9/3.
 //  Copyright © 2025 izual. All rights reserved.

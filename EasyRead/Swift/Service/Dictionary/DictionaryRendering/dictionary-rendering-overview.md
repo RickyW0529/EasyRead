@@ -1,7 +1,7 @@
 # 词典结果渲染
 
 `DictionaryRendering` 是词典类服务共用的 HTML 结果渲染基础设施。它只负责把已经查到、
-已经完成资源处理的词典条目组装成 Easydict 结果面板可加载的 HTML，不负责查词、网络请求、
+已经完成资源处理的词典条目组装成 EasyRead 结果面板可加载的 HTML，不负责查词、网络请求、
 资源解析或服务配置。
 
 ![词典结果渲染架构](./dictionary-rendering-architecture.svg)

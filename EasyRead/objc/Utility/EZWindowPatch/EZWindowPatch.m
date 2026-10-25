@@ -1,6 +1,6 @@
 //
 //  EZWindowPatch.m
-//  Easydict
+//  EasyRead
 //
 //  Created by asdmoment on 2026/4/26.
 //  Copyright © 2026 izual. All rights reserved.

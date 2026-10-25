@@ -1,6 +1,6 @@
 //
 //  GeminiService.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Jerry on 2024-01-02.
 //  Copyright © 2024 izual. All rights reserved.

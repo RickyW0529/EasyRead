@@ -1,6 +1,6 @@
 //
 //  VocabularyNotebookService.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by izual on 2026/9/15.
 //  Copyright © 2026 izual. All rights reserved.

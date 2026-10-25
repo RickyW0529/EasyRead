@@ -1,6 +1,6 @@
 //
 //  BuiltInAIService.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2024/4/13.
 //  Copyright © 2024 izual. All rights reserved.

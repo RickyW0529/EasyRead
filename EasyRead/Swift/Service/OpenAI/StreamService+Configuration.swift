@@ -1,6 +1,6 @@
 //
 //  StreamService+Configuation.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2024/6/28.
 //  Copyright © 2024 izual. All rights reserved.

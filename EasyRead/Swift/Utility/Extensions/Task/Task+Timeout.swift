@@ -1,6 +1,6 @@
 //
 //  Task+Timeout.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2026/4/12.
 //

@@ -1,6 +1,6 @@
 //
 //  TencentResponse.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Jerry on 2023-11-25.
 //  Copyright © 2023 izual. All rights reserved.

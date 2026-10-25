@@ -1,6 +1,6 @@
 //
 //  OllamaModel.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2024/7/7.
 //  Copyright © 2024 izual. All rights reserved.

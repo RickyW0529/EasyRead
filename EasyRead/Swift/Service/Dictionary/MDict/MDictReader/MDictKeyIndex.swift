@@ -1,6 +1,6 @@
 //
 //  MDictKeyIndex.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Kuroda Kayn on 2026/05/02.
 //  Copyright © 2026 izual. All rights reserved.

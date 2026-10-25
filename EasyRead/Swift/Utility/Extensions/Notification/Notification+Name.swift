@@ -1,6 +1,6 @@
 //
 //  Notification+Name.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by phlpsong on 2024/1/7.
 //  Copyright © 2024 izual. All rights reserved.

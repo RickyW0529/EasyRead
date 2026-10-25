@@ -1,6 +1,6 @@
 //
 //  ClaudeResponse.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by zkbkb on 2026/4/1.
 //  Copyright © 2026 izual. All rights reserved.

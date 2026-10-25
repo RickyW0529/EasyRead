@@ -1,6 +1,6 @@
 //
 //  ThrottleGate.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2026/3/22.
 //  Copyright © 2026 izual. All rights reserved.

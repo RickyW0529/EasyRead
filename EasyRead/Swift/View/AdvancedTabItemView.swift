@@ -1,6 +1,6 @@
 //
 //  AdvancedTabItemView.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Jerry on 2024-05-06.
 //  Copyright © 2024 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  TencentSigning.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2023/12/2.
 //  Copyright © 2023 izual. All rights reserved.

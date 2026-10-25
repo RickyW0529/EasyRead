@@ -1,6 +1,6 @@
 //
 //  NSImage+Test.swift
-//  EasydictSwiftTests
+//  EasyReadTests
 //
 //  Created by tisfeng on 2025/7/8.
 //  Copyright © 2025 izual. All rights reserved.

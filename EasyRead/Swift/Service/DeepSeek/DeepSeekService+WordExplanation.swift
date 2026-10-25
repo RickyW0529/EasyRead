@@ -1,6 +1,6 @@
 //
 //  DeepSeekService+WordExplanation.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by wangruiqi on 2026/10/10.
 //  Copyright © 2026 izual. All rights reserved.

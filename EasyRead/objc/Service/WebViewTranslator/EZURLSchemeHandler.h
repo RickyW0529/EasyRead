@@ -1,6 +1,6 @@
 //
 //  EZURLSchemeHandler.h
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2022/12/8.
 //  Copyright © 2022 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  QueryServiceConfiguration.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2022/11/22.
 //

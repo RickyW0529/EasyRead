@@ -1,6 +1,6 @@
 //
 //  CodexComponentManager.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Alfred on 2026/09/07.
 //

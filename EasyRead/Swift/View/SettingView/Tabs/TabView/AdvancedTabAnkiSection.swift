@@ -1,6 +1,6 @@
 //
 //  AdvancedTabAnkiSection.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by leexiaobu on 2026/7/9.
 //  Copyright © 2026 izual. All rights reserved.

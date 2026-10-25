@@ -1,6 +1,6 @@
 //
 //  EZDetectLanguageButton.h
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2022/12/1.
 //  Copyright © 2022 izual. All rights reserved.

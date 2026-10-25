@@ -1,6 +1,6 @@
 //
 //  AboutTab.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Kyle on 2023/10/29.
 //  Copyright © 2023 izual. All rights reserved.

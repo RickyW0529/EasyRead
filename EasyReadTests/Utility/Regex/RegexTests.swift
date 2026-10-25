@@ -1,6 +1,6 @@
 //
 //  RegexTests.swift
-//  EasydictSwiftTests
+//  EasyReadTests
 //
 //  Created by tisfeng on 2025/7/6.
 //  Copyright © 2025 izual. All rights reserved.

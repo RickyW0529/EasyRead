@@ -1,6 +1,6 @@
 //
 //  CaiyunService.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Kyle on 2023/11/7.
 //  Copyright © 2023 izual. All rights reserved.

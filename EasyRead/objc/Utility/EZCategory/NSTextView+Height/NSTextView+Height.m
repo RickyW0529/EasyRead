@@ -1,6 +1,6 @@
 //
 //  NSTextView+AutoHeight.m
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2022/11/7.
 //  Copyright © 2022 izual. All rights reserved.

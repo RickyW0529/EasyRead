@@ -37,7 +37,7 @@ def normalized_context(items, prompt):
 def verify(config):
     # Codex declines helper setup inside temporary CODEX_HOME. This dedicated
     # fixture directory is still disposable and never shares an auth namespace.
-    root = Path.home() / 'Library/Application Support/Easydict-Codex-Gate0'
+    root = Path.home() / 'Library/Application Support/EasyRead-Codex-Gate0'
     root.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='isolation-', dir=root) as temporary:
         home = Path(temporary)
@@ -97,11 +97,11 @@ def verify(config):
             thread = threading.Thread(target=server.serve_forever, daemon=True)
             thread.start()
             overrides = {
-                'model_provider': 'easydict-test',
-                'model_providers.easydict-test.name': 'Loopback fixture',
-                'model_providers.easydict-test.base_url': f'http://127.0.0.1:{server.server_port}/v1',
-                'model_providers.easydict-test.wire_api': 'responses',
-                'model_providers.easydict-test.requires_openai_auth': False,
+                'model_provider': 'easyread-test',
+                'model_providers.easyread-test.name': 'Loopback fixture',
+                'model_providers.easyread-test.base_url': f'http://127.0.0.1:{server.server_port}/v1',
+                'model_providers.easyread-test.wire_api': 'responses',
+                'model_providers.easyread-test.requires_openai_auth': False,
                 'cli_auth_credentials_store': 'keyring',
             }
             arguments = list(config['arguments'])

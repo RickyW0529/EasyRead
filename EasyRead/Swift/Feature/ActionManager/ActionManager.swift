@@ -1,6 +1,6 @@
 //
 //  ActionManager.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2025/8/29.
 //  Copyright © 2025 izual. All rights reserved.

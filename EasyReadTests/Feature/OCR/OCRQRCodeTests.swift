@@ -1,6 +1,6 @@
 //
 //  OCRQRCodeTests.swift
-//  EasydictTests
+//  EasyReadTests
 //
 //  Created by tisfeng on 2026/9/23.
 //  Copyright © 2026 izual. All rights reserved.

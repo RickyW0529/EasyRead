@@ -1,6 +1,6 @@
 //
 //  String+Layout.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Easydict on 2025/11/25.
 //  Copyright © 2025 izual. All rights reserved.

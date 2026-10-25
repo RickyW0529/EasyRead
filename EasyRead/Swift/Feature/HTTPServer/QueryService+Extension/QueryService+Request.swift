@@ -1,6 +1,6 @@
 //
 //  QueryService+Extension.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2024/7/22.
 //  Copyright © 2024 izual. All rights reserved.

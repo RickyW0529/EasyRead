@@ -1,6 +1,6 @@
 //
 //  SystemUtility+MenuAction.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2025/9/5.
 //  Copyright © 2025 izual. All rights reserved.

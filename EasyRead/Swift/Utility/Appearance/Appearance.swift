@@ -1,6 +1,6 @@
 //
 //  Appearance.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by yqing on 2023/12/25.
 //  Copyright © 2023 izual. All rights reserved.

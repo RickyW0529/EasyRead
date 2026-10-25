@@ -1,6 +1,6 @@
 //
-//  EasydictApp.swift
-//  Easydict
+//  EasyReadApp.swift
+//  EasyRead
 //
 //  Created by Kyle on 2023/12/28.
 //  Copyright © 2023 izual. All rights reserved.

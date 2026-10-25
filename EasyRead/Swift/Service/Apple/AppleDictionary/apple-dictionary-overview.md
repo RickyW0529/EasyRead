@@ -1,7 +1,7 @@
 # AppleDictionary 目录概览
 
 AppleDictionary 负责接入 macOS 系统词典，把 DictionaryServices 返回的词条
-HTML 包装成 Easydict 可展示的查询结果。该目录同时包含 Swift 查询服务和供
+HTML 包装成 EasyRead 可展示的查询结果。该目录同时包含 Swift 查询服务和供
 WKWebView 加载的 HTML 模板。
 
 ## 关键组件

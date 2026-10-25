@@ -1,6 +1,6 @@
 //
 //  AppleDictionary.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2023/7/29.
 //  Copyright © 2023 izual. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  UpdateNotificationInfo.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2024/10/25.
 //  Copyright © 2024 izual. All rights reserved.

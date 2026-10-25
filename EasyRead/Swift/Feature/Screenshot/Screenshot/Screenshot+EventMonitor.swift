@@ -1,6 +1,6 @@
 //
 //  Screenshot+EventMonitor.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2025/3/20.
 //  Copyright © 2025 izual. All rights reserved.

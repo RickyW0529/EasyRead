@@ -1,6 +1,6 @@
 //
 //  MetadataExtractor.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by tisfeng on 2025/4/6.
 //  Copyright © 2025 izual. All rights reserved.

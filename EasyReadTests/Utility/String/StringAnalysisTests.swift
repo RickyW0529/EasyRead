@@ -1,6 +1,6 @@
 //
 //  StringAnalysisTests.swift
-//  EasydictTests
+//  EasyReadTests
 //
 //  Created by Claude on 2025/1/30.
 //  Copyright © 2025 izual. All rights reserved.

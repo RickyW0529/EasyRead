@@ -29,7 +29,7 @@ PROVISIONING_PROFILE_SPECIFIER =
 EOF
 
 checkout_id=$(git rev-parse --show-toplevel | sed -e "s|^$HOME/||" -e 's|^\.||' -e 's|/|_|g')
-agent_dd="$HOME/Library/Developer/Xcode/DerivedData/Easydict-Agent/$checkout_id"
+agent_dd="$HOME/Library/Developer/Xcode/DerivedData/EasyRead-Agent/$checkout_id"
 xcodebuild build \
     -workspace EasyRead.xcworkspace \
     -scheme EasyRead \

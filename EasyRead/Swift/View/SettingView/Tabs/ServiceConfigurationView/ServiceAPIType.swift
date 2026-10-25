@@ -1,6 +1,6 @@
 //
 //  ServiceAPIType.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by karl on 2024/7/25.
 //  Copyright © 2024 izual. All rights reserved.

@@ -31,11 +31,14 @@ context or an explanation of how the sentence works.
 
 ## How to use EasyRead
 
-### 1. Build and open the app
+### 1. Install or build the app
 
-EasyRead is under development and currently available to try by building from
-source. You need full Xcode, the macOS SDK and CocoaPods. The app targets macOS 13
-or later.
+Download the **[v0.1.0 preview](https://github.com/RickyW0529/EasyRead/releases/tag/v0.1.0)**
+for Apple Silicon Macs running macOS 13 or later. The ZIP and DMG contain the same app;
+checksums are included. This preview is development-signed and **not notarized**, so
+macOS Gatekeeper may block opening it. See the [release notes](docs/user-docs/en/Release-v0.1.0.md).
+
+To build from source, you need full Xcode, the macOS SDK and CocoaPods:
 
 ```bash
 git clone https://github.com/RickyW0529/EasyRead.git

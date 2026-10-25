@@ -1,6 +1,6 @@
 //
 //  EZWrapView.m
-//  Easydict
+//  EasyRead
 //
 //  Created by choykarl on 2023/11/28.
 //  Copyright © 2023 izual. All rights reserved.

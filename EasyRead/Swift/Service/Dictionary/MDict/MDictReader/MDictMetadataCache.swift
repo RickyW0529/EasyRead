@@ -1,6 +1,6 @@
 //
 //  MDictMetadataCache.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by Kuroda Kayn on 2026/05/04.
 //  Copyright © 2026 izual. All rights reserved.

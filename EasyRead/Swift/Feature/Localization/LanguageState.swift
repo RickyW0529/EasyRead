@@ -1,6 +1,6 @@
 //
 //  LanguageState.swift
-//  Easydict
+//  EasyRead
 //
 //  Created by choykarl on 2024/3/3.
 //  Copyright © 2024 izual. All rights reserved.

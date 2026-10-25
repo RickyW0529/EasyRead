@@ -182,19 +182,28 @@ final class ReadingAssistantModel: ObservableObject {
             do {
                 let captured: SelectionSnapshot?
                 if let attached {
-                    captured = await ContextExtractionCoordinator.shared.completedSnapshot(
+                    let completed = await ContextExtractionCoordinator.shared.completedSnapshot(
                         forInputText: selectedText,
                         selectionID: attached.selectionID
                     )
-                    guard captured != nil else {
-                        logInfo("Reading analysis cancelled: selection snapshot replaced before context completed")
-                        throw CancellationError()
+                    try Task.checkCancellation()
+                    // The latest-selection cache may already describe another selection.
+                    // This query owns its attached snapshot; never borrow the replacement's context.
+                    let owned = completed ?? attached
+                    captured = Defaults[.enableContextExtraction] ? owned : SelectionSnapshot(
+                        selectedText: owned.selectedText, surroundingText: nil, availability: .selectionOnly,
+                        sourceBundleID: owned.sourceBundleID, timestamp: owned.timestamp, selectionID: owned.selectionID
+                    )
+                    if completed == nil {
+                        logInfo("Reading analysis retained query snapshot after latest selection changed")
                     }
                 } else { captured = nil }
                 try Task.checkCancellation()
                 guard let self, requestID == activeRequest else { return }
                 guard canRequest, configuration == ReadingAIConfiguration.current(),
                       AXContextExtractor.allowsAI(snapshot: captured) else { throw CancellationError() }
+                // Retain completed context for retries even after the global cache moves on.
+                snapshot = captured
                 let source = captured?.availability == .selectionOnly ? nil : captured?.surroundingText
                 let availability = captured?.availability ?? .selectionOnly
                 let cacheKey = ReadingAnalysisCache.Key(
@@ -233,13 +242,8 @@ final class ReadingAssistantModel: ObservableObject {
                 try Task.checkCancellation()
                 guard requestID == activeRequest else { return }
                 guard canRequest, configuration == ReadingAIConfiguration.current(),
+                      source == nil || Defaults[.enableContextExtraction],
                       AXContextExtractor.allowsAI(snapshot: captured) else { throw CancellationError() }
-                if let captured {
-                    guard ContextExtractionCoordinator.shared.snapshot(forInputText: selectedText)?
-                        .selectionID == captured.selectionID else {
-                        throw CancellationError()
-                    }
-                }
                 ReadingAnalysisCache.shared.insert(answer, for: cacheKey)
                 resultSource = "\(configuration.provider.displayName) · \(configuration.model)"
                 kind = answer.kind
@@ -248,6 +252,7 @@ final class ReadingAssistantModel: ObservableObject {
                 translation = answer.kind == .sentence ? answer.translation : ""
                 grammar = answer.grammar
                 showsDetails = false
+                logInfo("Reading analysis applied to its current query")
             } catch {
                 guard let self, requestID == activeRequest else { return }
                 if error is CancellationError || (error as? DeepSeekChatError) == .cancelled {
@@ -283,12 +288,6 @@ final class ReadingAssistantModel: ObservableObject {
                   source == nil || Defaults[.enableContextExtraction],
                   AXContextExtractor.allowsAI(snapshot: captured) else {
                 logInfo("Reading analysis cancelled: request, configuration or privacy permission changed")
-                throw CancellationError()
-            }
-            if let captured,
-               ContextExtractionCoordinator.shared.snapshot(forInputText: selectedText)?.selectionID != captured
-               .selectionID {
-                logInfo("Reading analysis cancelled: source selection changed")
                 throw CancellationError()
             }
             // Keep transport errors outside the decoding catch so they never trigger format repair.

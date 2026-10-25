@@ -157,22 +157,24 @@ extern CFArrayRef DCSCopyRecordsForSearchString(DCSDictionaryRef, CFStringRef, u
 
 - (instancetype)initWithRecordRef:(CFTypeRef)record
                     dictionaryRef:(DCSDictionaryRef)dictionary {
-    self = [self init];
-    if (!self && record) {
-        return nil;
+    @synchronized ([TTTDictionary class]) {
+        self = [self init];
+        if (!self || !record) {
+            return nil;
+        }
+
+        // ???: __bridge_transfer will cause crash, but why?
+        self.headword = (__bridge NSString *)DCSRecordGetHeadword(record);
+        if (self.headword) {
+            self.text = (__bridge_transfer NSString *)DCSRecordCopyData(record, TTTDictionaryVersionText);
+        }
+
+        self.HTML = (__bridge_transfer NSString *)DCSRecordCopyData(record, (long)TTTDictionaryVersionHTML);
+        self.HTMLWithAppCSS = (__bridge_transfer NSString *)DCSRecordCopyData(record, (long)TTTDictionaryVersionHTMLWithAppCSS);
+        self.HTMLWithPopoverCSS = (__bridge_transfer NSString *)DCSRecordCopyData(record, (long)TTTDictionaryVersionHTMLWithPopoverCSS);
+
+        return self;
     }
-    
-    // ???: __bridge_transfer will cause crash, but why?
-    self.headword = (__bridge NSString *)DCSRecordGetHeadword(record);
-    if (self.headword) {
-        self.text = (__bridge_transfer NSString *)DCSRecordCopyData(record, TTTDictionaryVersionText);
-    }
-    
-    self.HTML = (__bridge_transfer NSString *)DCSRecordCopyData(record, (long)TTTDictionaryVersionHTML);
-    self.HTMLWithAppCSS = (__bridge_transfer NSString *)DCSRecordCopyData(record, (long)TTTDictionaryVersionHTMLWithAppCSS);
-    self.HTMLWithPopoverCSS = (__bridge_transfer NSString *)DCSRecordCopyData(record, (long)TTTDictionaryVersionHTMLWithPopoverCSS);
-    
-    return self;
 }
 
 - (NSString *)description {
@@ -205,56 +207,60 @@ extern CFArrayRef DCSCopyRecordsForSearchString(DCSDictionaryRef, CFStringRef, u
 }
 
 + (NSSet<TTTDictionary *> *)availableDictionaries {
-    // Dictionary.app can finish downloading resources while EasyRead is running.
-    NSMutableSet *mutableDictionaries = [NSMutableSet set];
-    for (id dictionary in (__bridge_transfer NSArray *)DCSCopyAvailableDictionaries()) {
-        TTTDictionary *availableDictionary = [[TTTDictionary alloc] initWithDictionaryRef:(__bridge DCSDictionaryRef)dictionary];
-        if (availableDictionary) {
-            [mutableDictionaries addObject:availableDictionary];
+    @synchronized ([TTTDictionary class]) {
+        // Dictionary.app can finish downloading resources while EasyRead is running.
+        NSMutableSet *mutableDictionaries = [NSMutableSet set];
+        for (id dictionary in (__bridge_transfer NSArray *)DCSCopyAvailableDictionaries()) {
+            TTTDictionary *availableDictionary = [[TTTDictionary alloc] initWithDictionaryRef:(__bridge DCSDictionaryRef)dictionary];
+            if (availableDictionary) {
+                [mutableDictionaries addObject:availableDictionary];
+            }
         }
+        return [NSSet setWithSet:mutableDictionaries];
     }
-    return [NSSet setWithSet:mutableDictionaries];
 }
 
 /// Active dictionaries are dictionaries that are currently enabled in Dictionary.app
 + (NSArray<TTTDictionary *> *)activeDictionaries {
-    // !!!: DCSGetActiveDictionaries() can only invoke once, otherwise it will crash. So we must use static variable to cache the result.
-    
-    static NSArray *_activeDictionaries = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSMutableArray *mutableActiveDictionaries = [NSMutableArray array];
-        NSArray *activeDictionaries = (__bridge_transfer NSArray *)DCSGetActiveDictionaries();
-        for (id dictionary in activeDictionaries) {
-            TTTDictionary *activeDictionary = [[TTTDictionary alloc] initWithDictionaryRef:(__bridge DCSDictionaryRef)dictionary];
-            if (activeDictionary) {
-                [mutableActiveDictionaries addObject:activeDictionary];
-            }
-        }
+    @synchronized ([TTTDictionary class]) {
+        // !!!: DCSGetActiveDictionaries() can only invoke once, otherwise it will crash. So we must use static variable to cache the result.
 
-        MMLogInfo(@"Active Apple dictionaries count: %lu", (unsigned long)mutableActiveDictionaries.count);
-        [mutableActiveDictionaries enumerateObjectsUsingBlock:^(TTTDictionary *dictionary, NSUInteger index, BOOL *stop) {
-            NSString *dictionaryFile = dictionary.dictionaryURL.lastPathComponent ?: @"<missing>";
-            MMLogInfo(
-                @"Active Apple dictionary [%lu]: name=%@, shortName=%@, identifier=%@, file=%@",
-                (unsigned long)index,
-                dictionary.name ?: @"<missing>",
-                dictionary.shortName ?: @"<missing>",
-                dictionary.identifier ?: @"<missing>",
-                dictionaryFile
-            );
-            if (!dictionary.dictionaryURL) {
-                MMLogWarn(
-                    @"Active Apple dictionary has no URL: name=%@, identifier=%@",
-                    dictionary.name ?: @"<missing>",
-                    dictionary.identifier ?: @"<missing>"
-                );
+        static NSArray *_activeDictionaries = nil;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            NSMutableArray *mutableActiveDictionaries = [NSMutableArray array];
+            NSArray *activeDictionaries = (__bridge NSArray *)DCSGetActiveDictionaries();
+            for (id dictionary in activeDictionaries) {
+                TTTDictionary *activeDictionary = [[TTTDictionary alloc] initWithDictionaryRef:(__bridge DCSDictionaryRef)dictionary];
+                if (activeDictionary) {
+                    [mutableActiveDictionaries addObject:activeDictionary];
+                }
             }
-        }];
-        _activeDictionaries = [NSArray arrayWithArray:mutableActiveDictionaries];
-    });
-    
-    return _activeDictionaries;
+
+            MMLogInfo(@"Active Apple dictionaries count: %lu", (unsigned long)mutableActiveDictionaries.count);
+            [mutableActiveDictionaries enumerateObjectsUsingBlock:^(TTTDictionary *dictionary, NSUInteger index, BOOL *stop) {
+                NSString *dictionaryFile = dictionary.dictionaryURL.lastPathComponent ?: @"<missing>";
+                MMLogInfo(
+                    @"Active Apple dictionary [%lu]: name=%@, shortName=%@, identifier=%@, file=%@",
+                    (unsigned long)index,
+                    dictionary.name ?: @"<missing>",
+                    dictionary.shortName ?: @"<missing>",
+                    dictionary.identifier ?: @"<missing>",
+                    dictionaryFile
+                );
+                if (!dictionary.dictionaryURL) {
+                    MMLogWarn(
+                        @"Active Apple dictionary has no URL: name=%@, identifier=%@",
+                        dictionary.name ?: @"<missing>",
+                        dictionary.identifier ?: @"<missing>"
+                    );
+                }
+            }];
+            _activeDictionaries = [NSArray arrayWithArray:mutableActiveDictionaries];
+        });
+
+        return _activeDictionaries;
+    }
 }
 
 + (NSURL *)userDictionaryDirectoryURL {
@@ -323,30 +329,42 @@ extern CFArrayRef DCSCopyRecordsForSearchString(DCSDictionaryRef, CFStringRef, u
             DCSAppleDictionaryName,
         ];
     });
-    
+
     return _allBuildInDictNames;
 }
 
 - (instancetype)initWithDictionaryRef:(DCSDictionaryRef)dictionary {
-    self = [self init];
-    if (!self || !dictionary) {
-        return nil;
+    @synchronized ([TTTDictionary class]) {
+        self = [self init];
+        if (!self || !dictionary) {
+            return nil;
+        }
+
+        // Get APIs return borrowed objects; the properties copy/retain their own references.
+        // Each wrapper also owns its dictionary after the enumeration array is released.
+        self.dictionary = (DCSDictionaryRef)CFRetain(dictionary);
+        self.name = (__bridge NSString *)DCSDictionaryGetName(self.dictionary);
+        self.shortName = (__bridge NSString *)DCSDictionaryGetShortName(self.dictionary);
+
+        self.identifier = (__bridge NSString *)DCSDictionaryGetIdentifier(dictionary);
+        self.dictionaryURL = (__bridge NSURL *)DCSDictionaryGetURL(dictionary);
+
+        return self;
     }
-    
-    self.dictionary = dictionary;
-    self.name = (__bridge_transfer NSString *)DCSDictionaryGetName(self.dictionary);
-    self.shortName = (__bridge_transfer NSString *)DCSDictionaryGetShortName(self.dictionary);
-    
-    self.identifier = (__bridge_transfer NSString *)(DCSDictionaryGetIdentifier(dictionary));
-    self.dictionaryURL = (__bridge_transfer NSURL *)DCSDictionaryGetURL(dictionary);
-    
-    return self;
+}
+
+- (void)dealloc {
+    if (_dictionary) {
+        @synchronized ([TTTDictionary class]) {
+            CFRelease(_dictionary);
+        }
+    }
 }
 
 /// User custom dictionary
 - (BOOL)isUserDictionary {
     BOOL isSystemDictionary = [[self.dictionaryURL URLByDeletingLastPathComponent].path hasPrefix:DCSSystemDictionayDirectoryPath];
-    
+
     return !isSystemDictionary;
 }
 
@@ -356,23 +374,25 @@ extern CFArrayRef DCSCopyRecordsForSearchString(DCSDictionaryRef, CFStringRef, u
 }
 
 - (NSArray<TTTDictionaryEntry *> *)entriesForSearchTerm:(NSString *)term searchType:(TTTDictionarySearchType)searchType {
-    if (term.length == 0) {
-        return @[];
-    }
-    // The caller supplies the complete headword, including spaces and hyphens.
-    // Term-range detection at offset zero can reduce a phrase to its first word.
-    NSArray *records = (__bridge_transfer NSArray *)DCSCopyRecordsForSearchString(self.dictionary, (__bridge CFStringRef)term, searchType, 0);
-    NSMutableArray *mutableEntries = [NSMutableArray arrayWithCapacity:[records count]];
-    if (records) {
-        for (id record in records) {
-            TTTDictionaryEntry *entry = [[TTTDictionaryEntry alloc] initWithRecordRef:(__bridge CFTypeRef)record dictionaryRef:self.dictionary];
-            if (entry) {
-                [mutableEntries addObject:entry];
+    @synchronized ([TTTDictionary class]) {
+        if (term.length == 0) {
+            return @[];
+        }
+        // The caller supplies the complete headword, including spaces and hyphens.
+        // Term-range detection at offset zero can reduce a phrase to its first word.
+        NSArray *records = (__bridge_transfer NSArray *)DCSCopyRecordsForSearchString(self.dictionary, (__bridge CFStringRef)term, searchType, 0);
+        NSMutableArray *mutableEntries = [NSMutableArray arrayWithCapacity:[records count]];
+        if (records) {
+            for (id record in records) {
+                TTTDictionaryEntry *entry = [[TTTDictionaryEntry alloc] initWithRecordRef:(__bridge CFTypeRef)record dictionaryRef:self.dictionary];
+                if (entry) {
+                    [mutableEntries addObject:entry];
+                }
             }
         }
+
+        return [NSArray arrayWithArray:mutableEntries];
     }
-    
-    return [NSArray arrayWithArray:mutableEntries];
 }
 
 - (NSString *)description {
@@ -385,11 +405,11 @@ extern CFArrayRef DCSCopyRecordsForSearchString(DCSDictionaryRef, CFStringRef, u
     if (self == object) {
         return YES;
     }
-    
+
     if (![object isKindOfClass:[TTTDictionary class]]) {
         return NO;
     }
-    
+
     return [self.name isEqualToString:[(TTTDictionary *)object name]];
 }
 

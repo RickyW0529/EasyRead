@@ -1,6 +1,170 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "setting.advance.http_selection_token.hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save a token to allow GET /selectedText. Clients must send Authorization: Bearer <token>. Deleting the token blocks selection access; translation endpoints are unchanged."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存令牌后才能调用 GET /selectedText，调用方须发送 Authorization: Bearer <token>。删除令牌将关闭接口取词权限，不影响翻译接口。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "儲存權杖後才能呼叫 GET /selectedText，呼叫端須傳送 Authorization: Bearer <token>。刪除權杖將關閉介面取詞權限，不影響翻譯介面。"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GET /selectedText を使うにはトークンを保存し、Authorization: Bearer <token> を送信してください。削除すると選択テキストへのアクセスを拒否します。翻訳 API には影響しません。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda un token para usar GET /selectedText y envía Authorization: Bearer <token>. Eliminarlo bloquea el acceso al texto seleccionado, sin afectar a los endpoints de traducción."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uložte token pre GET /selectedText. Klienti musia posielať Authorization: Bearer <token>. Odstránenie tokenu zablokuje prístup k výberu; prekladové rozhrania sa nemenia."
+          }
+        }
+      }
+    },
+    "setting.advance.http_selection_token.placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a private access token"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "输入私有访问令牌"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入私有存取權杖"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "専用のアクセストークンを入力"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduce un token de acceso privado"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zadajte súkromný prístupový token"
+          }
+        }
+      }
+    },
+    "setting.advance.http_selection_token" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selection access token"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取词访问令牌"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取詞存取權杖"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択テキストのアクセストークン"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Token de acceso al texto seleccionado"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prístupový token pre vybraný text"
+          }
+        }
+      }
+    },
+    "reading.action.analyze" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start analysis"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始解析"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開始解析"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "解析を開始"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar análisis"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spustiť analýzu"
+          }
+        }
+      }
+    },
     "selection.panel.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1360,37 +1524,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No sentence context was available. This explanation uses the selected text only."
+            "value" : "This explanation uses only the selected text, without sentence context."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "未获取到原句上下文，当前解释仅依据所选词语。"
+            "value" : "当前解释仅依据所选词语，未使用原句上下文。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "未取得原句上下文，目前解釋僅依據所選詞語。"
+            "value" : "目前解釋僅依據所選詞語，未使用原句上下文。"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "文脈を取得できなかったため、選択した語句のみを解説しています。"
+            "value" : "この解説は文脈を使用せず、選択した語句のみに基づいています。"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se obtuvo el contexto de la oración. La explicación usa solo el texto seleccionado."
+            "value" : "Esta explicación usa solo el texto seleccionado, sin contexto de la oración."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kontext vety nebol dostupný. Vysvetlenie vychádza iba z vybraného textu."
+            "value" : "Vysvetlenie vychádza iba z vybraného textu, bez kontextu vety."
           }
         }
       }

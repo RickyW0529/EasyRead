@@ -6,13 +6,20 @@
 //  Copyright © 2025 izual. All rights reserved.
 //
 
-import Foundation
+import AppKit
 import SelectedTextKit
 
 extension SystemUtility {
+    @MainActor
     @objc
     public func getSelectedText(strategy: TextStrategy) async throws -> String? {
-        guard !AXContextExtractor.shouldBlockCurrentSelection() else { return nil }
-        return try await selectedTextManager.getSelectedText(strategy: strategy)
+        guard AXIsProcessTrusted(), !AXContextExtractor.shouldBlockCurrentSelection() else { return nil }
+        let sourcePID = NSWorkspace.shared.frontmostApplication?.processIdentifier
+        let text = try await selectedTextManager.getSelectedText(strategy: strategy)
+        try Task.checkCancellation()
+        // A fallback may suspend while focus or the user's exclusion rules change.
+        guard sourcePID == NSWorkspace.shared.frontmostApplication?.processIdentifier,
+              AXIsProcessTrusted(), !AXContextExtractor.shouldBlockCurrentSelection() else { return nil }
+        return text
     }
 }

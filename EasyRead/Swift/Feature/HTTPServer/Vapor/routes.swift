@@ -7,7 +7,6 @@
 //
 
 import OpenAI
-import SelectedTextKit
 import Vapor
 
 func routes(_ app: Application) throws {
@@ -154,8 +153,12 @@ func routes(_ app: Application) throws {
     }
 
     /// Get selected text
-    app.get("selectedText") { _ async throws -> GetSelectedTextResponse in
-        let selectedText = try await SelectedTextManager.shared.getSelectedText(strategy: .auto)
+    app.get("selectedText") { req async throws -> GetSelectedTextResponse in
+        let token = req.headers.bearerAuthorization?.token
+        guard VaporServer.authorizesSelection(token: token) else { throw Abort(.unauthorized) }
+        let selectedText = try await SystemUtility.shared.getSelectedText(strategy: .auto)
+        // Revocation while an asynchronous selection fallback runs also takes effect.
+        guard VaporServer.authorizesSelection(token: token) else { throw Abort(.unauthorized) }
         return GetSelectedTextResponse(selectedText: selectedText)
     }
 }

@@ -721,21 +721,18 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 }
 
 - (void)copyFirstTranslatedText {
-    if (self.firstService) {
-        [self.firstService.result.copiedText ns_copyAndShowToast:YES];
+    NSString *text = [self firstTranslatedText];
+    if (text.length > 0) {
+        [text ns_copyAndShowToast:YES];
     }
 }
 
+- (ReadingTranslation *)currentPanelTranslation {
+    return [self.readingAssistantView translationForQueryModel:self.queryModel services:self.services ?: @[]];
+}
+
 - (nullable NSString *)firstTranslatedText {
-    if (self.firstService &&
-        [self.firstService.result.queryText isEqualToString:self.queryModel.queryText]) {
-        NSString *copiedText = self.firstService.result.copiedText;
-        if (copiedText.length > 0) {
-            return copiedText;
-        }
-        return self.firstService.result.translatedText;
-    }
-    return nil;
+    return [self currentPanelTranslation].text;
 }
 
 - (void)toggleTranslationLanguages {
@@ -744,9 +741,8 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     BOOL canSwap = fromLang.length > 0 && toLang.length > 0 && ![fromLang isEqualToString:toLang];
     BOOL bothAutomatic = [fromLang isEqualToString:EZLanguageAuto] && [toLang isEqualToString:EZLanguageAuto];
     if (canSwap || bothAutomatic) {
-        BOOL isStreamingInProgress = self.firstService.isStream && !self.firstService.result.isStreamFinished;
-        BOOL isResultReady = !self.firstService.result.isLoading && !isStreamingInProgress && !self.firstService.result.error;
-        NSString *translatedText = isResultReady ? [self firstTranslatedText] : nil;
+        ReadingTranslation *translation = [self currentPanelTranslation];
+        NSString *translatedText = translation.isComplete ? translation.text : nil;
         if (bothAutomatic) {
             // Re-query the translation using Auto without changing language preferences.
             if ([translatedText ns_trim].length > 0) {
@@ -759,8 +755,8 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
         // Use the completed result's direction; shared language preferences may have changed.
         // The old language cell swapped once more after writing that direction, so the input
         // becomes the translation and the languages are the reverse pair.
-        EZLanguage fromLanguage = self.firstService.result.from;
-        EZLanguage toLanguage = self.firstService.result.to;
+        EZLanguage fromLanguage = translation.from;
+        EZLanguage toLanguage = translation.to;
         BOOL hasReverseDirection = fromLanguage.length > 0 && toLanguage.length > 0 &&
             ![fromLanguage isEqualToString:EZLanguageAuto] &&
             ![toLanguage isEqualToString:EZLanguageAuto] &&

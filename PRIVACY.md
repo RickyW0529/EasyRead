@@ -11,6 +11,13 @@ application rules, native secure-field checks and user exclusions are applied be
 selection extraction. These checks cannot identify every private page or field.
 Manual input remains available without Accessibility permission.
 
+The optional local HTTP server's `GET /selectedText` endpoint requires a separate
+access token saved in **Settings → Advanced → HTTP Server**. Send it as
+`Authorization: Bearer <token>`; unset, deleted or incorrect tokens return HTTP 401.
+The token is stored in Keychain. This endpoint applies the same sensitive-app and
+secure-field checks as selection capture and discards results if the foreground
+application changes during capture. Other HTTP translation endpoints are unchanged.
+
 When context extraction is enabled, Accessibility is asked for a bounded text range
 around the selection, up to 300 UTF-16 units on either side. Unsupported APIs fall
 back to the selection alone. Context is capped at 600 characters; URLs, email

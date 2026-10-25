@@ -40,13 +40,17 @@ extension DeepSeekService {
             return nil
         }
 
-        // Request-assembly time (Phase 2 review constraint): the capture is
-        // asynchronous and may finish only after this query started, so the
-        // store is read here instead of relying on the snapshot attached at
-        // `startQueryText` time.
-        let snapshot = queryModel.contextSnapshot.flatMap { attached in
+        // This service owns its query snapshot even after the latest-selection cache changes.
+        let snapshot = queryModel.contextSnapshot.map { attached in
             let latest = ContextExtractionCoordinator.shared.snapshot(forInputText: currentInputText)
-            return latest?.selectionID == attached.selectionID ? latest : nil
+            let owned = latest.flatMap { $0.selectionID == attached.selectionID ? $0 : nil } ?? attached
+            guard Defaults[.enableContextExtraction] else {
+                return SelectionSnapshot(
+                    selectedText: owned.selectedText, surroundingText: nil, availability: .selectionOnly,
+                    sourceBundleID: owned.sourceBundleID, timestamp: owned.timestamp, selectionID: owned.selectionID
+                )
+            }
+            return owned
         }
         guard AXContextExtractor.allowsAI(snapshot: snapshot) else {
             return AsyncThrowingStream { $0.finish(throwing: CancellationError()) }
@@ -84,10 +88,13 @@ extension DeepSeekService {
                 ? nil
                 : snapshot?.surroundingText
 
+            let generation = updateResultLock.withLock { resultGeneration }
             let task = Task {
                 do {
                     try Task.checkCancellation()
                     guard Defaults[.enableReadingAI], !apiKey.isEmpty,
+                          sourceSentence == nil || Defaults[.enableContextExtraction],
+                          updateResultLock.withLock({ resultGeneration == generation }),
                           AXContextExtractor.allowsAI(snapshot: snapshot) else { throw CancellationError() }
                     let messages = [
                         DeepSeekChatMessage(
@@ -117,20 +124,11 @@ extension DeepSeekService {
                         sourceSentence: sourceSentence
                     )
 
-                    // A newer selection must not receive this answer (spec
-                    // 4.4/T09): the single-slot store is replaced on every
-                    // capture, so a changed id means the user moved on.
-                    // Word-only requests carry no snapshot and rely on the
-                    // generation guards of the shared stream pipeline.
-                    if let snapshot {
-                        guard currentSelectionIDMatches(snapshot.selectionID) else {
-                            continuation.finish(throwing: CancellationError())
-                            return
-                        }
-                    }
-
                     try Task.checkCancellation()
-                    guard Defaults[.enableReadingAI], !apiKey.isEmpty else { throw CancellationError() }
+                    guard Defaults[.enableReadingAI], !apiKey.isEmpty,
+                          sourceSentence == nil || Defaults[.enableContextExtraction],
+                          updateResultLock.withLock({ resultGeneration == generation }),
+                          AXContextExtractor.allowsAI(snapshot: snapshot) else { throw CancellationError() }
                     continuation.yield(Self.explanationMarkdown(validated, snapshot: snapshot))
                     continuation.finish()
                 } catch is CancellationError {
@@ -160,14 +158,6 @@ extension DeepSeekService {
             currentTask = task
             continuation.onTermination = { _ in task.cancel() }
         }
-    }
-
-    /// Whether the store still holds this query's snapshot: the stored
-    /// selection for the same input text must still carry the same
-    /// `selectionID` the request was built from.
-    private func currentSelectionIDMatches(_ selectionID: UUID) -> Bool {
-        ContextExtractionCoordinator.shared.snapshot(forInputText: currentInputText)?
-            .selectionID == selectionID
     }
 
     // MARK: - Formatting

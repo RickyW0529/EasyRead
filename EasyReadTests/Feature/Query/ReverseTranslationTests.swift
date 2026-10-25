@@ -13,8 +13,8 @@ import Testing
 
 // MARK: - ReverseTranslationTests
 
-/// Exercises the real controller and language cell without starting a query window
-/// or contacting translation services. Captures the cell's query callback and
+/// Exercises the real controller and current panel without starting a query window
+/// or contacting translation services. Intercepts the query retry boundary and
 /// restores the language preferences that the production toggle updates.
 @MainActor
 @Suite("Reverse Translation", .serialized, .tags(.unit))
@@ -190,11 +190,34 @@ struct ReverseTranslationTests {
 
     // MARK: Private
 
+    /// Keep this subclass alive for fixtures retained across an asynchronous preference update.
+    /// Production has already applied language/input changes before it asks to retry the query.
+    private static let fixtureControllerType: NSViewController.Type? = {
+        guard let base = NSClassFromString("EZBaseQueryViewController"),
+              let subclass = objc_allocateClassPair(base, "ReverseTranslationFixtureController", 0),
+              let method = class_getInstanceMethod(base, NSSelectorFromString("retryQueryWithLanguage:")) else {
+            return nil
+        }
+        let block: @convention(block) (NSObject, NSString) -> () = { _, _ in }
+        let implementation = imp_implementationWithBlock(block)
+        guard class_addMethod(
+            subclass, NSSelectorFromString("retryQueryWithLanguage:"), implementation, method_getTypeEncoding(method)
+        ) else {
+            imp_removeBlock(implementation)
+            objc_disposeClassPair(subclass)
+            return nil
+        }
+        objc_registerClassPair(subclass)
+        return subclass as? NSViewController.Type
+    }()
+
     private func makeResultUnavailable(
         _ state: String, controller: NSViewController, service: ReverseTranslationService
     ) {
         switch state {
-        case "missing": controller.setValue(nil, forKey: "firstService")
+        case "missing":
+            controller.setValue(nil, forKey: "firstService")
+            controller.setValue([], forKey: "services")
         case "empty": service.result.translatedResults = []
         case "whitespace": service.result.translatedResults = [" \n\t "]
         case "loading": service.result.isLoading = true
@@ -248,10 +271,8 @@ struct ReverseTranslationTests {
             config.toLanguage = savedTo
         }
 
-        let controllerType = try #require(NSClassFromString("EZBaseQueryViewController") as? NSViewController.Type)
-        let cellType = try #require(NSClassFromString("EZSelectLanguageCell") as? NSView.Type)
+        let controllerType = try #require(Self.fixtureControllerType)
         let controller = controllerType.init(nibName: nil, bundle: nil)
-        let cell = cellType.init(frame: .zero)
         let model = QueryModel()
         model.userSourceLanguage = .auto
         model.userTargetLanguage = .simplifiedChinese
@@ -260,14 +281,6 @@ struct ReverseTranslationTests {
         model.detectedLanguage = .japanese
         model.actionType = .ocrQuery
         model.ocrImage = NSImage(size: NSSize(width: 1, height: 1))
-        cell.setValue(model, forKey: "queryModel")
-        let query: @convention(block) (NSString, NSString) -> () = { from, to in
-            model.userSourceLanguage = Language(rawValue: from as String)
-            model.userTargetLanguage = Language(rawValue: to as String)
-        }
-        cell.setValue(query, forKey: "enterActionBlock")
-        controller.setValue(cell, forKey: "selectLanguageCell")
-
         let service = ReverseTranslationService()
         service.queryModel = model
         service.result = QueryResult()
@@ -276,6 +289,7 @@ struct ReverseTranslationTests {
         service.result.to = model.queryTargetLanguage
         service.result.translatedResults = ["你好"]
         controller.setValue(service, forKey: "firstService")
+        controller.setValue([service], forKey: "services")
         try body(controller, model, service)
     }
 }

@@ -1,5 +1,4 @@
 // Copyright © 2026 EasyRead contributors. GPL-3.0.
-import AppKit
 import Combine
 import Defaults
 import EasyReadKit
@@ -48,41 +47,21 @@ final class ReadingAssistantModel: ObservableObject {
     @Published private(set) var wordExplanation: AIWordExplanation?
     @Published private(set) var contextExcerpt: String?
     @Published private(set) var grammar: GrammarExplanation?
-    @Published private(set) var kind: ReadingAnalysis.Kind?
     @Published private(set) var errorMessage = ""
     @Published private(set) var isLoading = false
     @Published private(set) var wasCancelled = false
-    @Published var showsDetails = false
     var onLayoutChange: (() -> ())?
 
     var isConfigured: Bool { ReadingAIConfiguration.current().isReady }
-    var showsDictionaryHint: Bool { kind == .sentence }
     var allowsAI: Bool { AXContextExtractor.allowsAI(snapshot: snapshot) }
     var canRequest: Bool {
         Defaults[.enableReadingAI] && isConfigured && SelectionPolicy.default.validateSelection(text)
             .isUsable && allowsAI
     }
 
-    var rowHeight: CGFloat {
-        if grammar != nil { return contentHeight > 1 ? contentHeight : (showsDetails ? 640 : 420) }
-        if wordExplanation != nil { return 380 }
-        return translation.isEmpty ? 120 : 220
-    }
-
-    /// The card reports its laid-out height. The table row follows that height so details
-    /// expand in place instead of scrolling inside a fixed box.
-    func updateContentHeight(_ height: CGFloat) {
-        let next = ceil(height)
-        guard next > 1, abs(next - contentHeight) > 1 else { return }
-        contentHeight = next
-        onLayoutChange?()
-    }
-
-    /// Drop the measured height so the next table pass uses the expanded or collapsed fallback
-    /// until SwiftUI reports the new layout.
-    func prepareForDetailResize() {
-        contentHeight = 0
-        onLayoutChange?()
+    var canResumeCommittedQuery: Bool {
+        guard let queryID else { return false }
+        return committedQueryID == queryID && canRequest && !isLoading
     }
 
     func update(queryModel: QueryModel) {
@@ -126,31 +105,14 @@ final class ReadingAssistantModel: ObservableObject {
 
     func retry() { request() }
 
-    func copyResult() {
-        var parts = [text, translation].filter { !$0.isEmpty }
-        if let wordExplanation {
-            parts += [wordExplanation.primaryMeaning, wordExplanation.explanation]
-            if let contextExcerpt { parts.append(contextExcerpt) }
-        }
-        if let grammar {
-            parts.append(grammar.mainClause)
-            parts += grammar.structures.map { "\($0.excerpt) — \($0.label)：\($0.explanation)" }
-            parts += grammar.readingSteps
-            parts += grammar.terminology.map { "\($0.term)：\($0.meaning)" }
-        }
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(parts.joined(separator: "\n\n"), forType: .string)
-    }
-
     func resumeCommittedQuery() {
-        guard let queryID, committedQueryID == queryID, canRequest, !isLoading else { return }
+        guard canResumeCommittedQuery else { return }
         preparedQueryID = queryID
         request()
     }
 
     // MARK: Private
 
-    private var contentHeight: CGFloat = 0
     private var task: Task<(), Never>?
     private var queryID: UUID?
     private var committedQueryID: UUID?
@@ -246,12 +208,10 @@ final class ReadingAssistantModel: ObservableObject {
                       AXContextExtractor.allowsAI(snapshot: captured) else { throw CancellationError() }
                 ReadingAnalysisCache.shared.insert(answer, for: cacheKey)
                 resultSource = "\(configuration.provider.displayName) · \(configuration.model)"
-                kind = answer.kind
                 wordExplanation = answer.wordExplanation
                 contextExcerpt = answer.wordExplanation?.contextualEvidence ?? source
-                translation = answer.kind == .sentence ? answer.translation : ""
+                translation = answer.translation
                 grammar = answer.grammar
-                showsDetails = false
                 logInfo("Reading analysis applied to its current query")
             } catch {
                 guard let self, requestID == activeRequest else { return }
@@ -330,10 +290,7 @@ final class ReadingAssistantModel: ObservableObject {
         wordExplanation = nil
         contextExcerpt = nil
         grammar = nil
-        kind = nil
         errorMessage = ""
         wasCancelled = false
-        showsDetails = false
-        contentHeight = 0
     }
 }

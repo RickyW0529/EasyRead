@@ -158,6 +158,7 @@ extension Defaults.Keys {
     )
     static var enableHTTPServer = Key<Bool>("enableHTTPServer", default: false)
     static var httpPort = Key<String>("httpPort", default: "8080")
+    static let httpSelectionTokenRevision = Key<String>("httpSelectionTokenRevision", default: "")
 
     static var enableAnkiConnect = Key<Bool>("enableAnkiConnect", default: false)
     static var ankiConnectEndpoint = Key<String>(

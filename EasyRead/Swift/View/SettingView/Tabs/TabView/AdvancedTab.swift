@@ -421,6 +421,14 @@ struct AdvancedTab: View {
                         subtitleText: "setting.advance.http_port_desc"
                     )
                 }
+                KeychainInputCell(
+                    textFieldTitleKey: "setting.advance.http_selection_token",
+                    placeholder: String(localized: "setting.advance.http_selection_token.placeholder"),
+                    store: VaporServer.selectionTokenStore,
+                    mirrorKey: .httpSelectionTokenRevision
+                )
+                Text("setting.advance.http_selection_token.hint")
+                    .font(.caption).foregroundStyle(.secondary)
             } header: {
                 Text("setting.advance.header.http_server")
             }

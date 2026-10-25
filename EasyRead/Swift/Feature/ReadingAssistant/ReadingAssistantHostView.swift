@@ -116,6 +116,14 @@ final class ReadingAssistantHostView: NSView {
         state.services = services
     }
 
+    /// Refreshes query ownership before returning the exact result used by panel controls.
+    @objc(translationForQueryModel:services:)
+    func translation(queryModel: QueryModel, services: [QueryService]) -> ReadingTranslation? {
+        update(queryModel: queryModel)
+        updateServices(services)
+        return state.primaryTranslation(aiTranslation: model.translation)
+    }
+
     @objc(servicesForCurrentTab:)
     func servicesForCurrentTab(_ services: [QueryService]) -> [QueryService] {
         switch state.tab {

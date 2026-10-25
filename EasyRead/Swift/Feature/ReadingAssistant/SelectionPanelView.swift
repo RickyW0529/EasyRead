@@ -52,21 +52,23 @@ final class SelectionPanelState: ObservableObject {
         return supported.contains(.dictionary) && !supported.contains(.translation)
     }
 
-    static func primaryTranslation(in services: [QueryService], queryText: String, aiTranslation: String) -> String {
+    func primaryTranslation(aiTranslation: String) -> ReadingTranslation? {
         let trimmedAI = aiTranslation.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !trimmedAI.isEmpty { return trimmedAI }
-        for service in services where !isDictionaryService(service) {
-            guard let result = service.result else { continue }
-            guard result.queryText == queryText else { continue }
-            if let copied = result.copiedText?.trimmingCharacters(in: .whitespacesAndNewlines), !copied.isEmpty {
-                return copied
-            }
-            if let translated = result.translatedText?.trimmingCharacters(in: .whitespacesAndNewlines),
-               !translated.isEmpty {
-                return translated
-            }
+        if !trimmedAI.isEmpty {
+            return ReadingTranslation(text: trimmedAI, from: sourceLanguage, to: targetLanguage, isComplete: true)
         }
-        return ""
+        for service in services where !Self.isDictionaryService(service) {
+            guard let result = service.result, result.queryText == queryText, result.error == nil else { continue }
+            let text = [result.copiedText, result.translatedText]
+                .compactMap { $0?.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .first { !$0.isEmpty }
+            guard let text else { continue }
+            return ReadingTranslation(
+                text: text, from: result.from, to: result.to,
+                isComplete: !result.isLoading && (!service.isStream() || result.isStreamFinished)
+            )
+        }
+        return nil
     }
 
     func resetChrome(isWord: Bool) {
@@ -142,11 +144,7 @@ struct SelectionPanelView: View {
     private var languages: [Language] { EZLanguageManager.shared().allLanguages }
 
     private var translationText: String {
-        SelectionPanelState.primaryTranslation(
-            in: state.services,
-            queryText: state.queryText,
-            aiTranslation: model.translation
-        )
+        state.primaryTranslation(aiTranslation: model.translation)?.text ?? ""
     }
 
     private var translationError: String? {
@@ -275,15 +273,7 @@ struct SelectionPanelView: View {
             if let grammar = model.grammar {
                 grammarSection(grammar)
             } else if let explanation = model.wordExplanation {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(verbatim: explanation.primaryMeaning)
-                        .font(.system(size: 15, weight: .semibold))
-                    Text(verbatim: explanation.explanation)
-                        .font(.system(size: 13))
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .panelContainer()
+                ReadingContextTip(answer: explanation, context: model.contextExcerpt)
             } else if model.isLoading {
                 HStack(spacing: 6) {
                     ProgressView().controlSize(.small)
@@ -293,17 +283,31 @@ struct SelectionPanelView: View {
             } else if !model.errorMessage.isEmpty {
                 HStack(spacing: 8) {
                     Text(verbatim: model.errorMessage).font(.system(size: 12)).foregroundStyle(.red)
-                    Button("reading.action.retry") { model.retry() }.buttonStyle(.borderless).font(.system(size: 12))
+                    Button("reading.action.retry") { model.retry() }
+                        .buttonStyle(.borderless).font(.system(size: 12)).disabled(!model.canRequest)
                 }
             } else if model.wasCancelled {
                 HStack(spacing: 8) {
                     Text("reading.ai.cancelled").font(.system(size: 12)).foregroundStyle(.secondary)
-                    Button("reading.action.retry") { model.retry() }.buttonStyle(.borderless).font(.system(size: 12))
+                    Button("reading.action.retry") { model.retry() }
+                        .buttonStyle(.borderless).font(.system(size: 12)).disabled(!model.canRequest)
                 }
             } else if !model.isConfigured, DefaultsReadingAI.isEnabled {
                 Text("reading.ai.no_key").font(.system(size: 12)).foregroundStyle(.secondary)
             } else if !state.queryText.isEmpty, DefaultsReadingAI.isEnabled {
-                Text("selection.panel.no_grammar").font(.system(size: 12)).foregroundStyle(.secondary)
+                if !model.allowsAI {
+                    Text("reading.ai.blocked").font(.system(size: 12)).foregroundStyle(.secondary)
+                } else if !SelectionPolicy.default.validateSelection(model.text).isUsable {
+                    Text("reading.ai.too_long").font(.system(size: 12)).foregroundStyle(.secondary)
+                } else if model.canResumeCommittedQuery {
+                    Button("reading.action.analyze") { model.resumeCommittedQuery() }
+                        .buttonStyle(.borderless).font(.system(size: 12))
+                } else {
+                    Text("selection.panel.no_grammar").font(.system(size: 12)).foregroundStyle(.secondary)
+                }
+            }
+            if !model.resultSource.isEmpty {
+                Text(verbatim: model.resultSource).font(.caption2).foregroundStyle(.secondary)
             }
         }
     }
@@ -786,4 +790,27 @@ extension LanguageMenuControl {
             onSelect(Language(rawValue: rawValue))
         }
     }
+}
+
+// MARK: - ReadingTranslation
+
+/// The panel's selected result; actions use the same text and completed direction as the display.
+@objc(ReadingTranslation)
+@objcMembers
+final class ReadingTranslation: NSObject {
+    // MARK: Lifecycle
+
+    init(text: String, from: Language, to: Language, isComplete: Bool) {
+        self.text = text
+        self.from = from
+        self.to = to
+        self.isComplete = isComplete
+    }
+
+    // MARK: Internal
+
+    let text: String
+    let from: Language
+    let to: Language
+    let isComplete: Bool
 }

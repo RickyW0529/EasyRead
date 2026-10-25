@@ -7,6 +7,7 @@
 //
 
 import Defaults
+import EasyReadKit
 import Logging
 import NIOCore
 import NIOPosix
@@ -46,6 +47,10 @@ class VaporServer {
 
     static let shared = VaporServer()
 
+    nonisolated static let selectionTokenStore = KeychainStore(
+        service: "com.easyread.EasyRead.http", account: "selection-access"
+    )
+
     var app: Vapor.Application?
     var env: Environment?
 
@@ -56,6 +61,13 @@ class VaporServer {
     var enableHTTPServer: Bool {
         get { Defaults[.enableHTTPServer] }
         set { Defaults[.enableHTTPServer] = newValue }
+    }
+
+    /// Only an explicitly configured credential can authorize a desktop selection read.
+    nonisolated static func authorizesSelection(token: String?) -> Bool {
+        guard let token, !token.isEmpty,
+              let stored = try? selectionTokenStore.read(), !stored.isEmpty else { return false }
+        return token == stored
     }
 
     func startServer(isOn: Bool) async {

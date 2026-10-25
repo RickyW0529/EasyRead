@@ -23,25 +23,28 @@ struct ReadingContextTip: View {
             }
             Text(verbatim: answer.primaryMeaning).font(.headline)
             Text(verbatim: answer.explanation).font(.system(size: 13)).lineSpacing(4)
-            if let context, !context.isEmpty {
-                HStack(alignment: .top, spacing: 9) {
-                    Rectangle().fill(Color.accentColor.opacity(0.55)).frame(width: 3)
-                    Text(verbatim: context).font(.callout).foregroundStyle(.secondary).lineSpacing(3)
+            if answer.contextStatus == .contextual, let context, !context.isEmpty {
+                DisclosureGroup("deepseek.explanation.context_passage") {
+                    Text(verbatim: context).font(.system(size: 12)).foregroundStyle(.secondary).lineSpacing(3)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
-                .fixedSize(horizontal: false, vertical: true)
+                .font(.caption)
             } else {
                 Text("reading.context.unavailable").font(.caption).foregroundStyle(.secondary)
             }
             if !answer.terminology.isEmpty {
-                ForEach(Array(answer.terminology.enumerated()), id: \.offset) { _, item in
-                    Text(verbatim: "\(item.term) · \(item.meaning)").font(.caption)
+                DisclosureGroup("reading.grammar.terminology") {
+                    ForEach(Array(answer.terminology.enumerated()), id: \.offset) { _, item in
+                        Text(verbatim: "\(item.term) · \(item.meaning)").font(.caption)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
+                .font(.caption)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(14)
-        .background { RoundedRectangle(cornerRadius: 10).fill(Color.accentColor.opacity(0.08)) }
-        .overlay { RoundedRectangle(cornerRadius: 10).strokeBorder(Color.accentColor.opacity(0.2), lineWidth: 1) }
+        .padding(10)
+        .background { RoundedRectangle(cornerRadius: 8).fill(Color.primary.opacity(0.06)) }
     }
 }

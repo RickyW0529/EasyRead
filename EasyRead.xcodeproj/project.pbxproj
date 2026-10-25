@@ -14,7 +14,6 @@
 		EAA015000000000000000001 /* ReadingAIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA015000000000000000000 /* ReadingAIProvider.swift */; };
 		EAA013001300130013001307 /* ReadingAnalysisCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA013001300130013001308 /* ReadingAnalysisCache.swift */; };
 		EAA013001300130013001305 /* ReadingContextTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA013001300130013001306 /* ReadingContextTip.swift */; };
-		EAA013001300130013001303 /* GrammarHoverTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA013001300130013001304 /* GrammarHoverTextView.swift */; };
 		EAA013001300130013001301 /* GrammarAnnotatedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA013001300130013001302 /* GrammarAnnotatedText.swift */; };
 		EAA012001200120012001201 /* ApplicationInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA012001200120012001202 /* ApplicationInstance.swift */; };
 		C0FFEEBF2026092400000000 /* GitHubCopilotDebugWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEEFD2026092400000000 /* GitHubCopilotDebugWindow.swift */; };
@@ -679,7 +678,6 @@
 		8FA639CB01DB48FFB856FAF6 /* GitHubCopilotModelStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D62DA53787E49EC9011BB14 /* GitHubCopilotModelStore.swift */; };
 		49DAA0A4B12B418BA7791B8F /* GitHubCopilotModelCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBAB49A71BBA4870A9C4FF0C /* GitHubCopilotModelCache.swift */; };
 		FEA7B00C0000000000000021 /* ReadingAssistantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA7B00C0000000000000020 /* ReadingAssistantModel.swift */; };
-		FEA7B00C0000000000000023 /* ReadingAssistantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA7B00C0000000000000022 /* ReadingAssistantView.swift */; };
 		FEA7B00C0000000000000025 /* ReadingAssistantHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA7B00C0000000000000024 /* ReadingAssistantHostView.swift */; };
 		EAA016000000000000000001 /* SelectionPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA016000000000000000002 /* SelectionPanelView.swift */; };
 /* End PBXBuildFile section */
@@ -714,7 +712,6 @@
 		EAA015000000000000000000 /* ReadingAIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingAIProvider.swift; sourceTree = "<group>"; };
 		EAA013001300130013001308 /* ReadingAnalysisCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingAnalysisCache.swift; sourceTree = "<group>"; };
 		EAA013001300130013001306 /* ReadingContextTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingContextTip.swift; sourceTree = "<group>"; };
-		EAA013001300130013001304 /* GrammarHoverTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarHoverTextView.swift; sourceTree = "<group>"; };
 		EAA013001300130013001302 /* GrammarAnnotatedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarAnnotatedText.swift; sourceTree = "<group>"; };
 		EAA012001200120012001202 /* ApplicationInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationInstance.swift; sourceTree = "<group>"; };
 		C0FFEEFD2026092400000000 /* GitHubCopilotDebugWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubCopilotDebugWindow.swift; sourceTree = "<group>"; };
@@ -1481,7 +1478,6 @@
 		9D62DA53787E49EC9011BB14 /* GitHubCopilotModelStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubCopilotModelStore.swift; sourceTree = "<group>"; };
 		FBAB49A71BBA4870A9C4FF0C /* GitHubCopilotModelCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubCopilotModelCache.swift; sourceTree = "<group>"; };
 		FEA7B00C0000000000000020 /* ReadingAssistantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingAssistantModel.swift; sourceTree = "<group>"; };
-		FEA7B00C0000000000000022 /* ReadingAssistantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingAssistantView.swift; sourceTree = "<group>"; };
 		FEA7B00C0000000000000024 /* ReadingAssistantHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingAssistantHostView.swift; sourceTree = "<group>"; };
 		EAA016000000000000000002 /* SelectionPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionPanelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -4044,10 +4040,8 @@
 				EAA015000000000000000006 /* ReadingAISettingsView.swift */,
 				FEA7B00C0000000000000020 /* ReadingAssistantModel.swift */,
 				EAA013001300130013001302 /* GrammarAnnotatedText.swift */,
-				EAA013001300130013001304 /* GrammarHoverTextView.swift */,
 				EAA013001300130013001306 /* ReadingContextTip.swift */,
 				EAA013001300130013001308 /* ReadingAnalysisCache.swift */,
-				FEA7B00C0000000000000022 /* ReadingAssistantView.swift */,
 				EAA016000000000000000002 /* SelectionPanelView.swift */,
 				FEA7B00C0000000000000024 /* ReadingAssistantHostView.swift */,
 			);
@@ -4659,10 +4653,8 @@
 				EAA015000000000000000007 /* ReadingAISettingsView.swift in Sources */,
 				FEA7B00C0000000000000021 /* ReadingAssistantModel.swift in Sources */,
 				EAA013001300130013001301 /* GrammarAnnotatedText.swift in Sources */,
-				EAA013001300130013001303 /* GrammarHoverTextView.swift in Sources */,
 				EAA013001300130013001305 /* ReadingContextTip.swift in Sources */,
 				EAA013001300130013001307 /* ReadingAnalysisCache.swift in Sources */,
-				FEA7B00C0000000000000023 /* ReadingAssistantView.swift in Sources */,
 				EAA016000000000000000001 /* SelectionPanelView.swift in Sources */,
 				FEA7B00C0000000000000025 /* ReadingAssistantHostView.swift in Sources */,
 				0337D3CA2E66AA5000B08437 /* SystemUtility+AX.swift in Sources */,

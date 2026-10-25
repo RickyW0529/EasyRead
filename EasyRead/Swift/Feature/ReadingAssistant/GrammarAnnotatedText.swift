@@ -63,9 +63,9 @@ final class GrammarPhraseContainer: NSView {
             guard let structure = fragment.structure else { continue }
             let line = NSView(frame: CGRect(
                 x: fragment.frame.minX,
-                y: fragment.frame.minY + 20,
+                y: fragment.frame.minY + 19,
                 width: fragment.frame.width,
-                height: 2
+                height: 1.5
             ))
             line.wantsLayer = true
             line.layer?.backgroundColor = color.cgColor
@@ -77,9 +77,9 @@ final class GrammarPhraseContainer: NSView {
             label.lineBreakMode = .byTruncatingTail
             label.frame = CGRect(
                 x: fragment.frame.minX,
-                y: fragment.frame.minY + 25,
+                y: fragment.frame.minY + 22,
                 width: fragment.frame.width,
-                height: 13
+                height: 12
             )
             label.toolTip = "\(structure.label)\n\(structure.explanation)"
             text.toolTip = label.toolTip
@@ -93,7 +93,7 @@ final class GrammarPhraseContainer: NSView {
         var items: [Fragment] = []
         var x: CGFloat = 0
         var y: CGFloat = 0
-        let rowHeight: CGFloat = 44
+        let rowHeight: CGFloat = 37
         let gap: CGFloat = 10
         for chunk in chunks {
             let words = fittingWords(chunk.text, width: limit)
@@ -107,7 +107,7 @@ final class GrammarPhraseContainer: NSView {
                 items.append(Fragment(
                     text: pending,
                     structure: chunk.structure,
-                    frame: CGRect(x: x, y: y, width: itemWidth, height: 38)
+                    frame: CGRect(x: x, y: y, width: itemWidth, height: 34)
                 ))
                 x += itemWidth + gap
                 pending = ""
@@ -139,7 +139,7 @@ final class GrammarPhraseContainer: NSView {
             }
             appendFragment()
         }
-        return (items, items.isEmpty ? 1 : y + 39)
+        return (items, items.isEmpty ? 1 : y + 35)
     }
 
     // MARK: Private

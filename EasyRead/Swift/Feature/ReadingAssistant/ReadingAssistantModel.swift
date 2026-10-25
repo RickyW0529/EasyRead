@@ -116,7 +116,10 @@ final class ReadingAssistantModel: ObservableObject {
         requestID = UUID()
         task?.cancel()
         task = nil
-        if isLoading { wasCancelled = true }
+        if isLoading {
+            logInfo("Reading analysis cancelled by caller")
+            wasCancelled = true
+        }
         isLoading = false
         onLayoutChange?()
     }
@@ -183,7 +186,10 @@ final class ReadingAssistantModel: ObservableObject {
                         forInputText: selectedText,
                         selectionID: attached.selectionID
                     )
-                    guard captured != nil else { throw CancellationError() }
+                    guard captured != nil else {
+                        logInfo("Reading analysis cancelled: selection snapshot replaced before context completed")
+                        throw CancellationError()
+                    }
                 } else { captured = nil }
                 try Task.checkCancellation()
                 guard let self, requestID == activeRequest else { return }
@@ -215,15 +221,13 @@ final class ReadingAssistantModel: ObservableObject {
                         targetLanguage: targetLanguage,
                         explanationLanguage: explanationLanguage
                     )
-                    let output = try await ReadingAIClient().complete(
+                    answer = try await validatedAnalysis(
                         configuration: configuration,
-                        system: ReadingAnalysisPrompt.systemPrompt,
-                        prompt: prompt
-                    )
-                    answer = try ReadingAnalysis.decode(
-                        jsonContent: output,
-                        queriedText: selectedText,
-                        sourceSentence: source
+                        prompt: prompt,
+                        selectedText: selectedText,
+                        source: source,
+                        captured: captured,
+                        activeRequest: activeRequest
                     )
                 }
                 try Task.checkCancellation()
@@ -247,6 +251,7 @@ final class ReadingAssistantModel: ObservableObject {
             } catch {
                 guard let self, requestID == activeRequest else { return }
                 if error is CancellationError || (error as? DeepSeekChatError) == .cancelled {
+                    logInfo("Reading analysis ended with cancellation")
                     wasCancelled = true
                 } else if let error = error as? DeepSeekChatError {
                     errorMessage = error.queryError.localizedDescription
@@ -261,6 +266,55 @@ final class ReadingAssistantModel: ObservableObject {
             task = nil
             onLayoutChange?()
         }
+    }
+
+    /// Repairs only decoded content failures; transport, authentication and cancellation errors escape immediately.
+    private func validatedAnalysis(
+        configuration: ReadingAIConfiguration, prompt: String, selectedText: String,
+        source: String?, captured: SelectionSnapshot?, activeRequest: UUID
+    ) async throws
+        -> ReadingAnalysis {
+        var currentPrompt = prompt
+        let maximumRepairs = 2
+        for attempt in 0 ... maximumRepairs {
+            try Task.checkCancellation()
+            guard requestID == activeRequest, canRequest,
+                  configuration == ReadingAIConfiguration.current(),
+                  source == nil || Defaults[.enableContextExtraction],
+                  AXContextExtractor.allowsAI(snapshot: captured) else {
+                logInfo("Reading analysis cancelled: request, configuration or privacy permission changed")
+                throw CancellationError()
+            }
+            if let captured,
+               ContextExtractionCoordinator.shared.snapshot(forInputText: selectedText)?.selectionID != captured
+               .selectionID {
+                logInfo("Reading analysis cancelled: source selection changed")
+                throw CancellationError()
+            }
+            // Keep transport errors outside the decoding catch so they never trigger format repair.
+            let output = try await ReadingAIClient().complete(
+                configuration: configuration, system: ReadingAnalysisPrompt.systemPrompt, prompt: currentPrompt
+            )
+            try Task.checkCancellation()
+            do {
+                let answer = try ReadingAnalysis.decode(
+                    jsonContent: output, queriedText: selectedText, sourceSentence: source
+                )
+                logInfo("Reading analysis validated; format repairs: \(attempt)")
+                return answer
+            } catch {
+                guard attempt < maximumRepairs else {
+                    logInfo("Reading analysis validation failed after two format repairs")
+                    throw error
+                }
+                // The prompt carries the detailed error; logs deliberately contain no response or source text.
+                logInfo("Reading analysis validation failed; requesting format repair \(attempt + 1)")
+                currentPrompt = try ReadingAnalysisPrompt.repairPrompt(
+                    originalPrompt: prompt, previousResponse: output, error: error
+                )
+            }
+        }
+        throw DeepSeekChatError.invalidResponse
     }
 
     private func invalidatePrivateResults() {

@@ -148,13 +148,11 @@ struct AdvancedTab: View {
                 .disabled(!autoShowQueryIcon)
                 .opacity(autoShowQueryIcon ? 1 : 0.6)
 
-                Toggle(isOn: $clickQuery) {
-                    AdvancedTabItemView(
-                        color: .green,
-                        icon: .cursorarrowClick,
-                        labelText: "setting.advance.click_icon_query_info"
-                    )
-                }
+                AdvancedTabItemView(
+                    color: .green,
+                    icon: .cursorarrowClick,
+                    labelText: "setting.advance.click_icon_query_info"
+                )
             } header: {
                 Text("setting.advance.mouse_select_query.header")
             }
@@ -500,7 +498,6 @@ struct AdvancedTab: View {
     @Default(.autoShowQueryIcon) private var autoShowQueryIcon
     @Default(.autoShowQueryIconExcludedLanguage) private var autoShowQueryIconExcludedLanguage
     @Default(.autoShowQueryIconMinTextLength) private var autoShowQueryIconMinTextLength
-    @Default(.clickQuery) private var clickQuery
 
     // Windows management
     @Default(.fixedWindowPosition) private var fixedWindowPosition

@@ -164,31 +164,12 @@ static EZWindowManager *_instance;
     mm_weakify(self);
 
     EZButton *popButton = self.popButtonWindow.popButton;
-    MyConfiguration *config = [MyConfiguration shared];
-
-    if (config.hideMainWindow) {
-        // FIXME: Click pop button will also show preferences window.
-        [popButton setClickBlock:^(EZButton *button) {
-            mm_strongify(self);
-            [self popButtonWindowClicked];
-        }];
-
-        if (config.clickQuery) {
-            popButton.mouseEnterBlock = nil;
-        } else {
-            [popButton setMouseEnterBlock:^(EZButton *button) {
-                mm_strongify(self);
-                [self popButtonWindowClicked];
-            }];
-        }
-    } else {
-        popButton.clickBlock = nil;
-
-        [popButton setMouseEnterBlock:^(EZButton *button) {
-            mm_strongify(self);
-            [self popButtonWindowClicked];
-        }];
-    }
+    // Selection capture only offers the icon; submitting a query requires a click.
+    popButton.mouseEnterBlock = nil;
+    [popButton setClickBlock:^(EZButton *button) {
+        mm_strongify(self);
+        [self popButtonWindowClicked];
+    }];
 }
 
 - (void)popButtonWindowClicked {

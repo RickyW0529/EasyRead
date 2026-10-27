@@ -5,6 +5,33 @@
 面向 macOS 的英语阅读助手。遇到不熟悉的词、术语或长难句时，在一个划词面板里完成查词、
 翻译和语法理解，减少阅读过程中的来回切换。
 
+## 界面与使用示例
+
+<img src="docs/images/easyread-menu.png" alt="EasyRead 菜单，包含划词、剪贴板和截图翻译入口" width="240">
+
+选中英文后，**点击划词图标**或按 **Option+D**（默认划词快捷键）打开阅读面板。
+仅把鼠标移到图标上不会提交查询。快捷键可在设置中修改。
+
+菜单顶部的 **EasyRead + 版本号**打开 [EasyRead 发行页](https://github.com/RickyW0529/EasyRead/releases)，
+**帮助 → 反馈**打开 [EasyRead 问题反馈](https://github.com/RickyW0529/EasyRead/issues)。
+关于页的 GitHub 与贡献者按钮也指向本仓库。
+
+例如，阅读技术文档时选中这句话：
+
+> The process that handles incoming requests runs in the background.
+
+开启 AI 阅读后，可以在面板中对照译文、理解句子结构。以下为说明性示例，实际输出随所配置的
+服务商与模型而变化。
+
+| 面板内容 | 示例 |
+| --- | --- |
+| 翻译 | 处理传入请求的进程在后台运行。 |
+| 主语 | **The process**：被描述的进程。 |
+| 定语从句 | **that handles incoming requests**：修饰 process，说明它负责处理传入请求。 |
+| 谓语 | **runs**：进程的运行状态。 |
+| 状语 | **in the background**：说明在后台运行。 |
+| 词典查询 | 单独选中 **process**，用已启用的词典查看释义。 |
+
 ## 基于 Easydict 开发与致谢
 
 EasyRead 基于开源项目 [Easydict](https://github.com/tisfeng/Easydict) 开发，沿用了它在

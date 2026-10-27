@@ -18,7 +18,7 @@ struct EasyReadMainMenu: Commands {
         // Override Help
         CommandGroup(replacing: .help) {
             Button("menu_feedback") {
-                openURL(URL(string: "\(EZGithubRepoUpstreamURL)/issues")!)
+                openURL(URL(string: "\(EZGithubRepoURL)/issues")!)
             }
         }
 

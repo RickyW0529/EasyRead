@@ -58,7 +58,6 @@ class MyConfiguration: NSObject {
     @DefaultsWrapper(.autoShowQueryIconExcludedLanguage) var autoShowQueryIconExcludedLanguage: Language
     @DefaultsWrapper(.autoShowQueryIconMinTextLength) var autoShowQueryIconMinTextLength: Int
     @DefaultsWrapper(.enableForceGetSelectedText) var enableForceGetSelectedText: Bool
-    @DefaultsWrapper(.clickQuery) var clickQuery: Bool
 
     @DefaultsWrapper(.mouseSelectTranslateWindowType) var mouseSelectTranslateWindowType:
         EZWindowType
@@ -215,14 +214,6 @@ class MyConfiguration: NSObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.didSetForceAutoGetSelectedText()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.clickQuery, options: [])
-            .removeDuplicates()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.didSetClickQuery()
             }
             .store(in: &cancellables)
 
@@ -474,12 +465,6 @@ extension MyConfiguration {
 
     fileprivate func didSetForceAutoGetSelectedText() {
         logSettings(["force_get_selected_text": enableForceGetSelectedText])
-    }
-
-    fileprivate func didSetClickQuery() {
-        EZWindowManager.shared().updatePopButtonQueryAction()
-
-        logSettings(["click_query": clickQuery])
     }
 
     fileprivate func didSetAutomaticallyChecksForUpdates() {

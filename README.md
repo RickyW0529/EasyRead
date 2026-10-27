@@ -5,6 +5,35 @@
 An English reading assistant for macOS. Look up words, translate passages, and
 understand difficult sentences in one selection panel while you read.
 
+## Preview and example
+
+<img src="docs/images/easyread-menu.png" alt="EasyRead menu with selection, clipboard and screenshot translation actions" width="240">
+
+Select English text, then **click the selection icon** or press **Option+D** (the
+default selection shortcut) to open the reading panel. Moving the pointer over the
+icon does not submit a query. Shortcuts can be customized in Settings.
+
+The **EasyRead + version** menu item opens [EasyRead releases](https://github.com/RickyW0529/EasyRead/releases).
+**Help → Feedback** opens [EasyRead issues](https://github.com/RickyW0529/EasyRead/issues).
+The GitHub and contributor buttons in About also open this repository.
+
+For example, select this sentence from a technical reading session:
+
+> The process that handles incoming requests runs in the background.
+
+With AI reading enabled, the panel can help you compare a translation and understand
+the structure. The following is an illustrative explanation; actual output varies
+with the configured provider and model.
+
+| Panel content | Example |
+| --- | --- |
+| Translation | 处理传入请求的进程在后台运行。 |
+| Subject | **The process** — the process being described. |
+| Relative clause | **that handles incoming requests** — modifies “process.” |
+| Predicate | **runs** — what the process does. |
+| Adverbial | **in the background** — how or where it runs. |
+| Dictionary lookup | Select **process** to look up its definitions in an enabled dictionary. |
+
 ## Built on Easydict
 
 EasyRead is developed from [Easydict](https://github.com/tisfeng/Easydict). Selection

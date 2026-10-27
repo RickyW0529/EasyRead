@@ -15721,37 +15721,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Query only when clicking select query icon (when main window hidden)"
+            "value" : "Click the selection icon to query. Hovering does not start a query."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Consultar solo al hacer clic en el icono de consulta de selección (cuando la ventana principal está oculta)"
+            "value" : "Haz clic en el icono de selección para consultar. Pasar el cursor no inicia la consulta."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "選択クエリアイコンをクリックしたときのみクエリ（メインウィンドウ非表示時）"
+            "value" : "選択アイコンをクリックして検索します。マウスを重ねるだけでは検索しません。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prekladať len po kliknutí na ikonu vyberania textu (pri skrytom hlavnom okne)"
+            "value" : "Kliknutím na ikonu výberu spustíte preklad. Samotné prejdenie myšou preklad nespustí."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "点击划词查询图标时才查询（需隐藏主窗口）"
+            "value" : "点击划词图标才查询，鼠标移入不会自动查询。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "僅在點擊划詞查詢圖示時查詢（當主視窗隱藏時）"
+            "value" : "點擊劃詞圖示才查詢，滑鼠移入不會自動查詢。"
           }
         }
       }
@@ -26210,37 +26210,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Based on EasyRead (GPL-3.0)"
+            "value" : "Based on Easydict (GPL-3.0)"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "基于 EasyRead（GPL-3.0）开发"
+            "value" : "基于 Easydict（GPL-3.0）开发"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "基於 EasyRead（GPL-3.0）開發"
+            "value" : "基於 Easydict（GPL-3.0）開發"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "EasyRead（GPL-3.0）ベース"
+            "value" : "Easydict（GPL-3.0）ベース"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Založené na EasyRead (GPL-3.0)"
+            "value" : "Založené na Easydict (GPL-3.0)"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Basado en EasyRead (GPL-3.0)"
+            "value" : "Basado en Easydict (GPL-3.0)"
           }
         }
       }

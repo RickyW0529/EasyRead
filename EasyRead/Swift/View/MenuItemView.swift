@@ -131,7 +131,7 @@ struct MenuItemView: View {
     /// Version item
     @ViewBuilder private var versionItem: some View {
         Button(versionString) {
-            guard let versionURL = URL(string: "\(EZGithubRepoUpstreamURL)/releases") else {
+            guard let versionURL = URL(string: "\(EZGithubRepoURL)/releases") else {
                 return
             }
             openURL(versionURL)
@@ -186,7 +186,7 @@ struct MenuItemView: View {
         Menu("Help") {
             Button("Feedback") {
                 logInfo("Open Feedback")
-                guard let versionURL = URL(string: "\(EZGithubRepoUpstreamURL)/issues") else {
+                guard let versionURL = URL(string: "\(EZGithubRepoURL)/issues") else {
                     return
                 }
                 openURL(versionURL)

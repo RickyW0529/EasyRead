@@ -9,7 +9,7 @@ beside the text you're reading, without switching apps.
 
 ![Select English, press Option+D, and read the AI translation](docs/images/ai-selection-translation.gif)
 
-*Workflow illustration with example results; not a screen recording. AI output varies by provider and model.*
+*Captured from the actual EasyRead interface: a complex sentence, its translation and grammar analysis. Waiting time is shortened.*
 
 ## Get started
 

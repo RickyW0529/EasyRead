@@ -8,7 +8,7 @@
 
 ![选中英文、按 Option+D、查看 AI 译文](docs/images/ai-selection-translation.gif)
 
-*交互示意动图，使用示例结果，并非屏幕实录；实际 AI 输出因服务商与模型而异。*
+*真实 EasyRead 界面采集：展示长难句翻译与语法解析，已缩短等待时间。*
 
 ## 开始使用
 

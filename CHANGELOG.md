@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.1.1 — Explicit selection queries
+
+- Require a click or shortcut to translate selections; hovering no longer submits queries.
+- Apply click-to-query behavior regardless of main window visibility and remove the old hover setting.
+- Correct menu, feedback and About links to point to the EasyRead repository.
+- Simplify both READMEs around an animated AI selection-translation example.
+
+[Download and release notes](https://github.com/RickyW0529/EasyRead/releases/tag/v0.1.1).
+Apple Silicon preview, development-signed and not notarized.
+
 ## v0.1.0 — First preview
 
 - Developed from Easydict with the EasyRead product and bundle names; retained GPL-3.0 and upstream attribution.
